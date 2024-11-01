@@ -10,6 +10,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 // routes
+app.get("/api", (req, res) => {
+  res.json({ message: "Hello from server!" });
+});
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
