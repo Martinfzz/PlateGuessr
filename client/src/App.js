@@ -1,10 +1,11 @@
+import React from "react";
 import Mapbox from "./components/Map/Mapbox";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Mapbox/>
+        <Mapbox />
       </header>
     </div>
   );
