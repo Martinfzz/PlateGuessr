@@ -1,13 +1,13 @@
 import React from "react";
-import Mapbox from "./components/Map/Mapbox";
+import MainLayout from "./components/Maps/MainLayout";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Mapbox />
-      </header>
-    </div>
+    <>
+      <MainLayout />
+      <Outlet />
+    </>
   );
 }
 
