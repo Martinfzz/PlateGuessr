@@ -75,11 +75,10 @@ const MainLayout = () => {
   };
 
   // Handle the start of a new game
-  const handleNewGame = (values) => {
-    console.log(values);
+  const handleNewGame = async (values) => {
     setShowGameModal(false);
     setPlayedCountryInfo(popupInfo);
-    selectRandomElements(NUMBER_OF_ROUNDS);
+    await selectRandomElements(NUMBER_OF_ROUNDS);
     setGameOptions(values);
   };
 
