@@ -8,16 +8,26 @@ import {
   MDBModalBody,
   MDBModalFooter,
   MDBSwitch,
+  MDBRange,
 } from "mdb-react-ui-kit";
-import { Formik, Form } from "formik";
-import { Col, Container, Row } from "react-bootstrap";
+import { Formik, Form, ErrorMessage } from "formik";
+import { Col, Container, Row, Form as BootstrapForm } from "react-bootstrap";
+import * as Yup from "yup";
+import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 
 const GameModal = ({
   showGameModal,
   setShowGameModal,
   handleNewGame,
   popupInfo,
+  selectedCountryNamesLength,
 }) => {
+  const validationSchema = Yup.object().shape({
+    gameMode: Yup.number()
+      .transform((_, val) => (isNaN(Number(val)) ? null : Number(val)))
+      .required("Required"),
+  });
+
   return (
     <>
       <Formik
@@ -26,7 +36,10 @@ const GameModal = ({
           toggleBorders: true,
           toggleLabels: true,
           color: popupInfo.color,
+          gameMode: "",
+          numberOfRounds: 20,
         }}
+        validationSchema={validationSchema}
         onSubmit={(values) => {
           handleNewGame(values);
         }}
@@ -49,14 +62,49 @@ const GameModal = ({
                     />
                   </MDBModalHeader>
                   <MDBModalBody>
-                    <h2 className="d-flex justify-content-center mb-3">
+                    <h3 className="d-flex justify-content-center mb-3">
                       {popupInfo.name}
-                    </h2>
+                    </h3>
                     <p>
                       Find the answer from the list of territorial identifiers
                       appearing on German number plates and corresponding to
                       boroughs and district towns.
                     </p>
+                    <h5 className="d-flex justify-content-center mb-3">
+                      Game Mode
+                    </h5>
+                    <BootstrapForm.Select
+                      aria-label="Game Mode"
+                      className="game-mode-select"
+                      onChange={(e) =>
+                        formikProps.setFieldValue("gameMode", e.target.value)
+                      }
+                    >
+                      <option>Select game mode</option>
+                      <option value={1}>Normal</option>
+                      <option value={2}>Training</option>
+                    </BootstrapForm.Select>
+                    <ErrorMessage
+                      component={ValidationsAlerts}
+                      name="gameMode"
+                    />
+                    {formikProps.values.gameMode === "2" && (
+                      <div className="mt-2 nb-rounds-range">
+                        <MDBRange
+                          defaultValue={20}
+                          id="nbOfRounds"
+                          min={1}
+                          max={selectedCountryNamesLength}
+                          label="Number of rounds"
+                          onChange={(e) =>
+                            formikProps.setFieldValue(
+                              "numberOfRounds",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    )}
                   </MDBModalBody>
                   <MDBModalFooter>
                     <Container>
@@ -64,7 +112,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleColors"
-                            label="Toggle colors"
+                            label="Colors"
                             checked={formikProps.values.toggleColors}
                             onChange={(e) =>
                               formikProps.setFieldValue(
@@ -78,7 +126,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleBorders"
-                            label="Toggle borders"
+                            label="Borders"
                             checked={formikProps.values.toggleBorders}
                             onChange={(e) => {
                               formikProps.setFieldValue(
@@ -95,7 +143,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleLabels"
-                            label="Toggle names"
+                            label="Labels"
                             checked={formikProps.values.toggleLabels}
                             onChange={(e) =>
                               formikProps.setFieldValue(

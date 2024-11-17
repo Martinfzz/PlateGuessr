@@ -6,6 +6,7 @@ import EndGameModal from "../EndGameModal";
 import CountriesLayer from "./CountriesLayer";
 import CountryLayer from "./CountryLayer";
 import SelectedCountry from "./SelectedCountry";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 const MainLayout = () => {
   // State variables
@@ -27,14 +28,13 @@ const MainLayout = () => {
 
   // Refs for mutable values
   const selectedElements = useRef([]);
+  const selectedCountryNames = useRef([]);
   const layerRef = useRef(["countries"]);
   const mapRef = useRef(null);
   const score = useRef(0);
   const currentRound = useRef(1);
   const clickIsDisable = useRef(false);
   const newRoundTimeout = useRef(null);
-
-  const NUMBER_OF_ROUNDS = 20;
 
   // Helper function to fetch features from the map
   const getFeatures = (e) => {
@@ -55,20 +55,25 @@ const MainLayout = () => {
     });
   }, []);
 
+  const getRandomUniqueName = (names, usedNames) => {
+    let name;
+    do {
+      name = names[Math.floor(Math.random() * names.length)];
+    } while (usedNames.includes(name));
+    return name;
+  };
+
   // Select random names from the current country
   const selectRandomElements = async (n) => {
-    const selectedCountry = await import(
-      `../../assets/metadata/json/${popupInfo.name.toLowerCase()}.json`
-    );
     let elements = [];
-    if (n >= selectedCountry.names.length) {
-      return selectedCountry.names;
+    if (n >= selectedCountryNames.current.length) {
+      return selectedCountryNames.current;
     }
     for (let i = 0; i < n; i++) {
-      let newElem =
-        selectedCountry.names[
-          Math.floor(Math.random() * selectedCountry.names.length)
-        ];
+      const newElem = getRandomUniqueName(
+        selectedCountryNames.current,
+        elements
+      );
       elements.push(newElem);
     }
     selectedElements.current = elements;
@@ -78,7 +83,7 @@ const MainLayout = () => {
   const handleNewGame = async (values) => {
     setShowGameModal(false);
     setPlayedCountryInfo(popupInfo);
-    await selectRandomElements(NUMBER_OF_ROUNDS);
+    await selectRandomElements(values.numberOfRounds);
     setGameOptions(values);
   };
 
@@ -111,25 +116,30 @@ const MainLayout = () => {
   };
 
   // Set user marker and check if the answer is correct
-  const setMarkerCoords = useCallback((e, features) => {
-    setUserMarker([{ longitude: e.lngLat.lng, latitude: e.lngLat.lat }]);
+  const setMarkerCoords = useCallback(
+    (e, features) => {
+      setUserMarker([{ longitude: e.lngLat.lng, latitude: e.lngLat.lat }]);
 
-    if (features[0]?.properties.name === selectedElements.current.at(-1).name) {
-      setUserMarkerColor("#47A025");
-      score.current = score.current + 1;
-    } else {
-      setUserMarkerColor("#E3655B");
-      const answerLongitude = selectedElements.current.at(-1).lng;
-      const answerLatitude = selectedElements.current.at(-1).lat;
-      setAnswerMarker([
-        { longitude: answerLongitude, latitude: answerLatitude },
-      ]);
-    }
+      if (features[0]?.properties.name === selectedElements.current.at(-1).id) {
+        setUserMarkerColor("#47A025");
+        score.current = score.current + 1;
+      } else {
+        setUserMarkerColor("#E3655B");
+        const answerLongitude = selectedElements.current.at(-1).lng;
+        const answerLatitude = selectedElements.current.at(-1).lat;
+        setAnswerMarker([
+          { longitude: answerLongitude, latitude: answerLatitude },
+        ]);
+      }
 
-    newRoundTimeout.current = setTimeout(() => {
-      setNewRound();
-    }, 2000);
-  }, []);
+      if (gameOptions.gameMode !== "2") {
+        newRoundTimeout.current = setTimeout(() => {
+          setNewRound();
+        }, 2000);
+      }
+    },
+    [gameOptions.gameMode]
+  );
 
   const handleClickOnCountry = (features) => {
     const country = features && features[0];
@@ -179,6 +189,16 @@ const MainLayout = () => {
     }
   }, [playedCountryInfo]);
 
+  // Handle when the user click on the country modal to select options
+  const handleOnPlay = async () => {
+    setShowGameModal(true);
+    setShowPopupInfo(false);
+    const country = await import(
+      `../../assets/metadata/json/${popupInfo.name.toLowerCase()}.json`
+    );
+    selectedCountryNames.current = country.names;
+  };
+
   // Handle when the user wants to go back to the main map
   const handleOnBack = () => {
     setPlayedCountryInfo({ countryId: 0 });
@@ -217,32 +237,43 @@ const MainLayout = () => {
       {playedCountryInfo.countryId !== 0 &&
         selectedElements.current.length > 0 && (
           <Round
-            selectedElement={selectedElements.current.at(-1).name}
-            numberOfRounds={NUMBER_OF_ROUNDS}
+            selectedElement={selectedElements.current.at(-1)}
             currentRound={currentRound.current}
             score={score.current}
+            gameOptions={gameOptions}
           />
         )}
+
+      {gameOptions.gameMode === "2" && userMarker.length > 0 && (
+        <div className="d-grid gap-2 col-6 mx-auto">
+          <MDBBtn
+            className="d-flex justify-content-center btn-next"
+            onClick={() => setNewRound()}
+          >
+            {selectedElements.current.length !== 1 ? "Next" : "Finish"}
+          </MDBBtn>
+        </div>
+      )}
 
       {showPopupInfo && popupInfo && playedCountryInfo.countryId === 0 && (
         <SelectedCountry
           popupInfo={popupInfo}
           handleOnClose={() => setPopupInfo(null)}
-          handleOnPlay={() => {
-            setShowGameModal(true);
-            setShowPopupInfo(false);
-          }}
+          handleOnPlay={handleOnPlay}
         />
       )}
 
-      {showGameModal && popupInfo && (
-        <GameModal
-          showGameModal={showGameModal}
-          setShowGameModal={() => setShowGameModal(false)}
-          handleNewGame={(values) => handleNewGame(values)}
-          popupInfo={popupInfo}
-        />
-      )}
+      {showGameModal &&
+        popupInfo &&
+        selectedCountryNames.current.length > 0 && (
+          <GameModal
+            showGameModal={showGameModal}
+            setShowGameModal={() => setShowGameModal(false)}
+            handleNewGame={(values) => handleNewGame(values)}
+            popupInfo={popupInfo}
+            selectedCountryNamesLength={selectedCountryNames.current.length}
+          />
+        )}
 
       {showEndGameModal && (
         <EndGameModal

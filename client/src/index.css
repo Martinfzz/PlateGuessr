@@ -19,7 +19,6 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: 20px !important;
   font-weight: 700 !important;
 }
 
@@ -79,6 +78,15 @@ label {
   color: rgba(255, 255, 255, 0.7);
 }
 
+.game-mode-select:focus {
+  border-color: #90e39a !important;
+  box-shadow: inset 0px 0px 0px 1px #90e39a !important;
+}
+
+.validations-alerts-help-block {
+  color: red;
+}
+
 /* react-map-gl override */
 
 .mapboxgl-popup-tip {
@@ -118,6 +126,12 @@ label {
   background-color: #e3655b !important;
 }
 
+.btn-next {
+  background-color: var(--game-btn-color) !important;
+  position: relative;
+  margin-top: 95%;
+}
+
 .btn-play-again {
   background-color: var(--game-btn-color) !important;
 }
@@ -126,4 +140,26 @@ label {
 
 .new-game-modal-header {
   padding: 0 !important;
+}
+
+/* Range */
+
+.nb-rounds-range > .range > .form-range::-webkit-slider-thumb {
+  background-color: var(--game-btn-color) !important;
+}
+
+.nb-rounds-range > .range > .form-range::-moz-range-thumb {
+  background-color: var(--game-btn-color) !important;
+}
+.nb-rounds-range > .range > .form-range::-ms-thumb {
+  background-color: var(--game-btn-color) !important;
+}
+
+.nb-rounds-range > .range > .thumb:after {
+  background-color: var(--game-btn-color) !important;
+}
+
+.nb-rounds-range > .range > .thumb > .thumb-value {
+  color: rgb(79, 79, 79) !important;
+  font-weight: 600 !important;
 }
