@@ -22,7 +22,7 @@ const EndGameModal = ({
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Final Score: {score}</MDBModalTitle>
+              <MDBModalTitle>Final Score: {score.after}</MDBModalTitle>
             </MDBModalHeader>
             <MDBModalBody>
               <p>In Progress</p>
