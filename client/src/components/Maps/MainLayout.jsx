@@ -19,6 +19,7 @@ const MainLayout = () => {
   const [userMarkerColor, setUserMarkerColor] = useState("#4A7B9D");
   const [answerMarker, setAnswerMarker] = useState([]);
   const [showEndGameModal, setShowEndGameModal] = useState(false);
+  const [showEffect, setShowEffect] = useState(false);
   const [gameOptions, setGameOptions] = useState({
     toggleColors: true,
     toggleBorders: true,
@@ -31,10 +32,13 @@ const MainLayout = () => {
   const selectedCountryNames = useRef([]);
   const layerRef = useRef(["countries"]);
   const mapRef = useRef(null);
-  const score = useRef(0);
+  const score = useRef({ before: 0, after: 0, time: 0 });
   const currentRound = useRef(1);
   const clickIsDisable = useRef(false);
   const newRoundTimeout = useRef(null);
+  const guessesCount = useRef(3);
+  const goodGuess = useRef(false);
+  const addedTime = useRef(0);
 
   // Helper function to fetch features from the map
   const getFeatures = (e) => {
@@ -85,6 +89,7 @@ const MainLayout = () => {
     setPlayedCountryInfo(popupInfo);
     await selectRandomElements(values.numberOfRounds);
     setGameOptions(values);
+    score.current = { before: 0, after: 0, time: 0 };
   };
 
   const toggleLayout = (status) => {
@@ -103,42 +108,72 @@ const MainLayout = () => {
 
   // Start a new round, resetting markers and check if game is over
   const setNewRound = () => {
+    resetMarkers();
+    currentRound.current += 1;
+    selectedElements.current.pop();
+    guessesCount.current = 3;
+    goodGuess.current = false;
+
+    if (selectedElements.current.length <= 0) {
+      setEndGame();
+    }
+  };
+
+  const setEndGame = () => {
+    clearTimeout(newRoundTimeout.current);
+    score.current.after = Math.ceil(score.current.after + score.current.time);
+    setShowEndGameModal(true);
+  };
+
+  const resetMarkers = () => {
     setUserMarker([]);
     setAnswerMarker([]);
     clickIsDisable.current = false; // Prevent multiple click before a new round
-    currentRound.current += 1;
-    selectedElements.current.pop();
-
-    if (selectedElements.current.length <= 0) {
-      clearTimeout(newRoundTimeout.current);
-      setShowEndGameModal(true);
-    }
   };
 
   // Set user marker and check if the answer is correct
   const setMarkerCoords = useCallback(
     (e, features) => {
       setUserMarker([{ longitude: e.lngLat.lng, latitude: e.lngLat.lat }]);
+      setShowEffect(true);
+      setTimeout(() => setShowEffect(false), 2000);
 
       if (features[0]?.properties.name === selectedElements.current.at(-1).id) {
         setUserMarkerColor("#47A025");
-        score.current = score.current + 1;
+        score.current.before = score.current.after;
+        score.current.after = score.current.after + guessesCount.current * 1000;
+        goodGuess.current = true;
+        addedTime.current = guessesCount.current * 5;
+        clearTimeout(newRoundTimeout.current);
       } else {
         setUserMarkerColor("#E3655B");
+        guessesCount.current = guessesCount.current - 1;
+      }
+
+      if (guessesCount.current === 0) {
         const answerLongitude = selectedElements.current.at(-1).lng;
         const answerLatitude = selectedElements.current.at(-1).lat;
         setAnswerMarker([
           { longitude: answerLongitude, latitude: answerLatitude },
         ]);
+        clearTimeout(newRoundTimeout.current);
       }
 
-      if (gameOptions.gameMode !== "2") {
-        newRoundTimeout.current = setTimeout(() => {
-          setNewRound();
-        }, 2000);
-      }
+      newRoundTimeout.current = setTimeout(() => {
+        if (gameOptions.gameMode !== "5") {
+          if (guessesCount.current === 0 || goodGuess.current) {
+            setNewRound();
+          } else {
+            resetMarkers();
+          }
+        } else {
+          if (guessesCount.current !== 0 && !goodGuess.current) {
+            resetMarkers();
+          }
+        }
+      }, 2000);
     },
-    [gameOptions.gameMode]
+    [gameOptions.gameMode, goodGuess]
   );
 
   const handleClickOnCountry = (features) => {
@@ -221,6 +256,22 @@ const MainLayout = () => {
       handleClick={handleClick}
       layerIds={layerRef.current}
     >
+      {showEffect && (
+        <>
+          <div
+            className={`border-effect-top-bar border-effect-color-${goodGuess.current}`}
+          ></div>
+          <div
+            className={`border-effect-bottom-bar border-effect-color-${goodGuess.current}`}
+          ></div>
+          <div
+            className={` border-effect-right-bar border-effect-color-${goodGuess.current}`}
+          ></div>
+          <div
+            className={`border-effect-left-bar border-effect-color-${goodGuess.current}`}
+          ></div>
+        </>
+      )}
       {playedCountryInfo.countryId === 0 && (
         <CountriesLayer hoverInfo={hoverInfo} />
       )}
@@ -241,19 +292,24 @@ const MainLayout = () => {
             currentRound={currentRound.current}
             score={score.current}
             gameOptions={gameOptions}
+            addedTime={addedTime.current}
+            setEndGame={() => setEndGame()}
+            showEndGameModal={showEndGameModal}
+            setFinalScore={(time) => (score.current.time = time * 100)}
           />
         )}
 
-      {gameOptions.gameMode === "2" && userMarker.length > 0 && (
-        <div className="d-grid gap-2 col-6 mx-auto">
-          <MDBBtn
-            className="d-flex justify-content-center btn-next"
-            onClick={() => setNewRound()}
-          >
-            {selectedElements.current.length !== 1 ? "Next" : "Finish"}
-          </MDBBtn>
-        </div>
-      )}
+      {gameOptions.gameMode === "5" &&
+        (guessesCount.current === 0 || goodGuess.current) && (
+          <div className="d-grid gap-2 col-6 mx-auto">
+            <MDBBtn
+              className="d-flex justify-content-center btn-next"
+              onClick={() => setNewRound()}
+            >
+              {selectedElements.current.length !== 1 ? "Next" : "Finish"}
+            </MDBBtn>
+          </div>
+        )}
 
       {showPopupInfo && popupInfo && playedCountryInfo.countryId === 0 && (
         <SelectedCountry

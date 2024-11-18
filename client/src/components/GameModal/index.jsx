@@ -8,12 +8,11 @@ import {
   MDBModalBody,
   MDBModalFooter,
   MDBSwitch,
-  MDBRange,
 } from "mdb-react-ui-kit";
-import { Formik, Form, ErrorMessage } from "formik";
-import { Col, Container, Row, Form as BootstrapForm } from "react-bootstrap";
+import { Formik, Form } from "formik";
+import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
-import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
+import GameMode from "./GameMode";
 
 const GameModal = ({
   showGameModal,
@@ -70,41 +69,9 @@ const GameModal = ({
                       appearing on German number plates and corresponding to
                       boroughs and district towns.
                     </p>
-                    <h5 className="d-flex justify-content-center mb-3">
-                      Game Mode
-                    </h5>
-                    <BootstrapForm.Select
-                      aria-label="Game Mode"
-                      className="game-mode-select"
-                      onChange={(e) =>
-                        formikProps.setFieldValue("gameMode", e.target.value)
-                      }
-                    >
-                      <option>Select game mode</option>
-                      <option value={1}>Normal</option>
-                      <option value={2}>Training</option>
-                    </BootstrapForm.Select>
-                    <ErrorMessage
-                      component={ValidationsAlerts}
-                      name="gameMode"
+                    <GameMode
+                      selectedCountryNamesLength={selectedCountryNamesLength}
                     />
-                    {formikProps.values.gameMode === "2" && (
-                      <div className="mt-2 nb-rounds-range">
-                        <MDBRange
-                          defaultValue={20}
-                          id="nbOfRounds"
-                          min={1}
-                          max={selectedCountryNamesLength}
-                          label="Number of rounds"
-                          onChange={(e) =>
-                            formikProps.setFieldValue(
-                              "numberOfRounds",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                    )}
                   </MDBModalBody>
                   <MDBModalFooter>
                     <Container>
@@ -120,7 +87,12 @@ const GameModal = ({
                                 e.target.checked
                               )
                             }
-                            disabled={!formikProps.values.toggleBorders}
+                            disabled={
+                              !formikProps.values.toggleBorders ||
+                              ["2", "3", "4"].includes(
+                                formikProps.values.gameMode
+                              )
+                            }
                           />
                         </Col>
                         <Col className="d-flex justify-content-center">
@@ -138,6 +110,9 @@ const GameModal = ({
                                 e.target.checked
                               );
                             }}
+                            disabled={["3", "4"].includes(
+                              formikProps.values.gameMode
+                            )}
                           />
                         </Col>
                         <Col className="d-flex justify-content-center">
@@ -151,6 +126,7 @@ const GameModal = ({
                                 e.target.checked
                               )
                             }
+                            disabled={formikProps.values.gameMode === "4"}
                           />
                         </Col>
                       </Row>
