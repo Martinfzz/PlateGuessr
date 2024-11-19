@@ -1,0 +1,82 @@
+import React from "react";
+import { ErrorMessage, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
+import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
+
+const EmailForm = () => {
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .required("Please Enter your password")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
+    passwordConfirmation: Yup.string()
+      .required("Please retype your password.")
+      .oneOf([Yup.ref("password")], "Your passwords do not match."),
+  });
+
+  return (
+    <Formik
+      initialValues={{ email: "", password: "", passwordConfirmation: "" }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => console.log(values)}
+    >
+      {(formikProps) => (
+        <Form className="signin-form">
+          <MDBInput
+            label="Email"
+            id="email"
+            type="email"
+            onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
+          />
+          <ErrorMessage
+            component={ValidationsAlerts}
+            name="email"
+            className="mb-4"
+          />
+
+          <MDBInput
+            label="Password"
+            id="password"
+            type="password"
+            className="mt-4 "
+            onChange={(e) =>
+              formikProps.setFieldValue("password", e.target.value)
+            }
+          />
+          <ErrorMessage
+            component={ValidationsAlerts}
+            name="password"
+            className="mb-4"
+          />
+
+          <MDBInput
+            label="Password confirmation"
+            id="passwordConfirmation"
+            type="password"
+            className="mt-4"
+            onChange={(e) =>
+              formikProps.setFieldValue("passwordConfirmation", e.target.value)
+            }
+          />
+          <ErrorMessage
+            component={ValidationsAlerts}
+            name="passwordConfirmation"
+            className="mb-4"
+          />
+
+          <div className="d-flex justify-content-center text-center mt-4">
+            <MDBBtn rounded className="btn-play" type="submit" color="light">
+              Sign in
+            </MDBBtn>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export default EmailForm;

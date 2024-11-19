@@ -3,6 +3,10 @@
   --game-btn-color: #90e39a;
 }
 
+#root {
+  height: 100vh;
+}
+
 * {
   font-family: "Roboto Slab";
 }
@@ -11,6 +15,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e7efef !important;
 }
 
 h1,
@@ -92,7 +97,46 @@ label {
   box-shadow: inset 0px 0px 0px 1px #90e39a !important;
 }
 
+.signin-form .form-outline .form-control {
+  background-color: white;
+}
+
+.signin-form .form-control:focus ~ .form-notch .form-notch-leading {
+  border-color: #90e39a !important;
+  box-shadow:
+    -1px 0 0 0 #90e39a,
+    0 1px 0 0 #90e39a,
+    0 -1px 0 0 #90e39a !important;
+}
+
+.signin-form .form-control:focus ~ .form-notch .form-notch-middle {
+  border-color: #90e39a !important;
+  box-shadow: 0 1px 0 0 #90e39a !important;
+  border-top: 1px solid transparent !important;
+}
+
+.signin-form .form-control:focus ~ .form-notch .form-notch-trailing {
+  border-color: #90e39a !important;
+  box-shadow:
+    1px 0 0 0 #90e39a,
+    0 -1px 0 0 #90e39a,
+    0 1px 0 0 #90e39a !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text !important;
+  background-color: white;
+}
+
+.signin-form .form-control:focus ~ .form-label {
+  color: #90e39a !important;
+}
+
 .validations-alerts-help-block {
+  font-size: 13px;
   color: red;
 }
 
@@ -163,6 +207,20 @@ label {
   100% {
     opacity: 0;
   }
+}
+
+.divider-container {
+  display: flex;
+  align-items: center;
+}
+
+.divider-border {
+  border-bottom: 1px solid #999999;
+  flex-grow: 1;
+}
+
+.divider-content {
+  padding: 0 10px 0 10px;
 }
 
 /* react-map-gl override */

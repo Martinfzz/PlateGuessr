@@ -7,6 +7,7 @@ import CountriesLayer from "./CountriesLayer";
 import CountryLayer from "./CountryLayer";
 import SelectedCountry from "./SelectedCountry";
 import { MDBBtn } from "mdb-react-ui-kit";
+import ConnexionBtn from "../ConnexionBtn";
 
 const MainLayout = () => {
   // State variables
@@ -121,7 +122,7 @@ const MainLayout = () => {
 
   const setEndGame = () => {
     clearTimeout(newRoundTimeout.current);
-    score.current.after = Math.ceil(score.current.after + score.current.time);
+    score.current.after = Math.floor(score.current.after + score.current.time);
     setShowEndGameModal(true);
   };
 
@@ -256,6 +257,7 @@ const MainLayout = () => {
       handleClick={handleClick}
       layerIds={layerRef.current}
     >
+      <ConnexionBtn />
       {showEffect && (
         <>
           <div
