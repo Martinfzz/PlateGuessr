@@ -10,8 +10,18 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import EmailForm from "./EmailForm";
 import Header from "../../components/Header";
+import Alerts from "../../components/Alerts";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useLogin } from "../../hooks/userLogin";
 
 const LogIn = () => {
+  const { login, error, isLoading } = useLogin();
+
+  const handleSubmit = async (values) => {
+    const { email, password } = values;
+
+    await login(email, password);
+  };
   return (
     <>
       <Header />
@@ -21,7 +31,12 @@ const LogIn = () => {
       >
         <div>
           <Col>
-            <EmailForm />
+            {error && (
+              <Alerts color="danger" icon={faCircleExclamation}>
+                Failed to sign in. Please try again.
+              </Alerts>
+            )}
+            <EmailForm isLoading={isLoading} handleSubmit={handleSubmit} />
             <div className="d-flex text-center">
               <Col>
                 <div className="divider-container text-muted my-4">

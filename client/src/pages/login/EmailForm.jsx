@@ -4,21 +4,12 @@ import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Link } from "react-router-dom";
-import { useLogin } from "../../hooks/userLogin";
 
-const EmailForm = () => {
-  const { login, error, isLoading } = useLogin();
-
+const EmailForm = ({ isLoading, handleSubmit }) => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Please Enter your password"),
   });
-
-  const handleSubmit = async (values) => {
-    const { email, password } = values;
-
-    await login(email, password);
-  };
 
   return (
     <Formik
@@ -72,7 +63,6 @@ const EmailForm = () => {
               Log in
             </MDBBtn>
           </div>
-          {error && <div className="error">{error}</div>}
         </Form>
       )}
     </Formik>

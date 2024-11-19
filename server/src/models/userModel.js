@@ -39,7 +39,7 @@ userSchema.statics.signup = async function (
   const exists = await this.findOne({ email });
 
   if (exists) {
-    throw Error("Email already in use");
+    throw Error("Sign up not allowed");
   }
 
   const salt = await bcrypt.genSalt(10);

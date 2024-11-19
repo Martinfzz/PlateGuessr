@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { useSignup } from "../../hooks/useSignup";
+import Alerts from "../../components/Alerts";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const EmailForm = () => {
   const { signup, error, isLoading } = useSignup();
@@ -35,6 +37,11 @@ const EmailForm = () => {
     >
       {(formikProps) => (
         <Form className="signup-form">
+          {error && (
+            <Alerts color="danger" icon={faCircleExclamation}>
+              {error}
+            </Alerts>
+          )}
           <MDBInput
             label="Email"
             id="email"
@@ -88,7 +95,6 @@ const EmailForm = () => {
               Sign in
             </MDBBtn>
           </div>
-          {error && <div className="error">{error}</div>}
         </Form>
       )}
     </Formik>
