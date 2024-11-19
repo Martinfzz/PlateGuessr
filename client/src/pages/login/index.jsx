@@ -28,6 +28,7 @@ const LogIn = () => {
               </div>
               <Col>
                 <MDBBtn
+                  disabled
                   rounded
                   className="m-2"
                   style={{
@@ -43,6 +44,7 @@ const LogIn = () => {
               </Col>
               <Col>
                 <MDBBtn
+                  disabled
                   rounded
                   className="m-2"
                   color="dark"
@@ -58,8 +60,9 @@ const LogIn = () => {
               </Col>
               <Col>
                 <MDBBtn
+                  disabled
                   rounded
-                  className="m-2 mb-4"
+                  className="m-2"
                   style={{
                     backgroundColor: "#3b5998",
                     textTransform: "none",
@@ -71,12 +74,14 @@ const LogIn = () => {
                   <span className="ms-2 h6">Continue with Facebook</span>
                 </MDBBtn>
               </Col>
-              <Link
-                to={"/signup"}
-                className="text-muted text-decoration-underline"
-              >
-                Create an account
-              </Link>
+              <div className="mt-4">
+                <Link
+                  to={"/signup"}
+                  className="text-muted text-decoration-underline"
+                >
+                  Create an account
+                </Link>
+              </div>
             </Col>
           </div>
         </Col>

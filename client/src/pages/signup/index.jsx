@@ -24,6 +24,7 @@ const SignUp = () => {
           <h2 className="my-4">Choose sign-up method</h2>
           <Col>
             <MDBBtn
+              disabled
               rounded
               className="m-2"
               style={{
@@ -39,6 +40,7 @@ const SignUp = () => {
           </Col>
           <Col>
             <MDBBtn
+              disabled
               rounded
               className="m-2"
               color="dark"
@@ -54,6 +56,7 @@ const SignUp = () => {
           </Col>
           <Col>
             <MDBBtn
+              disabled
               rounded
               className="m-2"
               style={{
