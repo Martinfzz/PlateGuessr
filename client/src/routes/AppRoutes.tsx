@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import App from "../App";
 import Error404 from "../pages/error404";
 import LogIn from "../pages/login";
-import SignIn from "../pages/signin";
+import SignUp from "../pages/signup";
 import ResetPassword from "../pages/resetPassword";
 
 const AppRoutes: FC = () => {
@@ -12,7 +12,7 @@ const AppRoutes: FC = () => {
       <Routes>
         <Route path="*" element={<Error404 />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<App />} />
       </Routes>

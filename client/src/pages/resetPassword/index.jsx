@@ -25,7 +25,7 @@ const ResetPassword = () => {
               onSubmit={(values) => console.log(values)}
             >
               {(formikProps) => (
-                <Form className="signin-form">
+                <Form className="signup-form">
                   <MDBInput
                     label="Email"
                     id="email"

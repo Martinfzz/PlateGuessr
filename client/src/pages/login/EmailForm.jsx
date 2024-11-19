@@ -27,7 +27,7 @@ const EmailForm = () => {
       onSubmit={(values) => handleSubmit(values)}
     >
       {(formikProps) => (
-        <Form className="signin-form">
+        <Form className="signup-form">
           <MDBInput
             label="Email"
             id="email"

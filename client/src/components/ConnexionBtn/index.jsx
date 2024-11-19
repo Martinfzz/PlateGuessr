@@ -26,7 +26,7 @@ const ConnexionBtn = () => {
               Log In
             </MDBBtn>
           </Link>
-          <Link to={"/signin"}>
+          <Link to={"/signup"}>
             <MDBBtn rounded className="m-2" type="submit" color="info">
               Sign In
             </MDBBtn>

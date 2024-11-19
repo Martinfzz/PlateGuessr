@@ -72,7 +72,7 @@ const LogIn = () => {
                 </MDBBtn>
               </Col>
               <Link
-                to={"/signin"}
+                to={"/signup"}
                 className="text-muted text-decoration-underline"
               >
                 Create an account

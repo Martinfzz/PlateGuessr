@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import EmailModal from "./EmailModal";
 
-const SignIn = () => {
+const SignUp = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
 
   return (
@@ -99,4 +99,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
