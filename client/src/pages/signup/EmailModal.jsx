@@ -15,13 +15,13 @@ const EmailModal = ({ showEmailModal, setShowEmailModal }) => {
   return (
     <MDBModal open={showEmailModal} onClose={setShowEmailModal} tabIndex="-1">
       <MDBModalDialog centered>
-        <MDBModalContent>
+        <MDBModalContent className="signup-modal">
           <MDBModalHeader>
             <Col>
               <Row className="d-flex text-center">
                 <MDBModalTitle>Almost there!</MDBModalTitle>
               </Row>
-              <Row className="d-flex text-center">
+              <Row className="d-flex text-center yellow">
                 <MDBModalTitle>
                   Just a few more steps and you're ready to go!
                 </MDBModalTitle>

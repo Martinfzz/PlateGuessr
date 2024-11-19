@@ -23,6 +23,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             label="Email"
             id="email"
             type="email"
+            placeholder=""
             onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
           />
           <ErrorMessage
@@ -35,7 +36,8 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             label="Password"
             id="password"
             type="password"
-            className="mt-4 "
+            className="mt-4"
+            placeholder=""
             onChange={(e) =>
               formikProps.setFieldValue("password", e.target.value)
             }
@@ -55,7 +57,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             </Link>
             <MDBBtn
               rounded
-              className="btn-play"
+              className="btn-signup"
               type="submit"
               color="light"
               disabled={isLoading}

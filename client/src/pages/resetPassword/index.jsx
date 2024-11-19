@@ -31,6 +31,7 @@ const ResetPassword = () => {
                     id="email"
                     type="email"
                     className="mt-4"
+                    placeholder=""
                     onChange={(e) =>
                       formikProps.setFieldValue("email", e.target.value)
                     }
@@ -43,7 +44,7 @@ const ResetPassword = () => {
                   <div className="d-flex justify-content-center text-center">
                     <MDBBtn
                       rounded
-                      className="btn-play mt-4"
+                      className="btn-signup mt-4"
                       type="submit"
                       color="light"
                     >

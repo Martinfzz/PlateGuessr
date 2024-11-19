@@ -25,7 +25,7 @@ const SignUp = () => {
         <div className="d-flex text-center">
           <Col>
             <h1>Get started</h1>
-            <h2 className="my-4">Choose sign-up method</h2>
+            <h2 className="my-4 yellow">Choose sign-up method</h2>
             <Col>
               <MDBBtn
                 disabled

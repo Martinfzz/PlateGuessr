@@ -14,25 +14,42 @@ const ConnexionBtn = () => {
 
   return (
     <div className="d-flex justify-content-end">
-      {user && (
-        <MDBBtn rounded className="m-2" onClick={handleClick} color="success">
-          Log Out
-        </MDBBtn>
-      )}
-      {!user && (
-        <>
-          <Link to={"/login"}>
-            <MDBBtn rounded className="m-2" type="submit" color="success">
-              Log In
-            </MDBBtn>
-          </Link>
-          <Link to={"/signup"}>
-            <MDBBtn rounded className="m-2" type="submit" color="info">
-              Sign In
-            </MDBBtn>
-          </Link>
-        </>
-      )}
+      <div className="position-absolute">
+        {user && (
+          <MDBBtn
+            rounded
+            className="mt-3 me-3 text-dark"
+            onClick={handleClick}
+            color="danger"
+          >
+            Log Out
+          </MDBBtn>
+        )}
+        {!user && (
+          <>
+            <Link to={"/login"}>
+              <MDBBtn
+                rounded
+                className="mt-3 me-3 btn-login"
+                type="submit"
+                color="light"
+              >
+                Log In
+              </MDBBtn>
+            </Link>
+            <Link to={"/signup"}>
+              <MDBBtn
+                rounded
+                className="mt-3 me-3 btn-signup"
+                type="submit"
+                color="light"
+              >
+                Sign Up
+              </MDBBtn>
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };

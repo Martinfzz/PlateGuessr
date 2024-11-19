@@ -21,6 +21,7 @@ const MainLayout = () => {
   const [answerMarker, setAnswerMarker] = useState([]);
   const [showEndGameModal, setShowEndGameModal] = useState(false);
   const [showEffect, setShowEffect] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [gameOptions, setGameOptions] = useState({
     toggleColors: true,
     toggleBorders: true,
@@ -86,6 +87,7 @@ const MainLayout = () => {
 
   // Handle the start of a new game
   const handleNewGame = async (values) => {
+    setIsPlaying(true);
     setShowGameModal(false);
     setPlayedCountryInfo(popupInfo);
     await selectRandomElements(values.numberOfRounds);
@@ -239,6 +241,7 @@ const MainLayout = () => {
   const handleOnBack = () => {
     setPlayedCountryInfo({ countryId: 0 });
     setShowEndGameModal(false);
+    setIsPlaying(false);
     currentRound.current = 1;
     toggleLayout("visible");
   };
@@ -257,7 +260,7 @@ const MainLayout = () => {
       handleClick={handleClick}
       layerIds={layerRef.current}
     >
-      <ConnexionBtn />
+      {!isPlaying && <ConnexionBtn />}
       {showEffect && (
         <>
           <div

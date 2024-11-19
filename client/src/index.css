@@ -1,6 +1,11 @@
 :root {
-  --popup-color: #e7efef;
+  --blue: #adcbff;
+  --yellow: #fec148;
+  --popup-color: #f6e3e0;
   --game-btn-color: #90e39a;
+  --redish-color: #e3655b;
+  --main-backgroung-color: #fcf6f5;
+  --signup-color: var(--blue);
 }
 
 #root {
@@ -15,7 +20,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e7efef !important;
+  background-color: var(--main-backgroung-color) !important;
 }
 
 h1,
@@ -30,6 +35,10 @@ h6 {
 p,
 label {
   font-weight: 600 !important;
+}
+
+.yellow {
+  color: var(--yellow);
 }
 
 .btn {
@@ -97,30 +106,45 @@ label {
   box-shadow: inset 0px 0px 0px 1px #90e39a !important;
 }
 
-.signup-form .form-outline .form-control {
-  background-color: white;
-}
-
 .signup-form .form-control:focus ~ .form-notch .form-notch-leading {
-  border-color: #90e39a !important;
+  border-color: var(--signup-color) !important;
   box-shadow:
-    -1px 0 0 0 #90e39a,
-    0 1px 0 0 #90e39a,
-    0 -1px 0 0 #90e39a !important;
+    -1px 0 0 0 var(--signup-color),
+    0 1px 0 0 var(--signup-color),
+    0 -1px 0 0 var(--signup-color) !important;
 }
 
 .signup-form .form-control:focus ~ .form-notch .form-notch-middle {
-  border-color: #90e39a !important;
-  box-shadow: 0 1px 0 0 #90e39a !important;
+  border-color: var(--signup-color) !important;
+  box-shadow: 0 1px 0 0 var(--signup-color) !important;
   border-top: 1px solid transparent !important;
 }
 
 .signup-form .form-control:focus ~ .form-notch .form-notch-trailing {
-  border-color: #90e39a !important;
+  border-color: var(--signup-color) !important;
   box-shadow:
-    1px 0 0 0 #90e39a,
-    0 -1px 0 0 #90e39a,
-    0 1px 0 0 #90e39a !important;
+    1px 0 0 0 var(--signup-color),
+    0 -1px 0 0 var(--signup-color),
+    0 1px 0 0 var(--signup-color) !important;
+}
+
+.signup-form .form-control ~ .form-notch .form-notch-leading {
+  border-color: var(--signup-color) !important;
+}
+
+.signup-form .form-control ~ .form-notch .form-notch-middle {
+  border-color: var(--signup-color) !important;
+}
+
+.signup-form
+  .form-control:not(:placeholder-shown)
+  ~ .form-notch
+  .form-notch-middle {
+  border-top: 1px solid transparent !important;
+}
+
+.signup-form .form-control ~ .form-notch .form-notch-trailing {
+  border-color: var(--signup-color) !important;
 }
 
 input:-webkit-autofill,
@@ -128,11 +152,19 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-background-clip: text !important;
-  background-color: white;
+  background-color: var(--main-backgroung-color);
 }
 
 .signup-form .form-control:focus ~ .form-label {
-  color: #90e39a !important;
+  color: var(--signup-color) !important;
+}
+
+.signup-modal {
+  background-color: var(--popup-color) !important;
+}
+
+.modal-header {
+  border-bottom-color: transparent !important;
 }
 
 .validations-alerts-help-block {
@@ -193,7 +225,7 @@ input:-webkit-autofill:active {
 }
 
 .border-effect-color-false {
-  border: 10px solid #e3655b;
+  border: 10px solid var(--redish-color);
 }
 
 .border-effect-color-true {
@@ -284,12 +316,21 @@ input:-webkit-autofill:active {
   background-color: var(--game-btn-color) !important;
 }
 
+.btn-signup {
+  background-color: var(--signup-color) !important;
+  box-shadow: none !important;
+}
+
+.btn-login {
+  background-color: var(--yellow) !important;
+  box-shadow: none !important;
+}
 .btn-back {
-  background-color: #e3655b !important;
+  background-color: var(--redish-color) !important;
 }
 
 .btn-next {
-  background-color: var(--game-btn-color) !important;
+  background-color: var(--yellow) !important;
   position: relative;
   margin-top: 95%;
 }
