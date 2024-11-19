@@ -223,6 +223,32 @@ input:-webkit-autofill:active {
   padding: 0 10px 0 10px;
 }
 
+/* Logo */
+
+.logo {
+  display: none;
+  height: 5vh;
+}
+
+.logo-container {
+  padding: 10px 0 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+@media (min-width: 768px) {
+  .logo-full {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .logo-icon {
+    display: block;
+  }
+}
+
 /* react-map-gl override */
 
 .mapboxgl-popup-tip {
