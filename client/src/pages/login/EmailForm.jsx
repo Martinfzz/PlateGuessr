@@ -4,18 +4,27 @@ import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/userLogin";
 
 const EmailForm = () => {
+  const { login, error, isLoading } = useLogin();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Please Enter your password"),
   });
 
+  const handleSubmit = async (values) => {
+    const { email, password } = values;
+
+    await login(email, password);
+  };
+
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => handleSubmit(values)}
     >
       {(formikProps) => (
         <Form className="signin-form">
@@ -53,10 +62,17 @@ const EmailForm = () => {
             >
               Forgot your password?
             </Link>
-            <MDBBtn rounded className="btn-play" type="submit" color="light">
+            <MDBBtn
+              rounded
+              className="btn-play"
+              type="submit"
+              color="light"
+              disabled={isLoading}
+            >
               Log in
             </MDBBtn>
           </div>
+          {error && <div className="error">{error}</div>}
         </Form>
       )}
     </Formik>

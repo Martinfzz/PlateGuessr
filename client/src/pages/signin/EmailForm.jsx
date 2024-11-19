@@ -3,8 +3,11 @@ import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
+import { useSignup } from "../../hooks/useSignup";
 
 const EmailForm = () => {
+  const { signup, error, isLoading } = useSignup();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
@@ -18,11 +21,17 @@ const EmailForm = () => {
       .oneOf([Yup.ref("password")], "Your passwords do not match."),
   });
 
+  const handleSubmit = async (values) => {
+    const { email, password, passwordConfirmation } = values;
+
+    await signup(email, password, passwordConfirmation);
+  };
+
   return (
     <Formik
       initialValues={{ email: "", password: "", passwordConfirmation: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => handleSubmit(values)}
     >
       {(formikProps) => (
         <Form className="signin-form">
@@ -69,10 +78,17 @@ const EmailForm = () => {
           />
 
           <div className="d-flex justify-content-center text-center mt-4">
-            <MDBBtn rounded className="btn-play" type="submit" color="light">
+            <MDBBtn
+              rounded
+              className="btn-play"
+              type="submit"
+              color="light"
+              disabled={isLoading}
+            >
               Sign in
             </MDBBtn>
           </div>
+          {error && <div className="error">{error}</div>}
         </Form>
       )}
     </Formik>
