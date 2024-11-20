@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
@@ -10,9 +11,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // routes
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
+app.use("/api/user", userRoutes);
 
 // connect to db
 mongoose

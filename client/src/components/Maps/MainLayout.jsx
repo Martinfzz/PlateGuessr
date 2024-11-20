@@ -7,6 +7,7 @@ import CountriesLayer from "./CountriesLayer";
 import CountryLayer from "./CountryLayer";
 import SelectedCountry from "./SelectedCountry";
 import { MDBBtn } from "mdb-react-ui-kit";
+import ConnexionBtn from "../ConnexionBtn";
 
 const MainLayout = () => {
   // State variables
@@ -20,6 +21,7 @@ const MainLayout = () => {
   const [answerMarker, setAnswerMarker] = useState([]);
   const [showEndGameModal, setShowEndGameModal] = useState(false);
   const [showEffect, setShowEffect] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [gameOptions, setGameOptions] = useState({
     toggleColors: true,
     toggleBorders: true,
@@ -85,6 +87,7 @@ const MainLayout = () => {
 
   // Handle the start of a new game
   const handleNewGame = async (values) => {
+    setIsPlaying(true);
     setShowGameModal(false);
     setPlayedCountryInfo(popupInfo);
     await selectRandomElements(values.numberOfRounds);
@@ -121,7 +124,7 @@ const MainLayout = () => {
 
   const setEndGame = () => {
     clearTimeout(newRoundTimeout.current);
-    score.current.after = Math.ceil(score.current.after + score.current.time);
+    score.current.after = Math.floor(score.current.after + score.current.time);
     setShowEndGameModal(true);
   };
 
@@ -238,6 +241,7 @@ const MainLayout = () => {
   const handleOnBack = () => {
     setPlayedCountryInfo({ countryId: 0 });
     setShowEndGameModal(false);
+    setIsPlaying(false);
     currentRound.current = 1;
     toggleLayout("visible");
   };
@@ -256,6 +260,7 @@ const MainLayout = () => {
       handleClick={handleClick}
       layerIds={layerRef.current}
     >
+      {!isPlaying && <ConnexionBtn />}
       {showEffect && (
         <>
           <div
