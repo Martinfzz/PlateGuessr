@@ -24,6 +24,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             id="email"
             type="email"
             placeholder=""
+            defaultValue=""
             onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
           />
           <ErrorMessage
@@ -38,6 +39,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             type="password"
             className="mt-4"
             placeholder=""
+            defaultValue=""
             onChange={(e) =>
               formikProps.setFieldValue("password", e.target.value)
             }

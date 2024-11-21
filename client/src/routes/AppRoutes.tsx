@@ -5,16 +5,18 @@ import Error404 from "../pages/error404";
 import LogIn from "../pages/login";
 import SignUp from "../pages/signup";
 import ResetPassword from "../pages/resetPassword";
+import Account from "../pages/account";
 
 const AppRoutes: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="*" element={<Error404 />} />
+        <Route path="/" element={<App />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/" element={<App />} />
+        <Route path="/me/settings" element={<Account />} />
       </Routes>
     </BrowserRouter>
   );

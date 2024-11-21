@@ -47,6 +47,7 @@ const EmailForm = () => {
             id="email"
             type="email"
             placeholder=""
+            defaultValue=""
             onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
           />
           <ErrorMessage
@@ -61,6 +62,7 @@ const EmailForm = () => {
             type="password"
             className="mt-4"
             placeholder=""
+            defaultValue=""
             onChange={(e) =>
               formikProps.setFieldValue("password", e.target.value)
             }
@@ -77,6 +79,7 @@ const EmailForm = () => {
             type="password"
             className="mt-4"
             placeholder=""
+            defaultValue=""
             onChange={(e) =>
               formikProps.setFieldValue("passwordConfirmation", e.target.value)
             }

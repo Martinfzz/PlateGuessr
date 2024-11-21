@@ -32,6 +32,7 @@ const ResetPassword = () => {
                     type="email"
                     className="mt-4"
                     placeholder=""
+                    defaultValue=""
                     onChange={(e) =>
                       formikProps.setFieldValue("email", e.target.value)
                     }
