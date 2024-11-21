@@ -1,15 +1,12 @@
 :root {
   --blue: #adcbff;
   --yellow: #fec148;
+  --red: #e3655b;
+  --green: #90e39a;
   --popup-color: #f6e3e0;
   --game-btn-color: #90e39a;
-  --redish-color: #e3655b;
   --main-backgroung-color: #fcf6f5;
   --signup-color: var(--blue);
-}
-
-#root {
-  height: 100vh;
 }
 
 * {
@@ -39,6 +36,14 @@ label {
 
 .yellow {
   color: var(--yellow);
+}
+
+.red {
+  color: var(--red);
+}
+
+.green {
+  color: var(--green);
 }
 
 .btn {
@@ -86,6 +91,12 @@ label {
   cursor: auto;
   clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
   transition: background-color 0.3s;
+}
+
+.page-badge {
+  min-width: 100px;
+  height: 30px;
+  background: rgba(3, 1, 44, 0.6) !important;
 }
 
 .round-text {
@@ -225,7 +236,7 @@ input:-webkit-autofill:active {
 }
 
 .border-effect-color-false {
-  border: 10px solid var(--redish-color);
+  border: 10px solid var(--red);
 }
 
 .border-effect-color-true {
@@ -253,6 +264,14 @@ input:-webkit-autofill:active {
 
 .divider-content {
   padding: 0 10px 0 10px;
+}
+
+.user-dropdown .btn {
+  background-color: rgba(3, 1, 44, 0.6) !important;
+}
+
+.user-dropdown .dropdown-menu {
+  background-color: rgba(3, 1, 44, 0.6) !important;
 }
 
 /* Logo */
@@ -326,7 +345,26 @@ input:-webkit-autofill:active {
   box-shadow: none !important;
 }
 .btn-back {
-  background-color: var(--redish-color) !important;
+  background-color: rgba(3, 1, 44, 0.6) !important;
+}
+
+.btn-back .hidden-text {
+  max-width: 0;
+  -webkit-transition: max-width 0.16s;
+  transition: max-width 0.16s;
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.btn-back:hover .hidden-text {
+  max-width: 7rem;
+}
+
+@media (max-width: 576px) {
+  .hidden-username {
+    display: none;
+  }
 }
 
 .btn-next {

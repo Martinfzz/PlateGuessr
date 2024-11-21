@@ -7,7 +7,7 @@ import CountriesLayer from "./CountriesLayer";
 import CountryLayer from "./CountryLayer";
 import SelectedCountry from "./SelectedCountry";
 import { MDBBtn } from "mdb-react-ui-kit";
-import ConnexionBtn from "../ConnexionBtn";
+import Navbar from "../Navbar";
 
 const MainLayout = () => {
   // State variables
@@ -260,7 +260,7 @@ const MainLayout = () => {
       handleClick={handleClick}
       layerIds={layerRef.current}
     >
-      {!isPlaying && <ConnexionBtn />}
+      {!isPlaying && <Navbar />}
       {showEffect && (
         <>
           <div
