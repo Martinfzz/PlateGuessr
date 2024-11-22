@@ -29,22 +29,22 @@ userSchema.statics.signup = async function (
 ) {
   // validation
   if (!email || !password || !passwordConfirmation) {
-    throw Error("All fields must be filled");
+    throw Error("validations.all_fields_filled");
   }
   if (!validator.isEmail(email)) {
-    throw Error("Email not valid");
+    throw Error("validations.invalid_email");
   }
   if (!validator.isStrongPassword(password)) {
-    throw Error("Password not strong enough");
+    throw Error("validations.not_strong_password");
   }
   if (password !== passwordConfirmation) {
-    throw Error("Passwords doesn't match");
+    throw Error("validations.password_match");
   }
 
   const emailExists = await this.findOne({ email });
 
   if (emailExists) {
-    throw Error("Sign up not allowed");
+    throw Error("validations.signup_not_allowed");
   }
 
   let username = "";
@@ -64,17 +64,17 @@ userSchema.statics.signup = async function (
 // static login method
 userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
-    throw Error("All fields must be filled");
+    throw Error("validations.all_fields_filled");
   }
 
   const user = await this.findOne({ email });
   if (!user) {
-    throw Error("Incorrect email");
+    throw Error("validations.incorrect_email");
   }
 
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    throw Error("Incorrect password");
+    throw Error("validations.incorrect_password");
   }
 
   return user;
@@ -94,7 +94,7 @@ userSchema.statics.update = async function (
     usernameExist &&
     JSON.stringify(usernameExist._id) !== JSON.stringify(user._id)
   ) {
-    throw Error("Username already taken");
+    throw Error("validations.username_taken");
   }
 
   if (currentPassword && password) {
@@ -102,7 +102,7 @@ userSchema.statics.update = async function (
     const hash = await bcrypt.hash(password, salt);
 
     if (!bcrypt.compareSync(currentPassword, user.password)) {
-      throw Error("Passwords doesn't match");
+      throw Error("validations.password_match");
     }
     user = await this.findOneAndUpdate({ _id }, { password: hash, username });
   } else {

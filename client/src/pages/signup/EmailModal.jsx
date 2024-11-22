@@ -10,8 +10,11 @@ import {
 } from "mdb-react-ui-kit";
 import { Col, Row } from "react-bootstrap";
 import EmailForm from "./EmailForm";
+import { useTranslation } from "react-i18next";
 
 const EmailModal = ({ showEmailModal, setShowEmailModal }) => {
+  const { t } = useTranslation();
+
   return (
     <MDBModal open={showEmailModal} onClose={setShowEmailModal} tabIndex="-1">
       <MDBModalDialog centered>
@@ -19,12 +22,10 @@ const EmailModal = ({ showEmailModal, setShowEmailModal }) => {
           <MDBModalHeader>
             <Col>
               <Row className="d-flex text-center">
-                <MDBModalTitle>Almost there!</MDBModalTitle>
+                <MDBModalTitle>{t("pages.signup.modal_title_1")}</MDBModalTitle>
               </Row>
               <Row className="d-flex text-center yellow">
-                <MDBModalTitle>
-                  Just a few more steps and you're ready to go!
-                </MDBModalTitle>
+                <MDBModalTitle>{t("pages.signup.modal_title_2")}</MDBModalTitle>
               </Row>
             </Col>
             <MDBBtn

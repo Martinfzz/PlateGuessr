@@ -1,8 +1,11 @@
 import { MDBBtn } from "mdb-react-ui-kit";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const ConnexionBtn = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Link to={"/login"}>
@@ -12,7 +15,7 @@ const ConnexionBtn = () => {
           type="submit"
           color="light"
         >
-          Log In
+          {t("app_common.login")}
         </MDBBtn>
       </Link>
       <Link to={"/signup"}>
@@ -22,7 +25,7 @@ const ConnexionBtn = () => {
           type="submit"
           color="light"
         >
-          Sign Up
+          {t("app_common.signup")}
         </MDBBtn>
       </Link>
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState } from "react";
 import InteractiveMap, {
   NavigationControl,
@@ -8,6 +8,7 @@ import InteractiveMap, {
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setViewport } from "../../features/map/mapSlice";
+import MapboxLanguage from "@mapbox/mapbox-gl-language";
 
 const MapComponent = ({
   mapRef,
@@ -17,6 +18,20 @@ const MapComponent = ({
   children,
 }) => {
   const [cursor, setCursor] = useState(null);
+  const lng = localStorage.getItem("i18nextLng");
+
+  const mapRefCallback = useCallback(
+    (ref) => {
+      if (ref !== null) {
+        mapRef.current = ref;
+        const map = ref;
+
+        const language = new MapboxLanguage();
+        map.addControl(language).setLanguage(lng);
+      }
+    },
+    [mapRef, lng]
+  );
 
   const dispatch = useDispatch();
   const { longitude, latitude, zoom } = useSelector(
@@ -43,7 +58,7 @@ const MapComponent = ({
       onMouseLeave={() => setCursor(null)}
       interactiveLayerIds={layerIds}
       onClick={(e) => handleClick(e, mapRef)}
-      ref={mapRef}
+      ref={mapRefCallback}
       cursor={cursor}
     >
       <FullscreenControl position="bottom-right" />

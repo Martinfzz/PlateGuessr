@@ -10,8 +10,10 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import EmailModal from "./EmailModal";
 import Header from "../../components/Header";
+import { useTranslation } from "react-i18next";
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const [showEmailModal, setShowEmailModal] = useState(false);
 
   return (
@@ -24,8 +26,8 @@ const SignUp = () => {
       >
         <div className="d-flex text-center">
           <Col>
-            <h1>Get started</h1>
-            <h2 className="my-4 yellow">Choose sign-up method</h2>
+            <h1>{t("pages.signup.title_1")}</h1>
+            <h2 className="my-4 yellow">{t("pages.signup.title_2")}</h2>
             <Col>
               <MDBBtn
                 disabled
@@ -39,7 +41,7 @@ const SignUp = () => {
                 }}
               >
                 <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
-                <span className="ms-2 h6">Continue with Google</span>
+                <span className="ms-2 h6">{t("pages.login.google")}</span>
               </MDBBtn>
             </Col>
             <Col>
@@ -55,7 +57,7 @@ const SignUp = () => {
                 }}
               >
                 <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
-                <span className="ms-2 h6">Continue with Apple</span>
+                <span className="ms-2 h6">{t("pages.login.apple")}</span>
               </MDBBtn>
             </Col>
             <Col>
@@ -71,7 +73,7 @@ const SignUp = () => {
                 }}
               >
                 <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}
-                <span className="ms-2 h6">Continue with Facebook</span>
+                <span className="ms-2 h6">{t("pages.login.facebook")}</span>
               </MDBBtn>
             </Col>
             <Col>
@@ -87,14 +89,14 @@ const SignUp = () => {
                 }}
                 onClick={() => setShowEmailModal(true)}
               >
-                <span className="h6">Continue with Email</span>
+                <span className="h6">{t("pages.signup.email")}</span>
               </MDBBtn>
             </Col>
             <Link
               to={"/login"}
               className="text-muted text-decoration-underline"
             >
-              Already have an account?
+              {t("pages.signup.account")}
             </Link>
           </Col>
         </div>

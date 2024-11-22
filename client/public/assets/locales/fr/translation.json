@@ -1,0 +1,94 @@
+{
+  "app_common": {
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "signup": "Inscription",
+    "back": "Retour",
+    "go_back": "Retour",
+    "play": "Jouer",
+    "next": "Suivant",
+    "finish": "Fini",
+    "email": "Email",
+    "password": "Mot de passe"
+  },
+  "pages": {
+    "account": {
+      "heading": "Compte",
+      "nickname": "Pseudo",
+      "change_password": "Changer le mot de passe",
+      "current_password": "Mot de passe actuel",
+      "new_password": "Nouveau mot de passe",
+      "save_changes": "Sauvegarder",
+      "delete_account": "Supprimer le compte",
+      "are_you_sure": "Êtes vous sûr ?",
+      "cannot_undo_action": "Cette action est irréversible."
+    },
+    "error404": {
+      "text": "404 Page introuvable ou fichier introuvable "
+    },
+    "login": {
+      "forgot_password": "Mot de passe oublié ?",
+      "failed": "Échec de la connexion. Veuillez réessayer.",
+      "continue": "ou continuez avec ",
+      "google": "Continuer avec Google",
+      "apple": "Continuer avec Apple",
+      "facebook": "Continuer avec Facebook",
+      "create_account": "Créer un compte"
+    },
+    "reset_password": {
+      "heading": "Réinitialiser le mot de passe"
+    },
+    "signup": {
+      "password_confirmation": "Confirmation du mot de passe",
+      "modal_title_1": "Nous y sommes presque !",
+      "modal_title_2": "Plus que quelques étapes à franchir et vous être prêt à partir !",
+      "title_1": "Inscription",
+      "title_2": "Sélectionner un mode de connexion",
+      "email": "Continuer avec Email",
+      "account": "Vous avez déjà un compte ?"
+    }
+  },
+  "game": {
+    "score": "Score",
+    "round": "Tour",
+    "final_score": "Score Final",
+    "play_again": "Jouer encore",
+    "colors": "Couleurs",
+    "borders": "Frontières",
+    "labels": "Labels",
+    "game_mode": {
+      "heading": "Mode de jeu",
+      "select": "Sélectionner un mode de jeu",
+      "easy": "Facile",
+      "normal": "Normal",
+      "hard": "Difficile",
+      "extrem": "Extrême",
+      "training": "Entraînement",
+      "nb_of_rounds": "Nombre de tours"
+    },
+    "country_description": "Trouvez la réponse dans la liste des identifiants territoriaux figurant sur les plaques minéralogiques allemandes et correspondant aux arrondissements et aux villes."
+  },
+  "countries": {
+    "names": {
+      "germany": "Allemagne"
+    }
+  },
+  "notifications": {
+    "something_went_wrong": "Quelque chose s'est mal passé",
+    "profile_updated": "Profil mis à jour "
+  },
+  "validations": {
+    "required": "Requis",
+    "invalid_email": "Email invalide",
+    "password_match": "Vos mots de passe ne correspondent pas",
+    "password_validation": "Doit contenir 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
+    "all_fields_filled": "Tous les champs doivent être remplis",
+    "not_strong_password": "Le mot de passe n'est pas assez complexe",
+    "signup_not_allowed": "L'inscription n'est pas autorisée",
+    "incorrect_password": "Mot de passe incorrect",
+    "incorrect_email": "Email incorrect",
+    "username_taken": "Nom d'utilisateur déjà pris"
+  }
+}

@@ -5,19 +5,28 @@ import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Col } from "react-bootstrap";
 import ConnexionBtn from "../../components/ConnexionBtn";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
+
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+      .email(t("validations.invalid_email"))
+      .required(t("validations.required")),
   });
 
   return (
     <>
-      <ConnexionBtn />
+      <div className="d-flex justify-content-end">
+        <ConnexionBtn />
+      </div>
       <div className="d-flex mt-5 justify-content-center">
         <div>
           <Col>
-            <h2 className="d-flex justify-content-center">Reset password</h2>
+            <h2 className="d-flex justify-content-center">
+              {t("pages.reset_password.heading")}
+            </h2>
 
             <Formik
               initialValues={{ email: "" }}
@@ -27,7 +36,7 @@ const ResetPassword = () => {
               {(formikProps) => (
                 <Form className="signup-form">
                   <MDBInput
-                    label="Email"
+                    label={t("app_common.email")}
                     id="email"
                     type="email"
                     className="mt-4"
@@ -49,7 +58,7 @@ const ResetPassword = () => {
                       type="submit"
                       color="light"
                     >
-                      Reset password
+                      {t("pages.reset_password.heading")}
                     </MDBBtn>
                   </div>
                 </Form>

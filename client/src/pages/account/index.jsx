@@ -5,10 +5,12 @@ import { MDBBtn } from "mdb-react-ui-kit";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { useDeleteUser } from "../../hooks/useDeleteUser";
 import { notifyError } from "../../shared/helpers/toasts/Toasts";
+import { useTranslation } from "react-i18next";
 
 const Account = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { deleteUser, isLoading, error } = useDeleteUser();
+  const { t } = useTranslation();
 
   const handleOnClick = async () => {
     await deleteUser();
@@ -16,13 +18,13 @@ const Account = () => {
   };
 
   useEffect(() => {
-    if (error) notifyError("Something went wrong");
+    if (error) notifyError("notifications.something_went_wrong");
   }, [error]);
 
   return (
     <>
       <header>
-        <Navbar page={"Account"} />
+        <Navbar page={t("pages.account.heading")} />
         <div className="d-flex align-items-center justify-content-center mt-5">
           <Form />
         </div>
@@ -34,7 +36,7 @@ const Account = () => {
           onClick={() => setShowDeleteModal(true)}
           color="danger"
         >
-          Delete account
+          {t("pages.account.delete_account")}
         </MDBBtn>
       </div>
 
@@ -43,8 +45,8 @@ const Account = () => {
           showModal={showDeleteModal}
           handleOnClick={handleOnClick}
           handleOnClose={() => setShowDeleteModal(false)}
-          title={"Are you sure ?"}
-          text={"You can't undo this action."}
+          title={t("pages.account.are_you_sure")}
+          text={t("pages.account.cannot_undo_action")}
           isLoading={isLoading}
         />
       )}

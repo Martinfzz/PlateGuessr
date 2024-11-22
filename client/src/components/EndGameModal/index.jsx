@@ -9,6 +9,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+import { useTranslation } from "react-i18next";
 
 const EndGameModal = ({
   score,
@@ -16,13 +17,17 @@ const EndGameModal = ({
   handleOnBack,
   handleOnPlayAgain,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <MDBModal tabIndex="-1" open={showEndGameModal}>
         <MDBModalDialog centered>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Final Score: {score.after}</MDBModalTitle>
+              <MDBModalTitle>
+                {t("game.final_score")}: {score.after}
+              </MDBModalTitle>
             </MDBModalHeader>
             <MDBModalBody>
               <p>In Progress</p>
@@ -30,11 +35,11 @@ const EndGameModal = ({
             <MDBModalFooter>
               <MDBBtn
                 rounded
-                className="btn-back"
+                className="btn-game-back"
                 color="light"
                 onClick={handleOnBack}
               >
-                Back
+                {t("app_common.back")}
               </MDBBtn>
               <MDBBtn
                 rounded
@@ -42,7 +47,7 @@ const EndGameModal = ({
                 color="light"
                 onClick={handleOnPlayAgain}
               >
-                Play again
+                {t("game.play_again")}
               </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>

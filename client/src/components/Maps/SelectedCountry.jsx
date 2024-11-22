@@ -1,8 +1,11 @@
 import React from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Popup } from "react-map-gl";
+import { useTranslation } from "react-i18next";
 
 const SelectedCountry = ({ popupInfo, handleOnClose, handleOnPlay }) => {
+  const { t } = useTranslation();
+
   return (
     <Popup
       anchor="bottom"
@@ -19,7 +22,9 @@ const SelectedCountry = ({ popupInfo, handleOnClose, handleOnPlay }) => {
           src={`/images/${popupInfo.name.toLowerCase()}.jpg`}
         />
         <div className="col text-center mt-3">
-          <p className="mapboxgl-popup-name">{popupInfo.name}</p>
+          <p className="mapboxgl-popup-name">
+            {t(`countries.names.${popupInfo.name.toLowerCase()}`)}
+          </p>
           <MDBBtn
             outline
             rounded
@@ -27,7 +32,7 @@ const SelectedCountry = ({ popupInfo, handleOnClose, handleOnPlay }) => {
             color="dark"
             onClick={handleOnPlay}
           >
-            Play
+            {t("app_common.play")}
           </MDBBtn>
         </div>
       </div>

@@ -7,10 +7,12 @@ import { Col, Row } from "react-bootstrap";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 import { notifyError, notifySuccess } from "../../shared/helpers/toasts/Toasts";
+import { useTranslation } from "react-i18next";
 
 const AccountForm = () => {
   const { updateUser, error, isLoading, success } = useUpdateUser();
   const { user } = useAuthContext();
+  const { t } = useTranslation();
 
   const handleSubmit = async (values) => {
     const { username, currentPassword, password } = values;
@@ -20,16 +22,16 @@ const AccountForm = () => {
 
   useEffect(() => {
     if (error) {
-      notifyError("Something went wrong");
+      notifyError(t("notifications.something_went_wrong"));
     } else if (success) {
-      notifySuccess("Profile updated");
+      notifySuccess(t("notifications.profile_updated"));
     }
   }, [error, success]);
 
   const validationSchema = Yup.object().shape({
     password: Yup.string().matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      t("validations.password_validation")
     ),
   });
 
@@ -48,7 +50,7 @@ const AccountForm = () => {
           {(formikProps) => (
             <Form>
               <MDBInput
-                label="Nickname"
+                label={t("pages.account.nickname")}
                 id="username"
                 type="text"
                 placeholder=""
@@ -65,12 +67,14 @@ const AccountForm = () => {
 
               <div className="divider-container text-muted my-4">
                 <div className="divider-border" />
-                <span className="divider-content">Change password</span>
+                <span className="divider-content">
+                  {t("pages.account.change_password")}
+                </span>
                 <div className="divider-border" />
               </div>
 
               <MDBInput
-                label="Current password"
+                label={t("pages.account.current_password")}
                 id="current-password"
                 type="password"
                 className="mt-4"
@@ -87,7 +91,7 @@ const AccountForm = () => {
               <Row>
                 <Col>
                   <MDBInput
-                    label="New password"
+                    label={t("pages.account.new_password")}
                     id="password"
                     type="password"
                     className="mt-4"
@@ -114,7 +118,7 @@ const AccountForm = () => {
                   color="light"
                   disabled={isLoading || !formikProps.dirty}
                 >
-                  Save changes
+                  {t("pages.account.save_changes")}
                 </MDBBtn>
               </div>
             </Form>

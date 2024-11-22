@@ -8,8 +8,10 @@ import CountryLayer from "./CountryLayer";
 import SelectedCountry from "./SelectedCountry";
 import { MDBBtn } from "mdb-react-ui-kit";
 import Navbar from "../Navbar";
+import { useTranslation } from "react-i18next";
 
 const MainLayout = () => {
+  const { t } = useTranslation();
   // State variables
   const [hoverInfo, setHoverInfo] = useState(null);
   const [popupInfo, setPopupInfo] = useState(null);
@@ -311,7 +313,9 @@ const MainLayout = () => {
               className="d-flex justify-content-center btn-next"
               onClick={() => setNewRound()}
             >
-              {selectedElements.current.length !== 1 ? "Next" : "Finish"}
+              {selectedElements.current.length !== 1
+                ? t("app_common.next")
+                : t("app_common.finish")}
             </MDBBtn>
           </div>
         )}

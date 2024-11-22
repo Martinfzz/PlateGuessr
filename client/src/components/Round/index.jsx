@@ -3,6 +3,7 @@ import { MDBBadge } from "mdb-react-ui-kit";
 import { Col, Row } from "react-bootstrap";
 import CountUp from "react-countup";
 import ProgressBar from "./ProgressBar";
+import { useTranslation } from "react-i18next";
 
 const Round = ({
   selectedElement,
@@ -14,6 +15,8 @@ const Round = ({
   showEndGameModal,
   setFinalScore,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       {gameOptions.gameMode !== "5" && (
@@ -39,13 +42,13 @@ const Round = ({
         <MDBBadge className="round-score-badge ms-2" color="">
           <Row>
             <Col>
-              <Col className="mb-2 round-text">Round</Col>
+              <Col className="mb-2 round-text">{t("game.round")}</Col>
               <Col>
                 {currentRound} / {gameOptions.numberOfRounds}
               </Col>
             </Col>
             <Col>
-              <Col className="mb-2 round-text">Score</Col>
+              <Col className="mb-2 round-text">{t("game.score")}</Col>
               <Col>
                 <CountUp
                   duration={2}

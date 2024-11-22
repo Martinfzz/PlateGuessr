@@ -6,21 +6,25 @@ import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { useSignup } from "../../hooks/useSignup";
 import Alerts from "../../components/Alerts";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 const EmailForm = () => {
   const { signup, error, isLoading } = useSignup();
+  const { t } = useTranslation();
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+      .email(t("validations.invalid_email"))
+      .required(t("validations.required")),
     password: Yup.string()
-      .required("Please Enter your password")
+      .required(t("validations.required"))
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+        t("validations.password_validation")
       ),
     passwordConfirmation: Yup.string()
-      .required("Please retype your password.")
-      .oneOf([Yup.ref("password")], "Your passwords do not match."),
+      .required(t("validations.required"))
+      .oneOf([Yup.ref("password")], t("validations.password_match")),
   });
 
   const handleSubmit = async (values) => {
@@ -39,11 +43,11 @@ const EmailForm = () => {
         <Form className="signup-form">
           {error && (
             <Alerts color="danger" icon={faCircleExclamation}>
-              {error}
+              {t(error)}
             </Alerts>
           )}
           <MDBInput
-            label="Email"
+            label={t("app_common.email")}
             id="email"
             type="email"
             placeholder=""
@@ -57,7 +61,7 @@ const EmailForm = () => {
           />
 
           <MDBInput
-            label="Password"
+            label={t("app_common.password")}
             id="password"
             type="password"
             className="mt-4"
@@ -74,7 +78,7 @@ const EmailForm = () => {
           />
 
           <MDBInput
-            label="Password confirmation"
+            label={t("pages.signup.password_confirmation")}
             id="passwordConfirmation"
             type="password"
             className="mt-4"
@@ -98,7 +102,7 @@ const EmailForm = () => {
               color="light"
               disabled={isLoading}
             >
-              Sign in
+              {t("app_common.signup")}
             </MDBBtn>
           </div>
         </Form>
