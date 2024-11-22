@@ -14,10 +14,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import LanguageSelector from "../LanguageSelector/index";
+import { useTranslation } from "react-i18next";
 
 const Navbar = ({ page }) => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     logout();
@@ -28,11 +31,11 @@ const Navbar = ({ page }) => {
       <Row className="pt-3 m-0 d-flex justify-content-between">
         {page && (
           <>
-            <Col className="d-flex justify-content-start">
+            <Col>
               <Link to={"/"}>
                 <MDBBtn className="btn-back">
                   <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                  <span className="hidden-text">Go Back</span>
+                  <span className="hidden-text">{t("app_common.go_back")}</span>
                 </MDBBtn>
               </Link>
             </Col>
@@ -46,8 +49,9 @@ const Navbar = ({ page }) => {
             </Col>
           </>
         )}
-        <Col className="d-flex justify-content-end">
-          <div className="position-absolute">
+        <Col>
+          <div className="d-flex justify-content-end">
+            <LanguageSelector />
             {user && (
               <MDBDropdown className="user-dropdown">
                 <MDBDropdownToggle>
@@ -56,10 +60,12 @@ const Navbar = ({ page }) => {
                 </MDBDropdownToggle>
                 <MDBDropdownMenu dark>
                   <Link to={"/me/settings"}>
-                    <MDBDropdownItem link>Account</MDBDropdownItem>
+                    <MDBDropdownItem link>
+                      {t("pages.account.heading")}
+                    </MDBDropdownItem>
                   </Link>
                   <MDBDropdownItem link onClick={handleClick}>
-                    <span className="red">Log out</span>
+                    <span className="red">{t("app_common.logout")}</span>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>

@@ -4,8 +4,11 @@ import { MDBRange } from "mdb-react-ui-kit";
 import { connect, ErrorMessage } from "formik";
 import { Form } from "react-bootstrap";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
+import { useTranslation } from "react-i18next";
 
 const GameMode = ({ formik, selectedCountryNamesLength }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     switch (formik.values.gameMode) {
       case "1":
@@ -44,18 +47,20 @@ const GameMode = ({ formik, selectedCountryNamesLength }) => {
 
   return (
     <>
-      <h5 className="d-flex justify-content-center mb-3">Game Mode</h5>
+      <h5 className="d-flex justify-content-center mb-3">
+        {t("game.game_mode.heading")}
+      </h5>
       <Form.Select
         aria-label="Game Mode"
         className="game-mode-select"
         onChange={(e) => formik.setFieldValue("gameMode", e.target.value)}
       >
-        <option>Select game mode</option>
-        <option value={1}>Easy</option>
-        <option value={2}>Normal</option>
-        <option value={3}>Hard</option>
-        <option value={4}>Extrem</option>
-        <option value={5}>Training</option>
+        <option>{t("game.game_mode.select")}</option>
+        <option value={1}>{t("game.game_mode.easy")}</option>
+        <option value={2}>{t("game.game_mode.normal")}</option>
+        <option value={3}>{t("game.game_mode.hard")}</option>
+        <option value={4}>{t("game.game_mode.extrem")}</option>
+        <option value={5}>{t("game.game_mode.training")}</option>
       </Form.Select>
       <ErrorMessage component={ValidationsAlerts} name="gameMode" />
       {formik.values.gameMode === "5" && (
@@ -65,7 +70,7 @@ const GameMode = ({ formik, selectedCountryNamesLength }) => {
             id="nbOfRounds"
             min={1}
             max={selectedCountryNamesLength}
-            label="Number of rounds"
+            label={t("game.game_mode.nb_of_rounds")}
             onChange={(e) =>
               formik.setFieldValue("numberOfRounds", e.target.value)
             }

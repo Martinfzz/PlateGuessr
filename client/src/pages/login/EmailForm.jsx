@@ -4,11 +4,16 @@ import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const EmailForm = ({ isLoading, handleSubmit }) => {
+  const { t } = useTranslation();
+
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Please Enter your password"),
+    email: Yup.string()
+      .email(t("validations.invalid_email"))
+      .required(t("validations.required")),
+    password: Yup.string().required(t("validations.required")),
   });
 
   return (
@@ -20,7 +25,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
       {(formikProps) => (
         <Form className="signup-form">
           <MDBInput
-            label="Email"
+            label={t("app_common.email")}
             id="email"
             type="email"
             placeholder=""
@@ -34,7 +39,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
           />
 
           <MDBInput
-            label="Password"
+            label={t("app_common.password")}
             id="password"
             type="password"
             className="mt-4"
@@ -55,7 +60,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
               to={"/reset-password"}
               className="text-muted text-decoration-underline"
             >
-              Forgot your password?
+              {t("pages.login.forgot_password")}
             </Link>
             <MDBBtn
               rounded
@@ -64,7 +69,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
               color="light"
               disabled={isLoading}
             >
-              Log in
+              {t("app_common.login")}
             </MDBBtn>
           </div>
         </Form>

@@ -9,6 +9,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+import { useTranslation } from "react-i18next";
 
 const ConfirmationModal = ({
   showModal,
@@ -18,6 +19,8 @@ const ConfirmationModal = ({
   text,
   isLoading,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <MDBModal open={showModal} onClose={handleOnClose} tabIndex="-1">
@@ -35,7 +38,7 @@ const ConfirmationModal = ({
                 outline
                 disabled={isLoading}
               >
-                Cancel
+                {t("app_common.cancel")}
               </MDBBtn>
               <MDBBtn
                 onClick={handleOnClick}
@@ -43,7 +46,7 @@ const ConfirmationModal = ({
                 outline
                 disabled={isLoading}
               >
-                Confirm
+                {t("app_common.confirm")}
               </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>

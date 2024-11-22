@@ -13,9 +13,11 @@ import Header from "../../components/Header";
 import Alerts from "../../components/Alerts";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useLogin } from "../../hooks/useLogin";
+import { useTranslation } from "react-i18next";
 
 const LogIn = () => {
   const { login, error, isLoading } = useLogin();
+  const { t } = useTranslation();
 
   const handleSubmit = async (values) => {
     const { email, password } = values;
@@ -33,7 +35,7 @@ const LogIn = () => {
           <Col>
             {error && (
               <Alerts color="danger" icon={faCircleExclamation}>
-                Failed to sign in. Please try again.
+                {t("pages.login.failed")}
               </Alerts>
             )}
             <EmailForm isLoading={isLoading} handleSubmit={handleSubmit} />
@@ -41,7 +43,9 @@ const LogIn = () => {
               <Col>
                 <div className="divider-container text-muted my-4">
                   <div className="divider-border" />
-                  <span className="divider-content">or continue with</span>
+                  <span className="divider-content">
+                    {t("pages.login.continue")}
+                  </span>
                   <div className="divider-border" />
                 </div>
                 <Col>
@@ -57,7 +61,7 @@ const LogIn = () => {
                     }}
                   >
                     <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
-                    <span className="ms-2 h6">Continue with Google</span>
+                    <span className="ms-2 h6">{t("pages.login.google")}</span>
                   </MDBBtn>
                 </Col>
                 <Col>
@@ -73,7 +77,7 @@ const LogIn = () => {
                     }}
                   >
                     <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
-                    <span className="ms-2 h6">Continue with Apple</span>
+                    <span className="ms-2 h6">{t("pages.login.apple")}</span>
                   </MDBBtn>
                 </Col>
                 <Col>
@@ -89,7 +93,7 @@ const LogIn = () => {
                     }}
                   >
                     <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}
-                    <span className="ms-2 h6">Continue with Facebook</span>
+                    <span className="ms-2 h6">{t("pages.login.facebook")}</span>
                   </MDBBtn>
                 </Col>
                 <div className="mt-4">
@@ -97,7 +101,7 @@ const LogIn = () => {
                     to={"/signup"}
                     className="text-muted text-decoration-underline"
                   >
-                    Create an account
+                    {t("pages.login.create_account")}
                   </Link>
                 </div>
               </Col>

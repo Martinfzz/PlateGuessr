@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 const Error404 = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <div
@@ -12,7 +16,7 @@ const Error404 = () => {
       >
         <div className="text-center p-7 overflow-hidden align-items-center">
           <div>
-            <h3>404 Page Not Found or File Not Found</h3>
+            <h3>{t("pages.error404.text")}</h3>
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { Formik, Form } from "formik";
 import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
 import GameMode from "./GameMode";
+import { useTranslation } from "react-i18next";
 
 const GameModal = ({
   showGameModal,
@@ -21,10 +22,12 @@ const GameModal = ({
   popupInfo,
   selectedCountryNamesLength,
 }) => {
+  const { t } = useTranslation();
+
   const validationSchema = Yup.object().shape({
     gameMode: Yup.number()
       .transform((_, val) => (isNaN(Number(val)) ? null : Number(val)))
-      .required("Required"),
+      .required(t("validations.required")),
   });
 
   return (
@@ -62,13 +65,9 @@ const GameModal = ({
                   </MDBModalHeader>
                   <MDBModalBody>
                     <h3 className="d-flex justify-content-center mb-3">
-                      {popupInfo.name}
+                      {t(`countries.names.${popupInfo.name.toLowerCase()}`)}
                     </h3>
-                    <p>
-                      Find the answer from the list of territorial identifiers
-                      appearing on German number plates and corresponding to
-                      boroughs and district towns.
-                    </p>
+                    <p>{t("game.country_description")}</p>
                     <GameMode
                       selectedCountryNamesLength={selectedCountryNamesLength}
                     />
@@ -79,7 +78,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleColors"
-                            label="Colors"
+                            label={t("game.colors")}
                             checked={formikProps.values.toggleColors}
                             onChange={(e) =>
                               formikProps.setFieldValue(
@@ -98,7 +97,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleBorders"
-                            label="Borders"
+                            label={t("game.borders")}
                             checked={formikProps.values.toggleBorders}
                             onChange={(e) => {
                               formikProps.setFieldValue(
@@ -118,7 +117,7 @@ const GameModal = ({
                         <Col className="d-flex justify-content-center">
                           <MDBSwitch
                             id="toggleLabels"
-                            label="Labels"
+                            label={t("game.labels")}
                             checked={formikProps.values.toggleLabels}
                             onChange={(e) =>
                               formikProps.setFieldValue(
@@ -138,7 +137,7 @@ const GameModal = ({
                             type="submit"
                             color="light"
                           >
-                            Play
+                            {t("app_common.play")}
                           </MDBBtn>
                         </Col>
                       </Row>

@@ -1,0 +1,94 @@
+{
+  "app_common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "login": "Log In",
+    "logout": "Log Out",
+    "signup": "Sign Up",
+    "back": "Back",
+    "go_back": "Go Back",
+    "play": "Play",
+    "next": "Next",
+    "finish": "Finish",
+    "email": "Email",
+    "password": "Password"
+  },
+  "pages": {
+    "account": {
+      "heading": "Account",
+      "nickname": "Nickname",
+      "change_password": "Change password",
+      "current_password": "Current password",
+      "new_password": "New password",
+      "save_changes": "Save changes",
+      "delete_account": "Delete account",
+      "are_you_sure": "Are you sure?",
+      "cannot_undo_action": "You can't undo this action."
+    },
+    "error404": {
+      "text": "404 Page Not Found or File Not Found"
+    },
+    "login": {
+      "forgot_password": "Forgot your password?",
+      "failed": "Failed to sign in. Please try again.",
+      "continue": "or continue with",
+      "google": "Continue with Google",
+      "apple": "Continue with Apple",
+      "facebook": "Continue with Facebook",
+      "create_account": "Create an account"
+    },
+    "reset_password": {
+      "heading": "Reset password"
+    },
+    "signup": {
+      "password_confirmation": "Password confirmation",
+      "modal_title_1": "Almost there!",
+      "modal_title_2": "Just a few more steps and you're ready to go!",
+      "title_1": "Get started",
+      "title_2": "Choose sign-up method",
+      "email": "Continue with Email",
+      "account": "Already have an account?"
+    }
+  },
+  "game": {
+    "score": "Score",
+    "round": "Round",
+    "final_score": "Final Score",
+    "play_again": "Play again",
+    "colors": "Colors",
+    "borders": "Borders",
+    "labels": "Labels",
+    "game_mode": {
+      "heading": "Game Mode",
+      "select": "Select game mode",
+      "easy": "Easy",
+      "normal": "Normal",
+      "hard": "Hard",
+      "extrem": "Extrem",
+      "training": "Training",
+      "nb_of_rounds": "Number of rounds"
+    },
+    "country_description": "Find the answer from the list of territorial identifiers appearing on German number plates and corresponding to boroughs and district towns."
+  },
+  "countries": {
+    "names": {
+      "germany": "Germany"
+    }
+  },
+  "notifications": {
+    "something_went_wrong": "Something went wrong",
+    "profile_updated": "Profile updated"
+  },
+  "validations": {
+    "required": "Required",
+    "invalid_email": "Invalid email",
+    "password_match": "Your passwords do not match",
+    "password_validation": "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
+    "all_fields_filled": "All fields must be filled",
+    "not_strong_password": "Password not strong enough",
+    "signup_not_allowed": "Sign up not allowed",
+    "incorrect_password": "Incorrect password",
+    "incorrect_email": "Incorrect email",
+    "username_taken": "Username already taken"
+  }
+}
