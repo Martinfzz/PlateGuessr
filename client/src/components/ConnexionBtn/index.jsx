@@ -9,22 +9,12 @@ const ConnexionBtn = () => {
   return (
     <>
       <Link to={"/login"}>
-        <MDBBtn
-          rounded
-          className="mt-3 me-3 btn-login"
-          type="submit"
-          color="light"
-        >
+        <MDBBtn rounded className=" me-3 btn-login" type="submit" color="light">
           {t("app_common.login")}
         </MDBBtn>
       </Link>
       <Link to={"/signup"}>
-        <MDBBtn
-          rounded
-          className="mt-3 me-3 btn-signup"
-          type="submit"
-          color="light"
-        >
+        <MDBBtn rounded className="me-3 btn-signup" type="submit" color="light">
           {t("app_common.signup")}
         </MDBBtn>
       </Link>

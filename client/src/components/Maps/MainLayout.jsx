@@ -346,6 +346,8 @@ const MainLayout = () => {
           handleOnBack={handleOnBack}
           handleOnPlayAgain={handleOnPlayAgain}
           score={score.current}
+          gameOptions={gameOptions}
+          countryId={playedCountryInfo.countryId}
         />
       )}
     </MapComponent>

@@ -5,6 +5,38 @@ const { faker } = require("@faker-js/faker");
 
 const Schema = mongoose.Schema;
 
+const scoreSchema = new Schema(
+  {
+    game_mode_id: {
+      type: String,
+    },
+    best_score: {
+      type: Number,
+    },
+    games_played: {
+      type: Number,
+    },
+    average_score: {
+      type: Number,
+    },
+  },
+  { _id: false }
+);
+
+const countrySchema = new Schema(
+  {
+    country_id: {
+      type: String,
+    },
+    scores: {
+      type: Map,
+      of: scoreSchema,
+      default: {},
+    },
+  },
+  { _id: false }
+);
+
 const userSchema = new Schema({
   email: {
     type: String,
@@ -18,6 +50,11 @@ const userSchema = new Schema({
   username: {
     type: String,
     unique: true,
+  },
+  country: {
+    type: Map,
+    of: countrySchema,
+    default: {},
   },
 });
 
@@ -116,6 +153,49 @@ userSchema.statics.update = async function (
 // static delete method
 userSchema.statics.delete = async function (_id) {
   const user = await this.findOneAndDelete({ _id });
+
+  return user;
+};
+
+// static save score method
+userSchema.statics.saveScore = async function (
+  user,
+  countryId,
+  gameModeId,
+  score
+) {
+  if (!user.country.get(countryId)) {
+    user.country.set(countryId, { country_id: countryId, scores: {} });
+  }
+  const country = user.country.get(countryId);
+  let gameModeScore = country.scores.get(gameModeId);
+
+  if (!gameModeScore) {
+    gameModeScore = {
+      game_mode_id: gameModeId,
+      best_score: score,
+      games_played: 1,
+      average_score: score,
+    };
+  } else {
+    const currentBestScore = gameModeScore.best_score ?? score;
+    const currentGamesPlayed = gameModeScore.games_played ?? 0;
+    const currentAverageScore = gameModeScore.average_score ?? score;
+
+    const newGamesPlayed = currentGamesPlayed + 1;
+    const newAverageScore =
+      (currentAverageScore * currentGamesPlayed + score) / newGamesPlayed;
+
+    const newBestScore = Math.max(currentBestScore, score);
+
+    gameModeScore.game_mode_id = gameModeId;
+    gameModeScore.best_score = newBestScore;
+    gameModeScore.games_played = newGamesPlayed;
+    gameModeScore.average_score = newAverageScore;
+  }
+
+  country.scores.set(gameModeId, gameModeScore);
+  user = await user.save();
 
   return user;
 };
