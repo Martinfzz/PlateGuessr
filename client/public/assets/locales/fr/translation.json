@@ -68,6 +68,14 @@
       "training": "Entraînement",
       "nb_of_rounds": "Nombre de tours"
     },
+    "end_game": {
+      "no_score_beaten": "Vous n'avez pas battu votre meilleur score...",
+      "your_best_score": "Votre meilleur score:",
+      "best_score": "C'est votre meilleur score !",
+      "no_connected": "Vous n'êtes pas connecté",
+      "cant_save_score": "Vous ne pouvez pas enregistrer ce score",
+      "save_score": "Pour enregistrer vos scores"
+    },
     "country_description": "Trouvez la réponse dans la liste des identifiants territoriaux figurant sur les plaques minéralogiques allemandes et correspondant aux arrondissements et aux villes."
   },
   "countries": {

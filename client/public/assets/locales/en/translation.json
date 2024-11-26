@@ -68,6 +68,14 @@
       "training": "Training",
       "nb_of_rounds": "Number of rounds"
     },
+    "end_game": {
+      "no_score_beaten": "You didn't beat your best score...",
+      "your_best_score": "Your best score:",
+      "best_score": "It's your best score!",
+      "no_connected": "You are not connected",
+      "cant_save_score": "You can't save this score",
+      "save_score": "To save your scores"
+    },
     "country_description": "Find the answer from the list of territorial identifiers appearing on German number plates and corresponding to boroughs and district towns."
   },
   "countries": {
