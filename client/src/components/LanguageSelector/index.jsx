@@ -52,7 +52,11 @@ const LanguageSelector = () => {
         </MDBDropdownToggle>
         <MDBDropdownMenu>
           {languages.map((l) => (
-            <MDBDropdownItem link onClick={() => changeLanguage(l.lang)}>
+            <MDBDropdownItem
+              link
+              onClick={() => changeLanguage(l.lang)}
+              key={l.id}
+            >
               <img className="rounded-1" src={l.flag} alt="country flag" />{" "}
               {l.name}
             </MDBDropdownItem>

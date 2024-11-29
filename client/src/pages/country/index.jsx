@@ -26,7 +26,7 @@ const Country = () => {
   const { user } = useAuthContext();
   const [loading, setLoading] = useState(loadingTypes.none);
   const [data, setData] = useState(null);
-  const [country, setCountry] = useState({});
+  const [country, setCountry] = useState(null);
   const [scores, setScores] = useState([]);
   const [userCountryScore, setUserCountryScore] = useState([]);
   const [userScore, setUserScore] = useState([]);
@@ -95,7 +95,7 @@ const Country = () => {
   return (
     <>
       <Navbar />
-      {loading || data === null ? (
+      {loading || data === null || country === null ? (
         <CustomSpinner center />
       ) : (
         <>
@@ -124,12 +124,12 @@ const Country = () => {
                   <MDBCard style={{ width: "300px" }}>
                     <MDBCardBody className=" py-3">
                       <MDBCardText className="d-flex justify-content-start">
-                        <h1
+                        <span
                           className="my-0 d-flex align-items-center justify-content-center"
-                          style={{ width: "50px" }}
+                          style={{ width: "50px", fontSize: "40px" }}
                         >
                           <FontAwesomeIcon icon={faChartSimple} />
-                        </h1>
+                        </span>
                         <span className="ms-3 d-flex align-items-center">
                           {t("pages.country.average_score")} -{" "}
                           {Math.floor(data.average_score)}
@@ -142,12 +142,12 @@ const Country = () => {
                   <MDBCard style={{ width: "300px" }}>
                     <MDBCardBody className=" py-3">
                       <MDBCardText className="d-flex justify-content-start">
-                        <h1
+                        <span
                           className="my-0 d-flex align-items-center justify-content-center"
-                          style={{ width: "50px" }}
+                          style={{ width: "50px", fontSize: "40px" }}
                         >
                           <FontAwesomeIcon icon={faGamepad} />
-                        </h1>
+                        </span>
                         <span className="ms-3 d-flex align-items-center">
                           {data.games_played}{" "}
                           {t("pages.country.games_played").toLowerCase()}
@@ -223,7 +223,7 @@ const Country = () => {
                   {scores.length > 0 &&
                     scores.map((score, index) => {
                       return (
-                        <MDBTableBody>
+                        <MDBTableBody key={index}>
                           <tr>
                             <th scope="col" className="text-center">
                               {index + 1}
