@@ -16,6 +16,10 @@ const topScoreSchema = new Schema(
       type: Number,
       required: true,
     },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { _id: false }
 );
@@ -51,8 +55,9 @@ const countrySchema = new Schema({
     unique: true,
   },
   game_modes: {
-    type: [gameModeSchema],
-    default: [],
+    type: Map,
+    of: gameModeSchema,
+    default: {},
   },
   games_played: {
     type: Number,
@@ -109,9 +114,7 @@ countrySchema.statics.saveScore = async function (
   gameModeId,
   score
 ) {
-  const gameMode = country.game_modes?.find(
-    (e) => e.game_mode_id === gameModeId
-  );
+  const gameMode = country.game_modes?.get(gameModeId);
   let gamesPlayed = 1;
   let averageScore = score;
   let topScores = [{ user_id: user._id, username: user.username, score }];

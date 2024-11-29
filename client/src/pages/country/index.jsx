@@ -52,7 +52,7 @@ const Country = () => {
     await API.get(`/api/country/${params.id}`)
       .then((res) => {
         setData(res.data.data);
-        setScores(res.data.data.game_modes[0]["1"].top_scores);
+        setScores(res.data.data.game_modes["1"].top_scores);
       })
       .catch((error) => {
         console.log(error);
@@ -82,14 +82,14 @@ const Country = () => {
 
   useEffect(() => {
     if (data !== null) {
-      getUserCountryScore();
+      if (user) getUserCountryScore();
       getCountryInfos();
     }
   }, [data]);
 
   const handleOnGameModeClick = (gameMode) => {
-    setScores(data.game_modes[0][gameMode]?.top_scores ?? []);
-    setUserScore(userCountryScore.scores[gameMode] ?? []);
+    setScores(data.game_modes?.[gameMode]?.top_scores ?? []);
+    if (user) setUserScore(userCountryScore.scores[gameMode] ?? []);
   };
 
   return (
@@ -229,12 +229,16 @@ const Country = () => {
                               {index + 1}
                             </th>
                             <th scope="col">
-                              <Link
-                                to={`/user/${score.user_id}`}
-                                className="stats-link"
-                              >
-                                {score.username}
-                              </Link>
+                              {score.deleted ? (
+                                score.username
+                              ) : (
+                                <Link
+                                  to={`/user/${score.user_id}`}
+                                  className="stats-link"
+                                >
+                                  {score.username}
+                                </Link>
+                              )}
                             </th>
                             <th scope="col" className="text-center">
                               {score.score}

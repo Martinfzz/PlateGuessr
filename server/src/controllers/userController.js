@@ -95,10 +95,31 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.params;
 
-  const decodedToken = decodeToken(id);
+  const user_id = decodeToken(id);
 
   try {
-    await User.delete(decodedToken._id);
+    // Update the deleted user in all of the countries
+    for (let i = 1; i <= 5; i++) {
+      await Country.updateMany(
+        {
+          [`game_modes.${i}.top_scores.user_id`]: user_id,
+        },
+        {
+          $set: {
+            [`game_modes.${i}.top_scores.$[elem].deleted`]: true,
+          },
+        },
+        {
+          arrayFilters: [
+            {
+              "elem.user_id": user_id,
+            },
+          ],
+        }
+      );
+    }
+
+    await User.delete(user_id._id);
 
     res.status(200).json({ success: true });
   } catch (error) {
