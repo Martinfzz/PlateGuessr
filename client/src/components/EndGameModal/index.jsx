@@ -58,7 +58,7 @@ const EndGameModal = ({
   };
 
   useEffect(() => {
-    saveScore();
+    if (user) saveScore();
   }, []);
 
   return (
