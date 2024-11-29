@@ -9,6 +9,8 @@ import AppRoutes from "routes/AppRoutes";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primeicons/primeicons.css";
 import "./i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

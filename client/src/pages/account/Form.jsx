@@ -17,7 +17,7 @@ const AccountForm = () => {
   const handleSubmit = async (values) => {
     const { username, currentPassword, password } = values;
 
-    await updateUser(username, currentPassword, password);
+    await updateUser(user.username, username, currentPassword, password);
   };
 
   useEffect(() => {

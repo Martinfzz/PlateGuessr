@@ -6,6 +6,8 @@ const {
   signupUser,
   updateUser,
   deleteUser,
+  userCountryScore,
+  getUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -21,5 +23,11 @@ router.patch("/:id", updateUser);
 
 // delete route
 router.delete("/:id", deleteUser);
+
+// user country score route
+router.get("/country/:id", userCountryScore);
+
+// user route
+router.get("/:id", getUser);
 
 module.exports = router;

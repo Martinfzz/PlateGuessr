@@ -51,9 +51,8 @@ const countrySchema = new Schema({
     unique: true,
   },
   game_modes: {
-    type: Map,
-    of: gameModeSchema,
-    default: {},
+    type: [gameModeSchema],
+    default: [],
   },
   games_played: {
     type: Number,
@@ -110,7 +109,9 @@ countrySchema.statics.saveScore = async function (
   gameModeId,
   score
 ) {
-  const gameMode = country.game_modes?.get(gameModeId);
+  const gameMode = country.game_modes?.find(
+    (e) => e.game_mode_id === gameModeId
+  );
   let gamesPlayed = 1;
   let averageScore = score;
   let topScores = [{ user_id: user._id, username: user.username, score }];

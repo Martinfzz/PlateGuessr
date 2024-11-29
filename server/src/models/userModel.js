@@ -161,13 +161,14 @@ userSchema.statics.delete = async function (_id) {
 userSchema.statics.saveScore = async function (
   user,
   countryId,
+  countryUuid,
   gameModeId,
   score
 ) {
-  if (!user.country.get(countryId)) {
-    user.country.set(countryId, { country_id: countryId, scores: {} });
+  if (!user.country.get(countryUuid)) {
+    user.country.set(countryUuid, { country_id: countryId, scores: {} });
   }
-  const country = user.country.get(countryId);
+  const country = user.country.get(countryUuid);
   let gameModeScore = country.scores.get(gameModeId);
 
   if (!gameModeScore) {

@@ -448,3 +448,29 @@ input:-webkit-autofill:active {
   color: rgb(79, 79, 79) !important;
   font-weight: 600 !important;
 }
+
+/* */
+
+.stats-link {
+  color: var(--red);
+}
+
+.stats-link:hover {
+  color: var(--red);
+  opacity: 0.8;
+}
+
+.country-img {
+  width: 220px !important;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.country-img img {
+  display: inline;
+  margin: 0 auto;
+  margin-left: -25%;
+  height: 100%;
+  width: auto;
+}

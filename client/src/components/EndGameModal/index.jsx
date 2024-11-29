@@ -14,6 +14,8 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import { API, loadingTypes } from "../../shared/helpers";
 import { CustomSpinner } from "../../shared/components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 const EndGameModal = ({
   score,
@@ -116,6 +118,17 @@ const EndGameModal = ({
               </MDBModalBody>
             )}
             <MDBModalFooter>
+              <Link
+                to={`/country/${countryId}`}
+                className="stats-link d-flex justify-content-start align-items-center flex-grow-1"
+              >
+                <h4 className="m-0">
+                  <FontAwesomeIcon icon={faChartSimple} />
+                </h4>
+                <p className="ms-2 m-0 d-flex align-items-center">
+                  {t("pages.stats.see_stats")}
+                </p>
+              </Link>
               <MDBBtn
                 rounded
                 className="btn-game-back"

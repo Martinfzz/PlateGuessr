@@ -48,6 +48,24 @@
       "title_2": "Sélectionner un mode de connexion",
       "email": "Continuer avec Email",
       "account": "Vous avez déjà un compte ?"
+    },
+    "stats": {
+      "see_stats": "Voir les statistiques",
+      "stats": "Stats",
+      "my_stats": "Mes stats",
+      "seach_by_country": "Recherche par pays",
+      "scores": "Scores",
+      "no_data": "Pas de données",
+      "country": "Pays",
+      "best_score": "Meilleur score"
+    },
+    "country": {
+      "average_score": "Score moyen",
+      "games_played": "Parties jouées",
+      "best_scores": "Meilleurs scores",
+      "your_best_score": "Vore meilleur score",
+      "no_mode_played": "Vous n'avez pas joué ce mode.",
+      "no_score": "Pas encore de scores"
     }
   },
   "game": {

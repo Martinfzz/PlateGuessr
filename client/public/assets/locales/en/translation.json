@@ -48,6 +48,24 @@
       "title_2": "Choose sign-up method",
       "email": "Continue with Email",
       "account": "Already have an account?"
+    },
+    "stats": {
+      "see_stats": "See stats",
+      "stats": "Stats",
+      "my_stats": "My stats",
+      "seach_by_country": "Search by country",
+      "scores": "Scores",
+      "no_data": "No data",
+      "country": "Country",
+      "best_score": "Best score"
+    },
+    "country": {
+      "average_score": "Average score",
+      "games_played": "Games played",
+      "best_scores": "Best scores",
+      "your_best_score": "Your best score",
+      "no_mode_played": "You haven't played this mode.",
+      "no_score": "No scores yet"
     }
   },
   "game": {
