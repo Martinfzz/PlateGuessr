@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
@@ -8,11 +8,13 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 import { notifyError, notifySuccess } from "../../shared/helpers/toasts/Toasts";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "../../Theme";
 
 const AccountForm = () => {
   const { updateUser, error, isLoading, success } = useUpdateUser();
   const { user } = useAuthContext();
   const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (values) => {
     const { username, currentPassword, password } = values;
@@ -54,6 +56,7 @@ const AccountForm = () => {
                 id="username"
                 type="text"
                 placeholder=""
+                contrast={theme === "dark-theme"}
                 defaultValue={user.username}
                 onChange={(e) =>
                   formikProps.setFieldValue("username", e.target.value)
@@ -79,6 +82,7 @@ const AccountForm = () => {
                 type="password"
                 className="mt-4"
                 placeholder=""
+                contrast={theme === "dark-theme"}
                 onChange={(e) =>
                   formikProps.setFieldValue("currentPassword", e.target.value)
                 }
@@ -96,6 +100,7 @@ const AccountForm = () => {
                     type="password"
                     className="mt-4"
                     placeholder=""
+                    contrast={theme === "dark-theme"}
                     onChange={(e) =>
                       formikProps.setFieldValue("password", e.target.value)
                     }

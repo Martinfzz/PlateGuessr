@@ -57,8 +57,8 @@ const GameModal = ({
               onClose={setShowGameModal}
             >
               <MDBModalDialog centered size="l">
-                <MDBModalContent>
-                  <MDBModalHeader className="new-game-modal-header">
+                <MDBModalContent className="game-modal">
+                  <MDBModalHeader>
                     <img
                       width="100%"
                       className="mapboxgl-popup-img"

@@ -9,7 +9,7 @@ export const countriesLayer: FillLayer = {
       property: "ID",
       stops: [[276, "#ffcc00"]],
     },
-    "fill-opacity": 0.1,
+    "fill-opacity": 0.5,
   },
 };
 

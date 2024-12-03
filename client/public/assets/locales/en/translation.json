@@ -76,6 +76,7 @@
     "colors": "Colors",
     "borders": "Borders",
     "labels": "Labels",
+    "loose_progression": "You will loose your progression!",
     "game_mode": {
       "heading": "Game Mode",
       "select": "Select game mode",

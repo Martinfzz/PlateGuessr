@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "../../Theme";
 
 const EmailForm = ({ isLoading, handleSubmit }) => {
   const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -30,6 +32,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             type="email"
             placeholder=""
             defaultValue=""
+            contrast={theme === "dark-theme"}
             onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
           />
           <ErrorMessage
@@ -45,6 +48,7 @@ const EmailForm = ({ isLoading, handleSubmit }) => {
             className="mt-4"
             placeholder=""
             defaultValue=""
+            contrast={theme === "dark-theme"}
             onChange={(e) =>
               formikProps.setFieldValue("password", e.target.value)
             }

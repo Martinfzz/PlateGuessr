@@ -16,8 +16,10 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import LanguageSelector from "../LanguageSelector/index";
 import { useTranslation } from "react-i18next";
+import Logo from "../Logo";
+import ThemeToggleButton from "../ThemeToggleButton";
 
-const Navbar = ({ page }) => {
+const Navbar = ({ page, logo = false }) => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
   const { t } = useTranslation();
@@ -29,11 +31,16 @@ const Navbar = ({ page }) => {
   return (
     <>
       <Row className="pt-3 m-0 d-flex justify-content-between">
+        {logo && (
+          <Col>
+            <Logo />
+          </Col>
+        )}
         {page && (
           <>
             <Col>
               <Link to={"/"}>
-                <MDBBtn className="btn-back">
+                <MDBBtn className="btn-menu-back text-boldgray">
                   <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
                   <span className="hidden-text">{t("app_common.go_back")}</span>
                 </MDBBtn>
@@ -41,7 +48,7 @@ const Navbar = ({ page }) => {
             </Col>
             <Col className="d-flex justify-content-center align-items-center">
               <MDBBadge
-                className="page-badge d-flex justify-content-center align-items-center"
+                className="page-badge d-flex justify-content-center align-items-center text-boldgray"
                 color=""
               >
                 {page}
@@ -51,26 +58,31 @@ const Navbar = ({ page }) => {
         )}
         <Col>
           <div className="d-flex justify-content-end">
+            <ThemeToggleButton />
             <LanguageSelector />
             {user && (
               <MDBDropdown className="user-dropdown">
-                <MDBDropdownToggle>
+                <MDBDropdownToggle className="text-boldgray">
                   <FontAwesomeIcon icon={faUser} className="me-2" />{" "}
                   <span className="hidden-username">{user.username}</span>
                 </MDBDropdownToggle>
                 <MDBDropdownMenu dark>
                   <Link to={"/me/settings"}>
                     <MDBDropdownItem link>
-                      {t("pages.account.heading")}
+                      <p className="m-0 text-boldgray">
+                        {t("pages.account.heading")}
+                      </p>
                     </MDBDropdownItem>
                   </Link>
                   <Link to={`/user/${user.id}`}>
                     <MDBDropdownItem link>
-                      {t("pages.stats.my_stats")}
+                      <p className="m-0 text-boldgray">
+                        {t("pages.stats.my_stats")}
+                      </p>
                     </MDBDropdownItem>
                   </Link>
                   <MDBDropdownItem link onClick={handleClick}>
-                    <span className="red">{t("app_common.logout")}</span>
+                    <p className="red m-0">{t("app_common.logout")}</p>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>

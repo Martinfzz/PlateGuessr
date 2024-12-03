@@ -308,11 +308,8 @@ const MainLayout = () => {
 
       {gameOptions.gameMode === "5" &&
         (guessesCount.current === 0 || goodGuess.current) && (
-          <div className="d-grid gap-2 col-6 mx-auto">
-            <MDBBtn
-              className="d-flex justify-content-center btn-next"
-              onClick={() => setNewRound()}
-            >
+          <div className="d-grid gap-2 col-12 d-flex justify-content-center btn-next">
+            <MDBBtn style={{ boxShadow: "none" }} onClick={() => setNewRound()}>
               {selectedElements.current.length !== 1
                 ? t("app_common.next")
                 : t("app_common.finish")}

@@ -32,7 +32,7 @@ const Account = () => {
       <div className="d-flex justify-content-center text-center mb-4 fixed-bottom">
         <MDBBtn
           rounded
-          className=""
+          className="btn-back"
           onClick={() => setShowDeleteModal(true)}
           color="danger"
         >

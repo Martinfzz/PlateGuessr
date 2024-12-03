@@ -76,6 +76,7 @@
     "colors": "Couleurs",
     "borders": "Frontières",
     "labels": "Labels",
+    "loose_progression": "Vous perdrez votre progression !",
     "game_mode": {
       "heading": "Mode de jeu",
       "select": "Sélectionner un mode de jeu",
