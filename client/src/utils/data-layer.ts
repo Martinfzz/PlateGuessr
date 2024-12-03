@@ -25,7 +25,7 @@ export const dataLayer = (gameOptions: any) => {
               .map((_, i) => [i, gameOptions.color]),
       },
       "fill-opacity": 0.5,
-      "fill-outline-color": gameOptions.toggleBorders ? "#000" : "#cacaca",
+      "fill-outline-color": gameOptions.toggleBorders ? "#000" : "#fde47e",
     },
   };
   return layer;
