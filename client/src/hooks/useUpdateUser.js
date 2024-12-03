@@ -7,7 +7,12 @@ export const useUpdateUser = () => {
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch, user } = useAuthContext();
 
-  const updateUser = async (username, currentPassword, password) => {
+  const updateUser = async (
+    oldUsername,
+    newUsername,
+    currentPassword,
+    password
+  ) => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
@@ -18,7 +23,12 @@ export const useUpdateUser = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
-      body: JSON.stringify({ username, currentPassword, password }),
+      body: JSON.stringify({
+        oldUsername,
+        newUsername,
+        currentPassword,
+        password,
+      }),
     });
     const json = await response.json();
 

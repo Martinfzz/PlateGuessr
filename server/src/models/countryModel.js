@@ -16,6 +16,10 @@ const topScoreSchema = new Schema(
       type: Number,
       required: true,
     },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { _id: false }
 );

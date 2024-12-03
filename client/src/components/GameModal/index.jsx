@@ -14,6 +14,9 @@ import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
 import GameMode from "./GameMode";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const GameModal = ({
   showGameModal,
@@ -64,9 +67,37 @@ const GameModal = ({
                     />
                   </MDBModalHeader>
                   <MDBModalBody>
-                    <h3 className="d-flex justify-content-center mb-3">
-                      {t(`countries.names.${popupInfo.name.toLowerCase()}`)}
-                    </h3>
+                    <Row className="d-flex justify-content-center">
+                      <Col></Col>
+                      <Col>
+                        <h3 className="d-flex justify-content-center mb-3">
+                          {t(`countries.names.${popupInfo.name.toLowerCase()}`)}
+                        </h3>
+                      </Col>
+                      <Col>
+                        <Col>
+                          <Row>
+                            <h4 className="d-flex justify-content-end mb-0">
+                              <Link
+                                to={`/country/${popupInfo.countryId}`}
+                                className="stats-link"
+                              >
+                                <FontAwesomeIcon icon={faChartSimple} />
+                              </Link>
+                            </h4>
+                          </Row>
+                          <Row>
+                            <h6
+                              className="d-flex justify-content-end"
+                              style={{ fontSize: "9px" }}
+                            >
+                              {t("pages.stats.stats")}
+                            </h6>
+                          </Row>
+                        </Col>
+                      </Col>
+                    </Row>
+
                     <p>{t("game.country_description")}</p>
                     <GameMode
                       selectedCountryNamesLength={selectedCountryNamesLength}

@@ -22,7 +22,13 @@ const saveScore = async (req, res) => {
       country = await Country.createCountry(countryId);
     }
 
-    await User.saveScore(user, country._id, gameModeId, Number(score));
+    await User.saveScore(
+      user,
+      countryId,
+      country._id,
+      gameModeId,
+      Number(score)
+    );
     await Country.saveScore(user, country, gameModeId, Number(score));
 
     return res.status(201).json({ message: "Successfully saved", score });
@@ -32,6 +38,23 @@ const saveScore = async (req, res) => {
   }
 };
 
+const countryInfos = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const country = await Country.findOne({ country_id: id });
+    if (!country) {
+      return res.status(404).json({ error: true });
+    } else {
+      return res.status(200).json({ data: country.toJSON() });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal error" });
+  }
+};
+
 module.exports = {
   saveScore,
+  countryInfos,
 };

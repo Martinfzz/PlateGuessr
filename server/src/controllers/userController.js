@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Country = require("../models/countryModel");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
@@ -19,7 +20,9 @@ const loginUser = async (req, res) => {
     // create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token, username: user.username });
+    res
+      .status(200)
+      .json({ email, token, username: user.username, id: user._id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -35,7 +38,9 @@ const signupUser = async (req, res) => {
     // create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token, username: user.username });
+    res
+      .status(200)
+      .json({ email, token, username: user.username, id: user._id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -43,7 +48,7 @@ const signupUser = async (req, res) => {
 
 // update a user
 const updateUser = async (req, res) => {
-  const { username, currentPassword, password } = req.body;
+  const { oldUsername, newUsername, currentPassword, password } = req.body;
   const { id } = req.params;
 
   const decodedToken = decodeToken(id);
@@ -51,10 +56,31 @@ const updateUser = async (req, res) => {
   try {
     const user = await User.update(
       decodedToken._id,
-      username,
+      newUsername,
       currentPassword,
       password
     );
+
+    // Update the new username in all of the countries' top scores
+    for (let i = 1; i <= 5; i++) {
+      await Country.updateMany(
+        {
+          [`game_modes.${i}.top_scores.username`]: oldUsername,
+        },
+        {
+          $set: {
+            [`game_modes.${i}.top_scores.$[elem].username`]: newUsername,
+          },
+        },
+        {
+          arrayFilters: [
+            {
+              "elem.username": oldUsername,
+            },
+          ],
+        }
+      );
+    }
 
     // create a token
     const token = createToken(user._id);
@@ -69,10 +95,31 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.params;
 
-  const decodedToken = decodeToken(id);
+  const user_id = decodeToken(id);
 
   try {
-    await User.delete(decodedToken._id);
+    // Update the deleted user in all of the countries
+    for (let i = 1; i <= 5; i++) {
+      await Country.updateMany(
+        {
+          [`game_modes.${i}.top_scores.user_id`]: user_id,
+        },
+        {
+          $set: {
+            [`game_modes.${i}.top_scores.$[elem].deleted`]: true,
+          },
+        },
+        {
+          arrayFilters: [
+            {
+              "elem.user_id": user_id,
+            },
+          ],
+        }
+      );
+    }
+
+    await User.delete(user_id._id);
 
     res.status(200).json({ success: true });
   } catch (error) {
@@ -80,4 +127,41 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser, updateUser, deleteUser };
+// get user country score
+const userCountryScore = async (req, res) => {
+  const { id } = req.params;
+  const { token } = req.query;
+
+  const userId = decodeToken(token);
+
+  try {
+    const user = await User.findById(userId);
+    const country = user.country.get(id);
+
+    res.status(200).json({ data: country ? country : [], success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// get user
+const getUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).select("-password");
+
+    res.status(200).json({ data: user, success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  signupUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  userCountryScore,
+  getUser,
+};

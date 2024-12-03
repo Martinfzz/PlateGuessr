@@ -64,6 +64,11 @@ const Navbar = ({ page }) => {
                       {t("pages.account.heading")}
                     </MDBDropdownItem>
                   </Link>
+                  <Link to={`/user/${user.id}`}>
+                    <MDBDropdownItem link>
+                      {t("pages.stats.my_stats")}
+                    </MDBDropdownItem>
+                  </Link>
                   <MDBDropdownItem link onClick={handleClick}>
                     <span className="red">{t("app_common.logout")}</span>
                   </MDBDropdownItem>
