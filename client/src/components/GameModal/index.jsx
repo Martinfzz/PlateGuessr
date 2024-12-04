@@ -17,15 +17,16 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const GameModal = ({
   showGameModal,
   setShowGameModal,
   handleNewGame,
-  popupInfo,
   selectedCountryNamesLength,
 }) => {
   const { t } = useTranslation();
+  const { popupInfo } = useSelector((state) => state.game);
 
   const validationSchema = Yup.object().shape({
     gameMode: Yup.number()

@@ -4,27 +4,25 @@ import data from "../../assets/metadata/geojson/germany.geojson";
 import { dataLayer } from "../../utils/data-layer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
-const CountryLayer = ({
-  gameOptions,
-  userMarker,
-  userMarkerColor,
-  answerMarker,
-}) => {
+const CountryLayer = () => {
+  const { gameOptions, markers } = useSelector((state) => state.game);
+
   return (
     <>
       <Source type="geojson" data={data}>
         <Layer {...dataLayer(gameOptions)} />
       </Source>
 
-      {userMarker.length
-        ? userMarker.map((m, i) => (
+      {markers.user.length
+        ? markers.user.map((m, i) => (
             <Marker {...m} key={i} anchor="bottom">
               <FontAwesomeIcon
                 icon={faLocationDot}
                 size="3x"
                 style={{
-                  color: userMarkerColor,
+                  color: markers.color,
                   marginBottom: "2px",
                 }}
               />
@@ -32,8 +30,8 @@ const CountryLayer = ({
           ))
         : null}
 
-      {answerMarker.length
-        ? answerMarker.map((m, i) => (
+      {markers.answer.length
+        ? markers.answer.map((m, i) => (
             <Marker {...m} key={i} anchor="bottom">
               <FontAwesomeIcon
                 icon={faLocationDot}

@@ -16,24 +16,24 @@ import { API, loadingTypes } from "../../shared/helpers";
 import { CustomSpinner } from "../../shared/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const EndGameModal = ({
   score,
   showEndGameModal,
   handleOnBack,
   handleOnPlayAgain,
-  gameOptions,
-  countryId,
 }) => {
   const { t } = useTranslation();
   const { user } = useAuthContext();
+  const { gameOptions, playedCountryInfo } = useSelector((state) => state.game);
   const [loading, setLoading] = useState(loadingTypes.none);
   const [userBestScore, setUserBestScore] = useState(null);
 
   const getUserBestScore = async () => {
     setLoading(loadingTypes.index);
     await API.get(
-      `/api/score/country/game_mode/user?token=${user.token}&countryId=${countryId}&gameModeId=${gameOptions.gameMode}`
+      `/api/score/country/game_mode/user?token=${user.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}`
     )
       .then((res) => {
         setUserBestScore(res.data.best_score);
@@ -47,7 +47,7 @@ const EndGameModal = ({
   const saveScore = async () => {
     setLoading(loadingTypes.create);
     await API.post(
-      `/api/country/save_score?token=${user.token}&countryId=${countryId}&gameModeId=${gameOptions.gameMode}&score=${score.after}`
+      `/api/country/save_score?token=${user.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}&score=${score.after}`
     )
       .then(() => {})
       .catch((error) => {
@@ -119,7 +119,7 @@ const EndGameModal = ({
             )}
             <MDBModalFooter>
               <Link
-                to={`/country/${countryId}`}
+                to={`/country/${playedCountryInfo.countryId}`}
                 className="stats-link d-flex justify-content-start align-items-center flex-grow-1"
               >
                 <h4 className="m-0">
