@@ -8,18 +8,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "../ConfirmationModal";
+import { useSelector } from "react-redux";
 
 const Round = ({
   selectedElement,
   currentRound,
   score,
-  gameOptions,
   addedTime,
   setEndGame,
   showEndGameModal,
   setFinalScore,
 }) => {
   const { t } = useTranslation();
+  const { gameOptions } = useSelector((state) => state.game);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const navigate = useNavigate();
 
