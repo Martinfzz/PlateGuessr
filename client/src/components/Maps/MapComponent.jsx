@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { useState } from "react";
 import InteractiveMap, {
   NavigationControl,
@@ -9,6 +9,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setViewport } from "../../features/map/mapSlice";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
+import { ThemeContext } from "../../Theme";
 
 const MapComponent = ({
   mapRef,
@@ -19,6 +20,7 @@ const MapComponent = ({
 }) => {
   const [cursor, setCursor] = useState(null);
   const lng = localStorage.getItem("i18nextLng");
+  const { theme } = useContext(ThemeContext);
 
   const mapRefCallback = useCallback(
     (ref) => {
@@ -51,7 +53,11 @@ const MapComponent = ({
         zoom: zoom || 5,
       }}
       style={{ width: "100vw", height: "100vh" }}
-      mapStyle="mapbox://styles/mapbox/light-v11"
+      mapStyle={
+        theme === "dark-theme"
+          ? "mapbox://styles/mapbox/dark-v11"
+          : "mapbox://styles/mapbox/light-v11"
+      }
       onMove={(e) => handleViewportChange(e)}
       onMouseMove={(e) => onHover(e, mapRef)}
       onMouseEnter={() => setCursor("pointer")}

@@ -49,7 +49,7 @@ const EndGameModal = ({
     await API.post(
       `/api/country/save_score?token=${user.token}&countryId=${countryId}&gameModeId=${gameOptions.gameMode}&score=${score.after}`
     )
-      .then((res) => {})
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
@@ -65,7 +65,7 @@ const EndGameModal = ({
     <>
       <MDBModal tabIndex="-1" open={showEndGameModal}>
         <MDBModalDialog centered>
-          <MDBModalContent>
+          <MDBModalContent className="end-game-modal">
             <MDBModalHeader>
               <MDBModalTitle>
                 {t("game.final_score")}: {score.after}
@@ -131,7 +131,7 @@ const EndGameModal = ({
               </Link>
               <MDBBtn
                 rounded
-                className="btn-game-back"
+                className="btn-back"
                 color="light"
                 onClick={handleOnBack}
               >

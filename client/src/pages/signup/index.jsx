@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
@@ -9,16 +9,18 @@ import {
   faApple,
 } from "@fortawesome/free-brands-svg-icons";
 import EmailModal from "./EmailModal";
-import Header from "../../components/Header";
+import Logo from "../../components/Logo";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "../../Theme";
 
 const SignUp = () => {
   const { t } = useTranslation();
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <>
-      <Header />
+      <Logo className="logo-container" />
 
       <div
         className="d-flex align-items-center justify-content-center"
@@ -26,7 +28,7 @@ const SignUp = () => {
       >
         <div className="d-flex text-center">
           <Col>
-            <h1>{t("pages.signup.title_1")}</h1>
+            <h1 className="text-color">{t("pages.signup.title_1")}</h1>
             <h2 className="my-4 yellow">{t("pages.signup.title_2")}</h2>
             <Col>
               <MDBBtn
@@ -38,6 +40,7 @@ const SignUp = () => {
                   textTransform: "none",
                   minWidth: "350px",
                   height: "3rem",
+                  boxShadow: "none",
                 }}
               >
                 <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
@@ -49,11 +52,12 @@ const SignUp = () => {
                 disabled
                 rounded
                 className="m-2"
-                color="dark"
+                color={theme === "dark-theme" ? "light" : "dark"}
                 style={{
                   textTransform: "none",
                   minWidth: "350px",
                   height: "3rem",
+                  boxShadow: "none",
                 }}
               >
                 <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
@@ -70,6 +74,7 @@ const SignUp = () => {
                   textTransform: "none",
                   minWidth: "350px",
                   height: "3rem",
+                  boxShadow: "none",
                 }}
               >
                 <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}
@@ -81,7 +86,7 @@ const SignUp = () => {
                 outline
                 rounded
                 className="mt-2 mb-4"
-                color="dark"
+                color={theme === "dark-theme" ? "light" : "dark"}
                 style={{
                   textTransform: "none",
                   minWidth: "350px",

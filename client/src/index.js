@@ -9,18 +9,23 @@ import AppRoutes from "routes/AppRoutes";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import "./i18n";
+import { ThemeProvider } from "./Theme";
+import { PrimeReactProvider } from "primereact/api";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <Provider store={store}>
-        <ToastContainer icon={false} limit={3} />
-        <AppRoutes />
-      </Provider>
+      <PrimeReactProvider>
+        <ThemeProvider>
+          <Provider store={store}>
+            <ToastContainer icon={false} limit={3} />
+            <AppRoutes />
+          </Provider>
+        </ThemeProvider>
+      </PrimeReactProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

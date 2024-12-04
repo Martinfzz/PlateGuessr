@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { API, loadingTypes } from "../../shared/helpers";
@@ -18,11 +18,13 @@ import Navbar from "../../components/Navbar";
 import { Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple, faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { ThemeContext } from "../../Theme";
 
 const Country = () => {
   const { t } = useTranslation();
   let params = useParams();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
   const { user } = useAuthContext();
   const [loading, setLoading] = useState(loadingTypes.none);
   const [data, setData] = useState(null);
@@ -30,6 +32,7 @@ const Country = () => {
   const [scores, setScores] = useState([]);
   const [userCountryScore, setUserCountryScore] = useState([]);
   const [userScore, setUserScore] = useState([]);
+  const [gameMode, setGameMode] = useState("1");
 
   const getUserCountryScore = async () => {
     setLoading(loadingTypes.index);
@@ -89,17 +92,18 @@ const Country = () => {
 
   const handleOnGameModeClick = (gameMode) => {
     setScores(data.game_modes?.[gameMode]?.top_scores ?? []);
+    setGameMode(gameMode);
     if (user) setUserScore(userCountryScore.scores[gameMode] ?? []);
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar logo={true} />
       {loading || data === null || country === null ? (
         <CustomSpinner center />
       ) : (
         <>
-          <h2 className="d-flex justify-content-center mt-3 mb-5">
+          <h2 className="d-flex justify-content-center mt-3 mb-5 text-color">
             {t(`countries.names.${country.name}`)}
           </h2>
           <Row style={{ width: "100%" }}>
@@ -125,7 +129,7 @@ const Country = () => {
                     <MDBCardBody className=" py-3">
                       <MDBCardText className="d-flex justify-content-start">
                         <span
-                          className="my-0 d-flex align-items-center justify-content-center"
+                          className="my-0 d-flex align-items-center justify-content-center red"
                           style={{ width: "50px", fontSize: "40px" }}
                         >
                           <FontAwesomeIcon icon={faChartSimple} />
@@ -143,7 +147,7 @@ const Country = () => {
                     <MDBCardBody className=" py-3">
                       <MDBCardText className="d-flex justify-content-start">
                         <span
-                          className="my-0 d-flex align-items-center justify-content-center"
+                          className="my-0 d-flex align-items-center justify-content-center red"
                           style={{ width: "50px", fontSize: "40px" }}
                         >
                           <FontAwesomeIcon icon={faGamepad} />
@@ -160,7 +164,7 @@ const Country = () => {
             </Col>
           </Row>
 
-          <h3 className="d-flex justify-content-center mb-4">
+          <h3 className="d-flex justify-content-center mb-4 text-color">
             {t("pages.country.best_scores")}
           </h3>
 
@@ -170,36 +174,40 @@ const Country = () => {
               <Row className="mb-5 d-flex justify-content-center">
                 <MDBBtnGroup shadow="0" aria-label="Basic example">
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
+                    className={gameMode === "1" ? "stats-btn-active" : ""}
                     outline
                     onClick={() => handleOnGameModeClick("1")}
                   >
                     {t("game.game_mode.easy")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "2" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("2")}
                   >
                     {t("game.game_mode.normal")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "3" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("3")}
                   >
                     {t("game.game_mode.hard")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "4" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("4")}
                   >
                     {t("game.game_mode.extrem")}
                   </MDBBtn>
                 </MDBBtnGroup>
               </Row>
-              <Row className="d-flex text-center">
+              <Row className="d-flex text-center text-color">
                 {userScore && Object.keys(userScore).length !== 0 ? (
                   <p>
                     {t("pages.country.your_best_score")} -{" "}
@@ -215,7 +223,7 @@ const Country = () => {
                     <tr>
                       <th scope="col"></th>
                       <th scope="col" className="w-100"></th>
-                      <th scope="col" className="text-center">
+                      <th scope="col" className="text-center text-color">
                         {t("game.score")}
                       </th>
                     </tr>
@@ -225,12 +233,14 @@ const Country = () => {
                       return (
                         <MDBTableBody key={index}>
                           <tr>
-                            <th scope="col" className="text-center">
+                            <th scope="col" className="text-center text-color">
                               {index + 1}
                             </th>
                             <th scope="col">
                               {score.deleted ? (
-                                score.username
+                                <span className="text-color">
+                                  {score.username}
+                                </span>
                               ) : (
                                 <Link
                                   to={`/user/${score.user_id}`}
@@ -240,7 +250,7 @@ const Country = () => {
                                 </Link>
                               )}
                             </th>
-                            <th scope="col" className="text-center">
+                            <th scope="col" className="text-center text-color">
                               {score.score}
                             </th>
                           </tr>

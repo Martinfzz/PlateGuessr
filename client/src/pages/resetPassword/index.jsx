@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
@@ -6,9 +6,11 @@ import ValidationsAlerts from "../../shared/components/form/ValidationsAlerts";
 import { Col } from "react-bootstrap";
 import ConnexionBtn from "../../components/ConnexionBtn";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "../../Theme";
 
 const ResetPassword = () => {
   const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -24,7 +26,7 @@ const ResetPassword = () => {
       <div className="d-flex mt-5 justify-content-center">
         <div>
           <Col>
-            <h2 className="d-flex justify-content-center">
+            <h2 className="d-flex justify-content-center text-color">
               {t("pages.reset_password.heading")}
             </h2>
 
@@ -42,6 +44,7 @@ const ResetPassword = () => {
                     className="mt-4"
                     placeholder=""
                     defaultValue=""
+                    contrast={theme === "dark-theme"}
                     onChange={(e) =>
                       formikProps.setFieldValue("email", e.target.value)
                     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
@@ -9,15 +9,17 @@ import {
   faApple,
 } from "@fortawesome/free-brands-svg-icons";
 import EmailForm from "./EmailForm";
-import Header from "../../components/Header";
+import Logo from "../../components/Logo";
 import Alerts from "../../components/Alerts";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useLogin } from "../../hooks/useLogin";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "../../Theme";
 
 const LogIn = () => {
   const { login, error, isLoading } = useLogin();
   const { t } = useTranslation();
+  const { theme } = useContext(ThemeContext);
 
   const handleSubmit = async (values) => {
     const { email, password } = values;
@@ -26,7 +28,7 @@ const LogIn = () => {
   };
   return (
     <>
-      <Header />
+      <Logo className="logo-container" />
       <div
         className="d-flex align-items-center justify-content-center"
         style={{ height: "90vh" }}
@@ -58,6 +60,7 @@ const LogIn = () => {
                       textTransform: "none",
                       minWidth: "350px",
                       height: "3rem",
+                      boxShadow: "none",
                     }}
                   >
                     <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
@@ -69,11 +72,12 @@ const LogIn = () => {
                     disabled
                     rounded
                     className="m-2"
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     style={{
                       textTransform: "none",
                       minWidth: "350px",
                       height: "3rem",
+                      boxShadow: "none",
                     }}
                   >
                     <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
@@ -90,6 +94,7 @@ const LogIn = () => {
                       textTransform: "none",
                       minWidth: "350px",
                       height: "3rem",
+                      boxShadow: "none",
                     }}
                   >
                     <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}

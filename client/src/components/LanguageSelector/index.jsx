@@ -56,9 +56,16 @@ const LanguageSelector = () => {
               link
               onClick={() => changeLanguage(l.lang)}
               key={l.id}
+              className="d-flex align-items-center"
             >
-              <img className="rounded-1" src={l.flag} alt="country flag" />{" "}
-              {l.name}
+              <p className="mb-0">
+                <img
+                  className="rounded-1 me-1"
+                  src={l.flag}
+                  alt="country flag"
+                />{" "}
+                <span>{l.name}</span>
+              </p>
             </MDBDropdownItem>
           ))}
         </MDBDropdownMenu>

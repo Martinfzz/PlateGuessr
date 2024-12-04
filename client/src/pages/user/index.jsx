@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { API, loadingTypes } from "../../shared/helpers";
 import { CustomSpinner } from "../../shared/components";
@@ -13,11 +13,13 @@ import Navbar from "../../components/Navbar";
 import { Col, Row } from "react-bootstrap";
 import { toAbsoluteUrl } from "../../helpers";
 import { FilterMatchMode } from "primereact/api";
+import { ThemeContext } from "../../Theme";
 
 const User = () => {
   const { t } = useTranslation();
   let params = useParams();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(loadingTypes.none);
   const [data, setData] = useState(null);
   const [countries, setCountries] = useState({});
@@ -26,6 +28,7 @@ const User = () => {
     country_name_lang: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
   const [globalFilterValue, setGlobalFilterValue] = useState("");
+  const [gameMode, setGameMode] = useState("1");
 
   const getScores = (gameMode) => {
     const countryScores = [];
@@ -76,13 +79,14 @@ const User = () => {
   };
 
   useEffect(() => {
-    if (data !== null) {
+    if (data !== null && Object.keys(countries).length !== 0) {
       getScores("1");
     }
-  }, [data]);
+  }, [data, countries]);
 
   const handleOnGameModeClick = (gameMode) => {
     getScores(gameMode);
+    setGameMode(gameMode);
   };
 
   const countryBodyTemplate = (rowData) => {
@@ -130,48 +134,52 @@ const User = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar logo={true} />
       {loading || data === null ? (
         <CustomSpinner center />
       ) : (
         <>
-          <h2 className="d-flex justify-content-center mt-3 mb-5">
+          <h2 className="d-flex justify-content-center mt-3 mb-5 text-color">
             {data.username}
           </h2>
 
-          <h3 className="d-flex justify-content-center mb-4">
+          <h3 className="d-flex justify-content-center mb-4 text-color">
             {t("pages.stats.scores")}
           </h3>
 
           <Row style={{ width: "100%" }}>
             <Col lg={2} xl={3}></Col>
             <Col lg={8} xl={6} className="px-5">
-              <Row className="mb-5 d-flex justify-content-center">
+              <Row className="mb-4 d-flex justify-content-center">
                 <MDBBtnGroup shadow="0" aria-label="game modes">
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "1" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("1")}
                   >
                     {t("game.game_mode.easy")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "2" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("2")}
                   >
                     {t("game.game_mode.normal")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "3" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("3")}
                   >
                     {t("game.game_mode.hard")}
                   </MDBBtn>
                   <MDBBtn
-                    color="dark"
+                    color={theme === "dark-theme" ? "light" : "dark"}
                     outline
+                    className={gameMode === "4" ? "stats-btn-active" : ""}
                     onClick={() => handleOnGameModeClick("4")}
                   >
                     {t("game.game_mode.extrem")}
@@ -180,7 +188,7 @@ const User = () => {
               </Row>
 
               <Row>
-                <div className="card">
+                <div>
                   <DataTable
                     value={scores}
                     removableSort
@@ -189,6 +197,7 @@ const User = () => {
                     header={header}
                     filters={filters}
                     loading={loading}
+                    stripedRows
                     emptyMessage={t("pages.stats.no_data")}
                   >
                     <Column
