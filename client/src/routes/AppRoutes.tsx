@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import React, { useContext } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import App from "../App";
 import Error404 from "../pages/error404";
@@ -10,7 +10,7 @@ import Country from "../pages/country";
 import User from "../pages/user";
 import { ThemeContext } from "../Theme";
 
-const AppRoutes: FC = () => {
+const AppRoutes = () => {
   const { theme } = useContext(ThemeContext);
 
   return (

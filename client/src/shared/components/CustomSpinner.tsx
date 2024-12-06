@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { Spinner } from "react-bootstrap";
 
 interface Props {
