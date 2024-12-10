@@ -127,10 +127,7 @@ userSchema.statics.update = async function (
   let user = await this.findOne({ _id });
   const usernameExist = await this.findOne({ username });
 
-  if (
-    usernameExist &&
-    JSON.stringify(usernameExist._id) !== JSON.stringify(user._id)
-  ) {
+  if (usernameExist && usernameExist.username !== user.username) {
     throw Error("validations.username_taken");
   }
 
