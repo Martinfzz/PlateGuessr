@@ -25,7 +25,9 @@ const AccountForm = () => {
   const handleSubmit = async (values: initialValues) => {
     const { username, currentPassword, password } = values;
 
-    await updateUser(user?.username ?? "", username, currentPassword, password);
+    if (user) {
+      await updateUser(user.username, username, currentPassword, password);
+    }
   };
 
   useEffect(() => {
@@ -45,7 +47,11 @@ const AccountForm = () => {
   });
 
   return (
-    <div className="signup-form" style={{ width: "240px" }}>
+    <div
+      className="signup-form"
+      style={{ width: "240px" }}
+      data-testid="account-form"
+    >
       {user && (
         <Formik
           initialValues={{

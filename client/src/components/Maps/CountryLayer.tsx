@@ -19,15 +19,17 @@ const CountryLayer = () => {
     (state: GameState) => state.game
   );
 
+  console.log(markers);
+
   return (
     <>
-      <Source type="geojson" data={data}>
-        <Layer {...dataLayer(gameOptions)} />
+      <Source type="geojson" data={data} data-testid="countries-source">
+        <Layer {...dataLayer(gameOptions)} data-testid="countries-layer" />
       </Source>
 
-      {markers.user.length
+      {markers.user.length > 0
         ? markers.user.map((m, i) => (
-            <Marker {...m} key={i} anchor="bottom">
+            <Marker {...m} key={i} anchor="bottom" data-testid="user-marker">
               <FontAwesomeIcon
                 icon={faLocationDot}
                 size="3x"
@@ -35,14 +37,15 @@ const CountryLayer = () => {
                   color: markers.color,
                   marginBottom: "2px",
                 }}
+                data-testid="user-marker-icon"
               />
             </Marker>
           ))
         : null}
 
-      {markers.answer.length
+      {markers.answer.length > 0
         ? markers.answer.map((m, i) => (
-            <Marker {...m} key={i} anchor="bottom">
+            <Marker {...m} key={i} anchor="bottom" data-testid="answer-marker">
               <FontAwesomeIcon
                 icon={faLocationDot}
                 size="3x"
@@ -50,6 +53,7 @@ const CountryLayer = () => {
                   color: "#47A025",
                   marginBottom: "2px",
                 }}
+                data-testid="answer-marker-icon"
               />
             </Marker>
           ))

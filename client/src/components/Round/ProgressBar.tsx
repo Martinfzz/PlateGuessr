@@ -18,15 +18,19 @@ const ProgressBar: FC<ProgressBarProps> = ({
   const resetTime = useRef(false);
 
   useEffect(() => {
-    const timeoutId = setInterval(() => setTime(time - 0.01), 10);
+    const timeoutId = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime <= 0 && !resetTime.current) {
+          clearInterval(timeoutId);
+          setEndGame();
+          resetTime.current = true;
+          return 0;
+        }
+        setFinalScore(prevTime - 0.01);
+        return prevTime - 0.01;
+      });
+    }, 10);
 
-    if (time <= 0 && !resetTime.current) {
-      clearInterval(timeoutId);
-      setEndGame();
-      resetTime.current = true;
-    }
-
-    setFinalScore(time);
     return () => clearInterval(timeoutId);
   }, [time, setEndGame, setFinalScore]);
 
@@ -43,12 +47,16 @@ const ProgressBar: FC<ProgressBarProps> = ({
   }, [showEndGameModal, resetTime]);
 
   return (
-    <MDBProgress className="round-progress-bar" height="5">
+    <MDBProgress
+      data-testid="progress-bar"
+      className="round-progress-bar"
+      height="5"
+    >
       <MDBProgressBar
         bgColor="success"
         striped
         animated
-        width={(time / 120) * 100}
+        width={Math.ceil((time / 120) * 100)}
         valuemin={0}
         valuemax={100}
       />

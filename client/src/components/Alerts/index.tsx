@@ -14,7 +14,7 @@ const Alerts: FC<AlertsProps> = ({ children, color = "primary", icon }) => {
     <div>
       <Alert variant={color}>
         <Alert.Heading className="d-flex justify-content-center">
-          <FontAwesomeIcon icon={icon} />
+          <FontAwesomeIcon icon={icon} data-testid="alert-icon" />
         </Alert.Heading>
         <span className="d-flex justify-content-center">{children}</span>
       </Alert>

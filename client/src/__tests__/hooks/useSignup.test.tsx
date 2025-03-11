@@ -1,0 +1,84 @@
+import { renderHook, act } from "@testing-library/react";
+import { useSignup } from "../../hooks/useSignup";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import fetchMock from "jest-fetch-mock";
+import { BrowserRouter as Router, useNavigate } from "react-router-dom";
+import { AuthActionType } from "../../shared.types";
+
+jest.mock("../../hooks/useAuthContext");
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: jest.fn(),
+}));
+
+describe("useSignup", () => {
+  const mockDispatch = jest.fn();
+  const mockNavigate = jest.fn();
+  Storage.prototype.setItem = jest.fn();
+
+  beforeEach(() => {
+    (useAuthContext as jest.Mock).mockReturnValue({ dispatch: mockDispatch });
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    fetchMock.resetMocks();
+  });
+
+  test("should signup successfully", async () => {
+    const user = {
+      id: "1",
+      username: "testuser",
+      email: "test@example.com",
+      token: "testtoken",
+    };
+    fetchMock.mockResponseOnce(JSON.stringify(user));
+
+    const { result } = renderHook(() => useSignup(), { wrapper: Router });
+
+    await act(async () => {
+      await result.current.signup(
+        "test@example.com",
+        "password123",
+        "password123"
+      );
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/user/signup",
+      expect.any(Object)
+    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      "user",
+      JSON.stringify(user)
+    );
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: AuthActionType.LOGIN,
+      payload: user,
+    });
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(null);
+  });
+
+  test("should handle signup error", async () => {
+    const errorMessage = "Passwords do not match";
+    fetchMock.mockResponseOnce(JSON.stringify({ error: errorMessage }), {
+      status: 400,
+    });
+
+    const { result } = renderHook(() => useSignup(), { wrapper: Router });
+
+    await act(async () => {
+      await result.current.signup(
+        "test@example.com",
+        "password123",
+        "password456"
+      );
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/user/signup",
+      expect.any(Object)
+    );
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(errorMessage);
+  });
+});

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { AuthActionType } from "shared.types";
+import { AuthActionType } from "../shared.types";
 
 export const useSignup = () => {
   const [error, setError] = useState<string | null>(null);

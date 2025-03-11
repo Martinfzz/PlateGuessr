@@ -7,6 +7,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useTranslation } from "react-i18next";
 import { toAbsoluteUrl } from "../../helpers";
+import { Col, Row } from "react-bootstrap";
 
 const languages = [
   {
@@ -41,7 +42,10 @@ const LanguageSelector = () => {
   };
 
   return (
-    <div className="d-flex align-items-center me-3">
+    <div
+      data-testid="language-selector"
+      className="d-flex align-items-center me-3"
+    >
       <MDBDropdown className="language-selector">
         <MDBDropdownToggle className="">
           <img
@@ -58,14 +62,18 @@ const LanguageSelector = () => {
               key={l.id}
               className="d-flex align-items-center"
             >
-              <p className="mb-0">
-                <img
-                  className="rounded-1 me-1"
-                  src={l.flag}
-                  alt="country flag"
-                />{" "}
-                <span>{l.name}</span>
-              </p>
+              <Row className="d-flex align-items-center">
+                <Col className="mb-0 col-1">
+                  <img
+                    className="rounded-1 me-1"
+                    src={l.flag}
+                    alt={`country flag ${l.lang}`}
+                  />
+                </Col>
+                <Col>
+                  <p className="m-0">{l.name}</p>
+                </Col>
+              </Row>
             </MDBDropdownItem>
           ))}
         </MDBDropdownMenu>

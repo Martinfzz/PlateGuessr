@@ -22,7 +22,7 @@ const SelectedCountry: FC<SelectedCountryProps> = ({ handleOnPlay }) => {
   const dispatch = useDispatch();
 
   return (
-    <>
+    <div data-testid="selected-country">
       {popupInfo && (
         <Popup
           anchor="bottom"
@@ -66,7 +66,7 @@ const SelectedCountry: FC<SelectedCountryProps> = ({ handleOnPlay }) => {
           </div>
         </Popup>
       )}
-    </>
+    </div>
   );
 };
 

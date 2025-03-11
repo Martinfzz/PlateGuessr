@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import App from "../App";
 import Error404 from "../pages/error404";
 import LogIn from "../pages/login";
@@ -15,18 +15,16 @@ const AppRoutes = () => {
 
   return (
     <div className={`App ${theme}`} style={{ height: "100vh" }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<Error404 />} />
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/me/settings" element={<Account />} />
-          <Route path="/country/:id" element={<Country />} />
-          <Route path="/user/:id" element={<User />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="*" element={<Error404 />} />
+        <Route path="/" element={<App />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/me/settings" element={<Account />} />
+        <Route path="/country/:id" element={<Country />} />
+        <Route path="/user/:id" element={<User />} />
+      </Routes>
     </div>
   );
 };

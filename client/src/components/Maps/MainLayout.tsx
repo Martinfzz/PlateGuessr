@@ -10,7 +10,7 @@ import { MDBBtn } from "mdb-react-ui-kit";
 import Navbar from "../Navbar";
 import { useTranslation } from "react-i18next";
 import BorderEffect from "./BorderEffect";
-import useGame from "../../hooks/useGame";
+import { useGame } from "../../hooks/useGame";
 import { useSelector } from "react-redux";
 import { GameOptions, PlayedCountryInfo } from "shared.types";
 import { MapRef } from "react-map-gl";
@@ -82,13 +82,18 @@ const MainLayout = () => {
             setEndGame={() => setEndGame()}
             showEndGameModal={showEndGameModal}
             setFinalScore={(time) => (score.current.time = time * 100)}
+            data-testid="round-component"
           />
         )}
 
       {gameOptions.gameMode === "5" &&
         (guessesCount.current === 0 || goodGuess.current) && (
           <div className="d-grid gap-2 col-12 d-flex justify-content-center btn-next">
-            <MDBBtn style={{ boxShadow: "none" }} onClick={() => setNewRound()}>
+            <MDBBtn
+              style={{ boxShadow: "none" }}
+              onClick={() => setNewRound()}
+              data-testid="game-button"
+            >
               {selectedElements.current.length !== 1
                 ? t("app_common.next")
                 : t("app_common.finish")}

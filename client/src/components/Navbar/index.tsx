@@ -34,7 +34,7 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
   };
 
   return (
-    <>
+    <div data-testid="navbar">
       <Row className="pt-3 m-0 d-flex justify-content-between">
         {logo && (
           <Col>
@@ -71,7 +71,7 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
                   <FontAwesomeIcon icon={faUser} className="me-2" />{" "}
                   <span className="hidden-username">{user.username}</span>
                 </MDBDropdownToggle>
-                <MDBDropdownMenu dark>
+                <MDBDropdownMenu dark data-testid="navbar-account">
                   <Link to={"/me/settings"}>
                     <MDBDropdownItem link>
                       <p className="m-0 text-boldgray">
@@ -96,7 +96,7 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

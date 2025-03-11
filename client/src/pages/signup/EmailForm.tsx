@@ -38,80 +38,87 @@ const EmailForm = () => {
   };
 
   return (
-    <Formik
-      initialValues={{ email: "", password: "", passwordConfirmation: "" }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => handleSubmit(values)}
-    >
-      {(formikProps) => (
-        <Form className="signup-form">
-          {error && (
-            <Alerts color="danger" icon={faCircleExclamation}>
-              {t(error)}
-            </Alerts>
-          )}
-          <MDBInput
-            label={t("app_common.email")}
-            id="email"
-            type="email"
-            placeholder=""
-            defaultValue=""
-            onChange={(e) => formikProps.setFieldValue("email", e.target.value)}
-          />
-          <ErrorMessage
-            component={ValidationsAlerts as ComponentType}
-            name="email"
-            className="mb-4"
-          />
+    <div data-testid="signup-form">
+      <Formik
+        initialValues={{ email: "", password: "", passwordConfirmation: "" }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        {(formikProps) => (
+          <Form className="signup-form">
+            {error && (
+              <Alerts color="danger" icon={faCircleExclamation}>
+                {t(error)}
+              </Alerts>
+            )}
+            <MDBInput
+              label={t("app_common.email")}
+              id="email"
+              type="email"
+              placeholder=""
+              defaultValue=""
+              onChange={(e) =>
+                formikProps.setFieldValue("email", e.target.value)
+              }
+            />
+            <ErrorMessage
+              component={ValidationsAlerts as ComponentType}
+              name="email"
+              className="mb-4"
+            />
 
-          <MDBInput
-            label={t("app_common.password")}
-            id="password"
-            type="password"
-            className="mt-4"
-            placeholder=""
-            defaultValue=""
-            onChange={(e) =>
-              formikProps.setFieldValue("password", e.target.value)
-            }
-          />
-          <ErrorMessage
-            component={ValidationsAlerts as ComponentType}
-            name="password"
-            className="mb-4"
-          />
+            <MDBInput
+              label={t("app_common.password")}
+              id="password"
+              type="password"
+              className="mt-4"
+              placeholder=""
+              defaultValue=""
+              onChange={(e) =>
+                formikProps.setFieldValue("password", e.target.value)
+              }
+            />
+            <ErrorMessage
+              component={ValidationsAlerts as ComponentType}
+              name="password"
+              className="mb-4"
+            />
 
-          <MDBInput
-            label={t("pages.signup.password_confirmation")}
-            id="passwordConfirmation"
-            type="password"
-            className="mt-4"
-            placeholder=""
-            defaultValue=""
-            onChange={(e) =>
-              formikProps.setFieldValue("passwordConfirmation", e.target.value)
-            }
-          />
-          <ErrorMessage
-            component={ValidationsAlerts as ComponentType}
-            name="passwordConfirmation"
-            className="mb-4"
-          />
+            <MDBInput
+              label={t("pages.signup.password_confirmation")}
+              id="passwordConfirmation"
+              type="password"
+              className="mt-4"
+              placeholder=""
+              defaultValue=""
+              onChange={(e) =>
+                formikProps.setFieldValue(
+                  "passwordConfirmation",
+                  e.target.value
+                )
+              }
+            />
+            <ErrorMessage
+              component={ValidationsAlerts as ComponentType}
+              name="passwordConfirmation"
+              className="mb-4"
+            />
 
-          <div className="d-flex justify-content-center text-center mt-4">
-            <MDBBtn
-              rounded
-              className="btn-signup"
-              type="submit"
-              color="light"
-              disabled={isLoading}
-            >
-              {t("app_common.signup")}
-            </MDBBtn>
-          </div>
-        </Form>
-      )}
-    </Formik>
+            <div className="d-flex justify-content-center text-center mt-4">
+              <MDBBtn
+                rounded
+                className="btn-signup"
+                type="submit"
+                color="light"
+                disabled={isLoading}
+              >
+                {t("app_common.signup")}
+              </MDBBtn>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

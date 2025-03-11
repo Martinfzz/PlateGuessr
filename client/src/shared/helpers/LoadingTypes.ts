@@ -6,6 +6,7 @@ const loadingTypes = {
   delete: "delete",
   edit: "edit",
   cancel: "cancel",
+  error: "error",
 };
 
 export default loadingTypes;

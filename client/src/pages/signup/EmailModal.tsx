@@ -40,6 +40,7 @@ const EmailModal: FC<EmailModalProps> = ({
               className="btn-close mb-5"
               color="none"
               onClick={setShowEmailModal}
+              data-testid="close-button"
             ></MDBBtn>
           </MDBModalHeader>
           <MDBModalBody>

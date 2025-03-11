@@ -7,7 +7,7 @@ function App() {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className={`App ${theme}`}>
+    <div className={`App ${theme}`} data-testid="app-container">
       <MainLayout />
       <Outlet />
     </div>

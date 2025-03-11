@@ -7,7 +7,7 @@ interface LogoProps {
 
 const Logo: FC<LogoProps> = ({ className }) => {
   return (
-    <div className={className}>
+    <div className={className} data-testid="logo-id">
       <Link to={"/"} className="d-flex">
         <img
           alt="app logo"

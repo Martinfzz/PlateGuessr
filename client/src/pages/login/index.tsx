@@ -26,6 +26,7 @@ const LogIn = () => {
 
     await login(email, password);
   };
+
   return (
     <>
       <Logo className="logo-container" />

@@ -32,7 +32,7 @@ type Country = {
   lat: number;
 }[];
 
-const useGame = () => {
+export const useGame = () => {
   const dispatch = useDispatch();
   const { gameOptions, popupInfo, playedCountryInfo } = useSelector(
     (state: GameState) => state.game
@@ -323,5 +323,3 @@ const useGame = () => {
     setShowGameModal,
   };
 };
-
-export default useGame;

@@ -17,7 +17,9 @@
     "baseUrl": "./src",
     "paths": {
       "@helpers": ["./client/src/helpers/index"]
-    }
+    },
+    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "lib": ["dom", "es2017"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],

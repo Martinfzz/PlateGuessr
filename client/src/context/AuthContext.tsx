@@ -5,14 +5,7 @@ import React, {
   FC,
   ReactNode,
 } from "react";
-import { AuthActionType } from "shared.types";
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  token: string;
-}
+import { AuthActionType, User } from "../shared.types";
 
 interface AuthState {
   user: User | null;
