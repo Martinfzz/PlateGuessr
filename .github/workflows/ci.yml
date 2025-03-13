@@ -60,16 +60,16 @@ jobs:
     #       MONGO_INITDB_ROOT_PASSWORD: rootpassword
 
     steps:
-      - name: Install packages
-        run: npm install
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 22
 
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Install packages
+        run: npm install
 
       - name: Run tests server
         run: cd server && npm test
