@@ -45,19 +45,19 @@ jobs:
       - name: Lint code for consistent style
         run: npm run lint
 
-  test:
+  tests:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-        options: >
-          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
-        env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    # services:
+    #   mongodb:
+    #     image: mongo
+    #     ports:
+    #       - 27017:27017
+    #     options: >
+    #       --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
+    #     env:
+    #       MONGO_INITDB_ROOT_USERNAME: root
+    #       MONGO_INITDB_ROOT_PASSWORD: rootpassword
 
     steps:
       - name: Install packages
