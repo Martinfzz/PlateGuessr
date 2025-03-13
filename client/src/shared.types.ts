@@ -44,3 +44,10 @@ export enum AuthActionType {
   UPDATE_USER = "UPDATE_USER",
   DELETE_USER = "DELETE_USER",
 }
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  token: string;
+}

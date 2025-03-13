@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { AuthActionType } from "shared.types";
+import { AuthActionType } from "../shared.types";
 
 export const useDeleteUser = () => {
   const [error, setError] = useState<string | null>(null);
@@ -27,12 +27,12 @@ export const useDeleteUser = () => {
       setError(json.error);
     }
     if (response.ok) {
-      // save the user to local storage
       // remove user from storage
       localStorage.removeItem("user");
 
       // update the auth context
       dispatch({ type: AuthActionType.DELETE_USER });
+      setIsLoading(false);
 
       navigate("/");
     }

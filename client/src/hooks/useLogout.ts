@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
-import { AuthActionType } from "shared.types";
+import { AuthActionType } from "../shared.types";
 
 export const useLogout = () => {
   const { dispatch } = useAuthContext();

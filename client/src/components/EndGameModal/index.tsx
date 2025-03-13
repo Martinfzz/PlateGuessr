@@ -17,7 +17,7 @@ import { CustomSpinner } from "../../shared/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
-import { GameOptions, PlayedCountryInfo } from "shared.types";
+import { GameOptions, PlayedCountryInfo } from "../../shared.types";
 
 interface EndGameModalProps {
   score: {
@@ -90,7 +90,11 @@ const EndGameModal: FC<EndGameModalProps> = ({
 
   return (
     <>
-      <MDBModal tabIndex="-1" open={showEndGameModal}>
+      <MDBModal
+        tabIndex="-1"
+        open={showEndGameModal}
+        data-testid="end-game-modal"
+      >
         <MDBModalDialog centered>
           <MDBModalContent className="end-game-modal">
             <MDBModalHeader>
@@ -101,7 +105,7 @@ const EndGameModal: FC<EndGameModalProps> = ({
             {gameOptions.gameMode !== "5" && (
               <MDBModalBody>
                 {user ? (
-                  loading ? (
+                  loading !== loadingTypes.none ? (
                     <CustomSpinner center />
                   ) : userBestScore >= score.after ? (
                     <>

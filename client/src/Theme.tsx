@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   createContext,
   useState,
   useContext,
@@ -10,7 +9,6 @@ import { PrimeReactContext } from "primereact/api";
 
 interface ThemeContextType {
   theme: string;
-  setTheme?: React.Dispatch<React.SetStateAction<string>>;
   toggleTheme: () => void;
 }
 
@@ -27,7 +25,7 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const { changeTheme } = useContext(PrimeReactContext);
 
   const getTheme = (): string => {
-    const theme = localStorage.getItem("theme");
+    const theme = localStorage.getItem("theme") ?? "light-theme";
 
     if (theme === "light-theme") {
       // Default theme is taken as ligth-theme
@@ -38,13 +36,13 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     } else {
       changeTheme &&
         changeTheme("lara-light-cyan", "lara-dark-cyan", "prime-react-theme");
-      return theme || "";
+      return "dark-theme";
     }
   };
 
   const [theme, setTheme] = useState<string>(getTheme);
 
-  function toggleTheme() {
+  const toggleTheme = () => {
     if (theme === "dark-theme") {
       changeTheme &&
         changeTheme(
@@ -62,21 +60,16 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
           () => setTheme("dark-theme")
         );
     }
-  }
-
-  useEffect(() => {
-    const refreshTheme = () => {
-      localStorage.setItem("theme", theme);
-    };
-
-    refreshTheme();
-  }, [theme]);
+    localStorage.setItem(
+      "theme",
+      theme === "dark-theme" ? "light-theme" : "dark-theme"
+    );
+  };
 
   return (
     <ThemeContext.Provider
       value={{
         theme,
-        setTheme,
         toggleTheme,
       }}
     >

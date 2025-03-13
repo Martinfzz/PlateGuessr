@@ -5,14 +5,7 @@ import React, {
   FC,
   ReactNode,
 } from "react";
-import { AuthActionType } from "shared.types";
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  token: string;
-}
+import { AuthActionType, User } from "../shared.types";
 
 interface AuthState {
   user: User | null;
@@ -61,7 +54,7 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") ?? "");
+    const user = JSON.parse(localStorage.getItem("user") ?? "{}");
 
     if (user) {
       dispatch({ type: AuthActionType.LOGIN, payload: user });

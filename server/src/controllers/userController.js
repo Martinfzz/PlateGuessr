@@ -85,7 +85,14 @@ const updateUser = async (req, res) => {
     // create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email: user.email, token, username: user.username });
+    res
+      .status(200)
+      .json({
+        email: user.email,
+        token,
+        username: user.username,
+        id: user._id,
+      });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

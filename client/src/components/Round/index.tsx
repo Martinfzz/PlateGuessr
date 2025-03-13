@@ -53,7 +53,7 @@ const Round: FC<RoundProps> = ({
   };
 
   return (
-    <>
+    <div data-testid="round">
       {gameOptions.gameMode !== "5" && (
         <ProgressBar
           addedTime={addedTime}
@@ -124,7 +124,7 @@ const Round: FC<RoundProps> = ({
           text={t("game.loose_progression")}
         />
       )}
-    </>
+    </div>
   );
 };
 

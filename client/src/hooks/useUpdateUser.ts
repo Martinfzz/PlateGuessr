@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
-import { AuthActionType } from "shared.types";
+import { AuthActionType } from "../shared.types";
 
 export const useUpdateUser = () => {
   const [error, setError] = useState<string | null>(null);

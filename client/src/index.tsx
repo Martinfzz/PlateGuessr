@@ -11,8 +11,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "primeicons/primeicons.css";
 import "./i18n";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { ThemeProvider } from "./Theme";
 import { PrimeReactProvider } from "primereact/api";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -24,7 +26,9 @@ root.render(
         <ThemeProvider>
           <Provider store={store}>
             <ToastContainer icon={false} limit={3} />
-            <AppRoutes />
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
           </Provider>
         </ThemeProvider>
       </PrimeReactProvider>

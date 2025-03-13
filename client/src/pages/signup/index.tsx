@@ -59,6 +59,7 @@ const SignUp = () => {
                   height: "3rem",
                   boxShadow: "none",
                 }}
+                data-testid="apple-button"
               >
                 <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
                 <span className="ms-2 h6">{t("pages.login.apple")}</span>
@@ -93,6 +94,7 @@ const SignUp = () => {
                   height: "3rem",
                 }}
                 onClick={() => setShowEmailModal(true)}
+                data-testid="email-button"
               >
                 <span className="h6">{t("pages.signup.email")}</span>
               </MDBBtn>

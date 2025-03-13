@@ -74,8 +74,10 @@ const Country = () => {
     setLoading(loadingTypes.index);
     await API.get(`/api/user/country/${data?._id}?token=${user?.token}`)
       .then((res) => {
-        setUserCountryScore(res.data.data);
-        setUserScore(res.data.data.scores["1"] ?? []);
+        if (res.data.data.hasOwnProperty("scores")) {
+          setUserCountryScore(res.data.data);
+          setUserScore(res.data.data.scores[gameMode] ?? []);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -136,10 +138,14 @@ const Country = () => {
 
     if (isGameMode(gameModeData)) {
       setScores(gameModeData.top_scores ?? []);
+    } else {
+      setScores([]);
     }
     setGameMode(gameMode);
-    if (user && userCountryScore) {
+    if (user && userCountryScore && gameModeData !== undefined) {
       setUserScore(userCountryScore.scores[Number(gameMode)] ?? []);
+    } else {
+      setUserScore(null);
     }
   };
 

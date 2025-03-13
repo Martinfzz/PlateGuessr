@@ -14,41 +14,64 @@ const ProgressBar: FC<ProgressBarProps> = ({
   showEndGameModal,
   setFinalScore,
 }) => {
-  const [time, setTime] = useState(120);
+  const duration = 120;
+  const [time, setTime] = useState(duration);
   const resetTime = useRef(false);
+  const timeoutId = useRef<number>();
 
   useEffect(() => {
-    const timeoutId = setInterval(() => setTime(time - 0.01), 10);
+    const startTime = performance.now();
+    let lastTimestamp = startTime;
 
-    if (time <= 0 && !resetTime.current) {
-      clearInterval(timeoutId);
-      setEndGame();
-      resetTime.current = true;
-    }
+    const updateTimer = (timestamp: number) => {
+      const deltaTime = (timestamp - lastTimestamp) / 1000;
+      lastTimestamp = timestamp;
 
-    setFinalScore(time);
-    return () => clearInterval(timeoutId);
-  }, [time, setEndGame, setFinalScore]);
+      setTime((prevTime) => {
+        if (prevTime <= 0 && !resetTime.current) {
+          setEndGame();
+          setTime(duration);
+          resetTime.current = true;
+          return 0;
+        }
+        const newTime = prevTime - deltaTime;
+        setFinalScore(newTime);
+        return Math.max(newTime, 0);
+      });
+
+      if (!resetTime.current) {
+        timeoutId.current = requestAnimationFrame(updateTimer);
+      }
+    };
+
+    timeoutId.current = requestAnimationFrame(updateTimer);
+
+    return () => cancelAnimationFrame(timeoutId.current as number);
+  }, [setEndGame, setFinalScore]);
 
   useEffect(() => {
-    setTime(Math.min(time + addedTime, 120));
+    setTime(Math.min(time + addedTime, duration));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addedTime]);
 
   useEffect(() => {
     if (!showEndGameModal && resetTime) {
-      setTime(120);
+      setTime(duration);
       resetTime.current = false;
     }
-  }, [showEndGameModal, resetTime]);
+  }, [showEndGameModal, resetTime, duration]);
 
   return (
-    <MDBProgress className="round-progress-bar" height="5">
+    <MDBProgress
+      data-testid="progress-bar"
+      className="round-progress-bar"
+      height="5"
+    >
       <MDBProgressBar
         bgColor="success"
         striped
         animated
-        width={(time / 120) * 100}
+        width={Math.ceil((time / duration) * 100)}
         valuemin={0}
         valuemax={100}
       />

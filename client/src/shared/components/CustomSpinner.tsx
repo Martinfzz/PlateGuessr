@@ -7,7 +7,10 @@ interface Props {
 
 const CustomSpinner: FC<Props> = ({ center }) => {
   return (
-    <div className={`${center && "text-center"} m-2`}>
+    <div
+      className={`${center && "text-center"} m-2`}
+      data-testid="custom-spinner"
+    >
       <Spinner animation="border" variant="danger" role="status" />
     </div>
   );

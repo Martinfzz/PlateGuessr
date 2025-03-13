@@ -8,12 +8,15 @@ const ThemeToggleButton = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <div className="d-flex align-items-center me-3 theme-toggle">
+    <div
+      data-testid="theme-toggle-button"
+      className="d-flex align-items-center me-3 theme-toggle"
+    >
       <MDBBtn onClick={() => toggleTheme()} className={theme}>
         {theme === "dark-theme" ? (
-          <FontAwesomeIcon icon={faMoon} />
+          <FontAwesomeIcon icon={faMoon} data-testid="theme-icon" />
         ) : (
-          <FontAwesomeIcon icon={faSun} />
+          <FontAwesomeIcon icon={faSun} data-testid="theme-icon" />
         )}
       </MDBBtn>
     </div>

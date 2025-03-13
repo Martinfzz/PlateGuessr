@@ -21,9 +21,13 @@ const CountriesLayer = () => {
   );
 
   return (
-    <Source type="geojson" data={countries}>
-      <Layer {...countriesLayer} />
-      <Layer {...highlightLayer} filter={filter} />
+    <Source type="geojson" data={countries} data-testid="countries-source">
+      <Layer {...countriesLayer} data-testid="countries-layer" />
+      <Layer
+        {...highlightLayer}
+        filter={filter}
+        data-testid="highlight-layer"
+      />
     </Source>
   );
 };

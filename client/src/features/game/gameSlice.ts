@@ -67,7 +67,11 @@ const gameSlice = createSlice({
       const { payload } = action;
       Object.keys(payload).forEach((key) => {
         if (key in state.markers) {
-          (state.markers as any)[key] = [payload[key]];
+          if (key === "user" || key === "answer") {
+            (state.markers as any)[key] = [payload[key]];
+          } else {
+            (state.markers as any)[key] = payload[key];
+          }
         }
       });
     },

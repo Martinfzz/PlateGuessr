@@ -49,7 +49,7 @@ const GameModal: FC<GameModalProps> = ({
   });
 
   return (
-    <>
+    <div data-testid="game-modal">
       <Formik
         initialValues={{
           toggleColors: true,
@@ -96,6 +96,7 @@ const GameModal: FC<GameModalProps> = ({
                               <Link
                                 to={`/country/${popupInfo.countryId}`}
                                 className="stats-link"
+                                data-testid="stats-link-id"
                               >
                                 <FontAwesomeIcon icon={faChartSimple} />
                               </Link>
@@ -196,7 +197,7 @@ const GameModal: FC<GameModalProps> = ({
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 };
 

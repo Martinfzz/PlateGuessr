@@ -7,7 +7,6 @@ import InteractiveMap, {
   ViewStateChangeEvent,
   MapRef,
 } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setViewport } from "../../features/map/mapSlice";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
@@ -63,9 +62,13 @@ const MapComponent: FC<MapComponentProps> = ({
     <InteractiveMap
       mapboxAccessToken="pk.eyJ1IjoibWFydGluZnp6IiwiYSI6ImNtMnl0eWltdDA0NnUyd3FzNWN5aDQ5OTkifQ.ZtRxBpmpMa9pxB02NZeFgQ"
       initialViewState={{
-        longitude: longitude || 2,
-        latitude: latitude || 46,
-        zoom: zoom || 5,
+        longitude: parseFloat(
+          localStorage.getItem("lng") ?? longitude.toString()
+        ),
+        latitude: parseFloat(
+          localStorage.getItem("lat") ?? latitude.toString()
+        ),
+        zoom: parseFloat(localStorage.getItem("zoom") ?? zoom.toString()),
       }}
       style={{ width: "100vw", height: "100vh" }}
       mapStyle={
@@ -81,6 +84,7 @@ const MapComponent: FC<MapComponentProps> = ({
       onClick={(e) => handleClick(e, mapRef)}
       ref={mapRefCallback}
       cursor={cursor}
+      data-testid="map-component"
     >
       <FullscreenControl position="bottom-right" />
       <NavigationControl position="bottom-right" />

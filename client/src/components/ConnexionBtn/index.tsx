@@ -7,7 +7,7 @@ const ConnexionBtn = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <div data-testid="connexion-btn">
       <Link to={"/login"}>
         <MDBBtn rounded className=" me-3 btn-login" type="submit" color="light">
           {t("app_common.login")}
@@ -18,7 +18,7 @@ const ConnexionBtn = () => {
           {t("app_common.signup")}
         </MDBBtn>
       </Link>
-    </>
+    </div>
   );
 };
 
