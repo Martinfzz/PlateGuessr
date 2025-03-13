@@ -17,6 +17,7 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-expressions": "warn",
+      "react/display-name": "warn",
     },
   },
 ];
