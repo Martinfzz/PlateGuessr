@@ -88,7 +88,7 @@ export const useGame = () => {
 
   // Select random names from the current country
   const selectRandomElements = async (n: number) => {
-    let elements = [];
+    const elements = [];
     if (n >= selectedCountryNames.current.length) {
       return selectedCountryNames.current;
     }

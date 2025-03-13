@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "../App";
 import { ThemeContext } from "../Theme";
 
-jest.mock("../components/Maps/MainLayout", () => () => (
+jest.mock("../components/Maps/MainLayout", () => (
   <div>MainLayout Component</div>
 ));
 

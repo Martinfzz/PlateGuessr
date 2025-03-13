@@ -25,6 +25,7 @@ jest.mock("react-map-gl", () => ({
     onClose,
   }: {
     children: React.ReactNode;
+    onClose: () => void;
     [key: string]: any;
   }) => (
     <div data-testid="popup" onClick={onClose}>

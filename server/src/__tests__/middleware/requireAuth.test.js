@@ -1,6 +1,5 @@
 const requireAuth = require("../../middleware/requireAuth");
 const jwt = require("jsonwebtoken");
-const User = require("../../models/userModel");
 
 jest.mock("jsonwebtoken");
 jest.mock("../../models/userModel");

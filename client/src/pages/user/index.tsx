@@ -28,12 +28,15 @@ type Data = {
   email: string;
   password: string;
   username: string;
-  country: Record<string, any>;
+  country: Record<
+    string,
+    { country_id: string; scores: Record<string, Score> }
+  >;
 };
 
 const User = () => {
   const { t } = useTranslation();
-  let params = useParams();
+  const params = useParams();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState<string>(loadingTypes.none);
@@ -52,13 +55,15 @@ const User = () => {
       const filteredCountry = countries.find(
         (e) => e.id === Number(value.country_id)
       );
-      value.scores[gameMode] &&
+
+      if (filteredCountry) {
         countryScores.push({
           country_id: value.country_id,
           country_name: filteredCountry.name,
           country_name_lang: t(`countries.names.${filteredCountry.name}`),
           ...value.scores[gameMode],
         });
+      }
     }
     setScores(countryScores);
   };
@@ -81,7 +86,6 @@ const User = () => {
   useEffect(() => {
     getUser();
     getCountriesInfos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getCountriesInfos = async () => {
@@ -99,7 +103,6 @@ const User = () => {
     if (data !== null && Object.keys(countries).length !== 0) {
       getScores("1");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, countries]);
 
   const handleOnGameModeClick = (gameMode: string) => {
@@ -129,7 +132,7 @@ const User = () => {
 
   const onGlobalFilterChange = (e: any) => {
     const value = e.target.value;
-    let _filters = { ...filters };
+    const _filters = { ...filters };
 
     _filters["country_name_lang"].value = value;
 

@@ -36,7 +36,6 @@ const AccountForm = () => {
     } else if (success) {
       notifySuccess(t("notifications.profile_updated"));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, success]);
 
   const validationSchema = Yup.object().shape({
