@@ -39,6 +39,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install packages
+        run: npm install
+
       - name: Lint code for consistent style
         run: npm run lint
 
