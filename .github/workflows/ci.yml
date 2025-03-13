@@ -68,14 +68,11 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install packages
-        run: npm install
-
       - name: Run tests server
-        run: cd server && npm test
+        run: cd server && npm install && npm test
 
       - name: Run tests client
-        run: cd client && npm test
+        run: cd client && npm install && npm test
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
