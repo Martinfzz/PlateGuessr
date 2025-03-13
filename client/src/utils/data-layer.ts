@@ -1,7 +1,6 @@
 import type { FillLayer } from "react-map-gl";
-import { GameOptions } from "shared.types";
 
-export const dataLayer = (gameOptions: GameOptions) => {
+export const dataLayer = (gameOptions: any) => {
   const layer: FillLayer = {
     id: "country",
     type: "fill",

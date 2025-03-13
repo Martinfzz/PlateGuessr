@@ -3,16 +3,30 @@ import { render, screen } from "@testing-library/react";
 import AppRoutes from "../../routes/AppRoutes";
 import { MemoryRouter } from "react-router-dom";
 
-jest.mock("../../App", () => <div>App Component</div>);
-jest.mock("../../pages/error404", () => <div>Error 404 Component</div>);
-jest.mock("../../pages/login", () => <div>LogIn Component</div>);
-jest.mock("../../pages/signup", () => <div>SignUp Component</div>);
-jest.mock("../../pages/resetPassword", () => (
+jest.mock("../../App", () => {
+  return () => <div>App Component</div>;
+});
+jest.mock("../../pages/error404", () => {
+  return () => <div>Error 404 Component</div>;
+});
+jest.mock("../../pages/login", () => {
+  return () => <div>LogIn Component</div>;
+});
+jest.mock("../../pages/signup", () => {
+  return () => <div>SignUp Component</div>;
+});
+jest.mock("../../pages/resetPassword", () => () => (
   <div>ResetPassword Component</div>
 ));
-jest.mock("../../pages/account", () => <div>Account Component</div>);
-jest.mock("../../pages/country", () => <div>Country Component</div>);
-jest.mock("../../pages/user", () => <div>User Component</div>);
+jest.mock("../../pages/account", () => {
+  return () => <div>Account Component</div>;
+});
+jest.mock("../../pages/country", () => {
+  return () => <div>Country Component</div>;
+});
+jest.mock("../../pages/user", () => {
+  return () => <div>User Component</div>;
+});
 
 describe("AppRoutes Component", () => {
   test("renders App component", () => {
