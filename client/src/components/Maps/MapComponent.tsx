@@ -55,7 +55,6 @@ const MapComponent: FC<MapComponentProps> = ({
   );
 
   const handleViewportChange = (e: ViewStateChangeEvent) => {
-    console.log(e.viewState);
     dispatch(setViewport(e.viewState));
   };
 

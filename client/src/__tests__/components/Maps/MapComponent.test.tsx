@@ -17,7 +17,6 @@ jest.mock("react-map-gl", () => ({
   default: ({ children, onMove, ...props }: any) => {
     const handleMove = (e: any) => {
       if (onMove) {
-        console.log("props", onMove);
         onMove({
           viewState: { longitude: -122.42, latitude: 37.78, zoom: 10 },
         });

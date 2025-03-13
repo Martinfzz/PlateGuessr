@@ -19,8 +19,6 @@ const CountryLayer = () => {
     (state: GameState) => state.game
   );
 
-  console.log(markers);
-
   return (
     <>
       <Source type="geojson" data={data} data-testid="countries-source">

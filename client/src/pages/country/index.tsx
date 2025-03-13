@@ -88,6 +88,7 @@ const Country = () => {
 
   const getCountry = async () => {
     setLoading(loadingTypes.index);
+    console.log(params.id);
     await API.get(`/api/country/${params.id}`)
       .then((res) => {
         setData(res.data.data);

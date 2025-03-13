@@ -42,7 +42,6 @@ describe("ThemeProvider", () => {
     expect(screen.getByText("light-theme")).toBeInTheDocument();
 
     const button = screen.getByRole("button", { name: /Toggle Theme/i });
-    console.log("idsjmdslfsj<s");
     fireEvent.click(button);
 
     expect(localStorage.getItem("theme")).toBe("dark-theme");

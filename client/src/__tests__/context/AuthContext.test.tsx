@@ -146,7 +146,6 @@ describe("AuthContextProvider", () => {
         );
       }
       const { user } = context;
-      console.log(user);
       return <div>{user ? JSON.stringify(user) : "null"}</div>;
     };
 
