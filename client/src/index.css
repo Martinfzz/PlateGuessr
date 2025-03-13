@@ -7,7 +7,7 @@
 .light-theme {
   --blue: #adcbff;
   --yellow-dark: #feb420;
-  --red: #e3655b;
+  --mdb-warning-rgb: 254, 193, 72;
   --red-dark: #de4a3f;
   --green: #90e39a;
   --faded-white: #f0f4f8;
