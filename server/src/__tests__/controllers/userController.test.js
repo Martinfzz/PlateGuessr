@@ -174,6 +174,7 @@ describe("User Controller Tests", () => {
         email: "test@example.com",
         token: "testToken",
         username: "newusername",
+        id: "testUserId",
       });
       expect(User.update).toHaveBeenCalledWith(
         "testUserId",
