@@ -51,7 +51,6 @@ const ProgressBar: FC<ProgressBarProps> = ({
 
   useEffect(() => {
     setTime(Math.min(time + addedTime, duration));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addedTime]);
 
   useEffect(() => {

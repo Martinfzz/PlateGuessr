@@ -11,6 +11,7 @@
   "author": "Martinfzz",
   "license": "ISC",
   "devDependencies": {
+    "@types/validator": "^13.12.2",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^10.1.2",
     "nodemon": "^3.1.7",

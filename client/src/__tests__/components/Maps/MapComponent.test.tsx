@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import MapComponent from "../../../components/Maps/MapComponent";
@@ -15,7 +15,7 @@ jest.mock("mapbox-gl", () => ({
 jest.mock("react-map-gl", () => ({
   __esModule: true,
   default: ({ children, onMove, ...props }: any) => {
-    const handleMove = (e: any) => {
+    const handleMove = () => {
       if (onMove) {
         onMove({
           viewState: { longitude: -122.42, latitude: 37.78, zoom: 10 },
@@ -35,14 +35,14 @@ jest.mock("react-map-gl", () => ({
 }));
 
 describe("MapComponent", () => {
-  let store: any = mockStore({
+  const store: any = mockStore({
     mapViewport: {
       longitude: 0,
       latitude: 0,
       zoom: 2,
     },
   });
-  let mapRef = {
+  const mapRef = {
     current: {
       getMap: jest.fn(),
     },

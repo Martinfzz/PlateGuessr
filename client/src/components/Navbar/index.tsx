@@ -54,7 +54,7 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
             <Col className="d-flex justify-content-center align-items-center">
               <MDBBadge
                 className="page-badge d-flex justify-content-center align-items-center text-boldgray"
-                color=""
+                color="warning"
               >
                 {page}
               </MDBBadge>

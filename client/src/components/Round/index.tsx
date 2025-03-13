@@ -78,7 +78,7 @@ const Round: FC<RoundProps> = ({
         <h4 className="d-flex justify-content-center">
           <MDBBadge
             className="round-name-badge ms-2 d-flex align-middle"
-            color=""
+            color="warning"
           >
             {gameOptions.gameMode !== "5"
               ? selectedElement.id
@@ -88,7 +88,7 @@ const Round: FC<RoundProps> = ({
       </Col>
 
       <h4 className="d-flex justify-content-end">
-        <MDBBadge className="round-score-badge ms-2" color="">
+        <MDBBadge className="round-score-badge ms-2" color="warning">
           <Row>
             <Col>
               <Col className="mb-2 round-text text-boldgray">

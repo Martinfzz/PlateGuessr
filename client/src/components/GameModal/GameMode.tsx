@@ -52,7 +52,6 @@ const GameMode: FC<GameModeProps> = ({
       default:
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.gameMode]);
 
   return (

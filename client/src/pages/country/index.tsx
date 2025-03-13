@@ -54,7 +54,7 @@ type Data = {
 
 const Country = () => {
   const { t } = useTranslation();
-  let params = useParams();
+  const params = useParams();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const { user } = useAuthContext();
@@ -74,7 +74,7 @@ const Country = () => {
     setLoading(loadingTypes.index);
     await API.get(`/api/user/country/${data?._id}?token=${user?.token}`)
       .then((res) => {
-        if (res.data.data.hasOwnProperty("scores")) {
+        if (Object.prototype.hasOwnProperty.call(res.data.data, "scores")) {
           setUserCountryScore(res.data.data);
           setUserScore(res.data.data.scores[gameMode] ?? []);
         }
@@ -106,7 +106,6 @@ const Country = () => {
 
   useEffect(() => {
     getCountry();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getCountryInfos = async () => {
@@ -126,7 +125,6 @@ const Country = () => {
       if (user) getUserCountryScore();
       getCountryInfos();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const isGameMode = (data: any): data is GameMode => {
