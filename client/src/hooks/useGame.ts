@@ -152,7 +152,9 @@ export const useGame = () => {
 
   const setEndGame = () => {
     clearTimeout(newRoundTimeout.current);
-    score.current.after = Math.floor(score.current.after + score.current.time);
+    score.current.after = Math.floor(
+      score.current.after + (score.current.time < 0 ? 0 : score.current.time)
+    );
     setShowEndGameModal(true);
   };
 
@@ -174,7 +176,8 @@ export const useGame = () => {
         score.current.before = score.current.after;
         score.current.after = score.current.after + guessesCount.current * 1000;
         goodGuess.current = true;
-        addedTime.current = guessesCount.current * 5;
+        // addedTime.current = guessesCount.current * 4;
+        addedTime.current = 10;
         clearTimeout(newRoundTimeout.current);
       } else {
         dispatch(setMarkers({ color: "#E3655B" }));
