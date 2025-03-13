@@ -88,7 +88,7 @@ const Round: FC<RoundProps> = ({
       </Col>
 
       <h4 className="d-flex justify-content-end">
-        <MDBBadge className="round-score-badge ms-2" color="">
+        <MDBBadge className="round-score-badge ms-2" color="warning">
           <Row>
             <Col>
               <Col className="mb-2 round-text text-boldgray">
