@@ -15,23 +15,28 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { ThemeProvider } from "./Theme";
 import { PrimeReactProvider } from "primereact/api";
 import { BrowserRouter } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <PrimeReactProvider>
-        <ThemeProvider>
-          <Provider store={store}>
-            <ToastContainer icon={false} limit={3} />
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </Provider>
-        </ThemeProvider>
-      </PrimeReactProvider>
-    </AuthContextProvider>
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <AuthContextProvider>
+        <PrimeReactProvider>
+          <ThemeProvider>
+            <Provider store={store}>
+              <ToastContainer icon={false} limit={3} />
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </Provider>
+          </ThemeProvider>
+        </PrimeReactProvider>
+      </AuthContextProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );

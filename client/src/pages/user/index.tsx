@@ -86,7 +86,7 @@ const User = () => {
   useEffect(() => {
     getUser();
     getCountriesInfos();
-  }, []);
+  }, [params.id]);
 
   const getCountriesInfos = async () => {
     setLoading(loadingTypes.index);

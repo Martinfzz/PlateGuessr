@@ -8,6 +8,11 @@ const {
   deleteUser,
   userCountryScore,
   getUser,
+  googleAuth,
+  verifyEmail,
+  resendVerificationEmail,
+  resetPassword,
+  setPassword,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -29,5 +34,20 @@ router.get("/country/:id", userCountryScore);
 
 // user route
 router.get("/:id", getUser);
+
+// verify email route
+router.post("/verify-email", verifyEmail);
+
+// resend verification email route
+router.post("/resend-verification-email", resendVerificationEmail);
+
+// reset password route
+router.post("/reset-password", resetPassword);
+
+// set password route
+router.post("/set-password", setPassword);
+
+// login with Google
+router.post("/auth/google", googleAuth);
 
 module.exports = router;

@@ -80,52 +80,59 @@ const AccountForm = () => {
                 className="mb-4"
               />
 
-              <div className="divider-container text-muted my-4">
-                <div className="divider-border" />
-                <span className="divider-content">
-                  {t("pages.account.change_password")}
-                </span>
-                <div className="divider-border" />
-              </div>
+              {user.authSource === "self" && (
+                <>
+                  <div className="divider-container text-muted my-4">
+                    <div className="divider-border" />
+                    <span className="divider-content">
+                      {t("pages.account.change_password")}
+                    </span>
+                    <div className="divider-border" />
+                  </div>
 
-              <MDBInput
-                label={t("pages.account.current_password")}
-                id="current-password"
-                type="password"
-                className="mt-4"
-                placeholder=""
-                contrast={theme === "dark-theme"}
-                onChange={(e) =>
-                  formikProps.setFieldValue("currentPassword", e.target.value)
-                }
-              />
-              <ErrorMessage
-                component={ValidationsAlerts as ComponentType}
-                name="currentPassword"
-                className="mb-4 text-align-start"
-              />
-              <Row>
-                <Col>
                   <MDBInput
-                    label={t("pages.account.new_password")}
-                    id="password"
+                    label={t("pages.account.current_password")}
+                    id="current-password"
                     type="password"
                     className="mt-4"
                     placeholder=""
                     contrast={theme === "dark-theme"}
                     onChange={(e) =>
-                      formikProps.setFieldValue("password", e.target.value)
+                      formikProps.setFieldValue(
+                        "currentPassword",
+                        e.target.value
+                      )
                     }
                   />
-                  {formikProps.values.password && (
-                    <ErrorMessage
-                      component={ValidationsAlerts as ComponentType}
-                      name="password"
-                      className="mb-4 text-align-start"
-                    />
-                  )}
-                </Col>
-              </Row>
+                  <ErrorMessage
+                    component={ValidationsAlerts as ComponentType}
+                    name="currentPassword"
+                    className="mb-4 text-align-start"
+                  />
+                  <Row>
+                    <Col>
+                      <MDBInput
+                        label={t("pages.account.new_password")}
+                        id="password"
+                        type="password"
+                        className="mt-4"
+                        placeholder=""
+                        contrast={theme === "dark-theme"}
+                        onChange={(e) =>
+                          formikProps.setFieldValue("password", e.target.value)
+                        }
+                      />
+                      {formikProps.values.password && (
+                        <ErrorMessage
+                          component={ValidationsAlerts as ComponentType}
+                          name="password"
+                          className="mb-4 text-align-start"
+                        />
+                      )}
+                    </Col>
+                  </Row>
+                </>
+              )}
 
               <div className="d-flex justify-content-center text-center mt-4">
                 <MDBBtn

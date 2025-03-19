@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 import fetchMock from "jest-fetch-mock";
 import React from "react";
-import { AuthActionType } from "../../shared.types";
+import { AuthActionType, User } from "../../shared.types";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -20,7 +20,9 @@ describe("useDeleteUser", () => {
     username: "testuser",
     email: "test@example.com",
     token: "testtoken",
-  };
+    isVerified: true,
+    authSource: "self",
+  } as User;
 
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);

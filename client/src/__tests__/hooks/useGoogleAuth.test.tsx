@@ -1,18 +1,25 @@
 import { renderHook, act } from "@testing-library/react";
-import { useLogin } from "../../hooks/useLogin";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
 import fetchMock from "jest-fetch-mock";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { AuthActionType } from "../../shared.types";
 
+jest.mock("react-toastify", () => ({
+  toast: {
+    error: jest.fn(),
+  },
+}));
+
 jest.mock("../../hooks/useAuthContext");
+
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: jest.fn(),
 }));
-fetchMock.enableMocks();
 
-describe("useLogin", () => {
+describe("useGoogleAuth", () => {
   const mockDispatch = jest.fn();
   const mockNavigate = jest.fn();
   Storage.prototype.setItem = jest.fn();
@@ -30,17 +37,17 @@ describe("useLogin", () => {
     fetchMock.resetMocks();
   });
 
-  test("should login successfully", async () => {
+  test("should authenticate with Google successfully", async () => {
     fetchMock.mockResponseOnce(JSON.stringify(user));
 
-    const { result } = renderHook(() => useLogin(), { wrapper: Router });
+    const { result } = renderHook(() => useGoogleAuth(), { wrapper: Router });
 
     await act(async () => {
-      await result.current.login("test@example.com", "password123");
+      await result.current.googleAuth("code123");
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      "/api/user/auth/google",
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -52,29 +59,40 @@ describe("useLogin", () => {
       payload: user,
     });
     expect(mockNavigate).toHaveBeenCalledWith("/");
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.error).toBe(null);
   });
 
-  test("should handle login error", async () => {
+  test("should handle google authentication error", async () => {
     const errorMessage = "Invalid credentials";
-    const email = "test@example.com";
-    fetchMock.mockResponseOnce(JSON.stringify({ error: errorMessage, email }), {
+    fetchMock.mockResponseOnce(JSON.stringify({ error: errorMessage }), {
       status: 400,
     });
 
-    const { result } = renderHook(() => useLogin(), { wrapper: Router });
+    const { result } = renderHook(() => useGoogleAuth(), { wrapper: Router });
 
     await act(async () => {
-      await result.current.login("test@example.com", "wrongpassword");
+      await result.current.googleAuth("code123");
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      "/api/user/auth/google",
       expect.any(Object)
     );
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.error).toBe(errorMessage);
-    expect(result.current.email).toBe(email);
+    expect(localStorage.setItem).not.toHaveBeenCalled();
+    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(toast.error).toHaveBeenCalledWith(
+      "notifications.something_went_wrong",
+      {
+        position: "top-right",
+        autoClose: 6000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        className: "red",
+      }
+    );
   });
 });

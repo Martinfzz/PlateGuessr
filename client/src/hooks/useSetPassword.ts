@@ -3,42 +3,43 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { AuthActionType } from "../shared.types";
 
-export const useLogin = () => {
+export const useSetPassword = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+  const [success] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
-  const login = async (email: string, password: string) => {
+  const setPassword = async (
+    password: string,
+    passwordConfirmation: string,
+    token: string
+  ) => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch("/api/user/login", {
+    const response = await fetch("/api/user/set-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ password, passwordConfirmation, token }),
     });
     const json = await response.json();
 
     if (!response.ok) {
       setIsLoading(false);
       setError(json.error);
-      setEmail(json.email);
     }
     if (response.ok) {
-      // save the user to local storage
       localStorage.setItem("user", JSON.stringify(json));
 
       // update the auth context
       dispatch({ type: AuthActionType.LOGIN, payload: json });
 
-      // update loading state
       setIsLoading(false);
 
       navigate("/");
     }
   };
 
-  return { login, isLoading, error, email };
+  return { setPassword, error, isLoading, success };
 };

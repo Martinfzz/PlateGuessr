@@ -44,7 +44,9 @@ describe("EndGameModal Component", () => {
     username: "test",
     email: "test@example.com",
     token: "token123",
-  };
+    isVerified: true,
+    authSource: "self",
+  } as User;
 
   const setup = (
     userState: User | null = user,

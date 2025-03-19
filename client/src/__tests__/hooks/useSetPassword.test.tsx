@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { useLogin } from "../../hooks/useLogin";
+import { useSetPassword } from "../../hooks/useSetPassword";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import fetchMock from "jest-fetch-mock";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ jest.mock("react-router-dom", () => ({
 }));
 fetchMock.enableMocks();
 
-describe("useLogin", () => {
+describe("useSetPassword", () => {
   const mockDispatch = jest.fn();
   const mockNavigate = jest.fn();
   Storage.prototype.setItem = jest.fn();
@@ -30,17 +30,21 @@ describe("useLogin", () => {
     fetchMock.resetMocks();
   });
 
-  test("should login successfully", async () => {
+  test("should setPassword successfully", async () => {
     fetchMock.mockResponseOnce(JSON.stringify(user));
 
-    const { result } = renderHook(() => useLogin(), { wrapper: Router });
+    const { result } = renderHook(() => useSetPassword(), { wrapper: Router });
 
     await act(async () => {
-      await result.current.login("test@example.com", "password123");
+      await result.current.setPassword(
+        "test@example.com",
+        "password123",
+        "token123"
+      );
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      "/api/user/set-password",
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -56,25 +60,27 @@ describe("useLogin", () => {
     expect(result.current.error).toBe(null);
   });
 
-  test("should handle login error", async () => {
+  test("should handle setPassword error", async () => {
     const errorMessage = "Invalid credentials";
-    const email = "test@example.com";
-    fetchMock.mockResponseOnce(JSON.stringify({ error: errorMessage, email }), {
+    fetchMock.mockResponseOnce(JSON.stringify({ error: errorMessage }), {
       status: 400,
     });
 
-    const { result } = renderHook(() => useLogin(), { wrapper: Router });
+    const { result } = renderHook(() => useSetPassword(), { wrapper: Router });
 
     await act(async () => {
-      await result.current.login("test@example.com", "wrongpassword");
+      await result.current.setPassword(
+        "test@example.com",
+        "wrongpassword",
+        "token123"
+      );
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      "/api/user/set-password",
       expect.any(Object)
     );
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBe(errorMessage);
-    expect(result.current.email).toBe(email);
   });
 });

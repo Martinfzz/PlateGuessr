@@ -60,6 +60,7 @@ const EmailForm = () => {
               onChange={(e) =>
                 formikProps.setFieldValue("email", e.target.value)
               }
+              tabIndex={1}
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}

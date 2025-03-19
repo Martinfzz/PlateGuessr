@@ -1,13 +1,26 @@
 const User = require("../models/userModel");
 const Country = require("../models/countryModel");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const { sendVerificationMail } = require("../utils/sendVerificationMail");
+const { sendResetPasswordMail } = require("../utils/sendResetPasswordMail");
+
+const oAuth2Client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  "postmessage"
+);
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
 const decodeToken = (token) => {
-  return jwt.verify(token, process.env.SECRET);
+  try {
+    return jwt.verify(token, process.env.SECRET);
+  } catch {
+    throw new Error("errors.invalid_token");
+  }
 };
 
 // login a user
@@ -20,11 +33,16 @@ const loginUser = async (req, res) => {
     // create a token
     const token = createToken(user._id);
 
-    res
-      .status(200)
-      .json({ email, token, username: user.username, id: user._id });
+    res.status(200).json({
+      email,
+      token,
+      username: user.username,
+      id: user._id,
+      authSource: user.authSource,
+      isVerified: user.isVerified,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message, email });
   }
 };
 
@@ -34,6 +52,8 @@ const signupUser = async (req, res) => {
 
   try {
     const user = await User.signup(email, password, passwordConfirmation);
+
+    sendVerificationMail(user);
 
     // create a token
     const token = createToken(user._id);
@@ -85,14 +105,14 @@ const updateUser = async (req, res) => {
     // create a token
     const token = createToken(user._id);
 
-    res
-      .status(200)
-      .json({
-        email: user.email,
-        token,
-        username: user.username,
-        id: user._id,
-      });
+    res.status(200).json({
+      email: user.email,
+      token,
+      username: user.username,
+      id: user._id,
+      authSource: user.authSource,
+      isVerified: user.isVerified,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -164,6 +184,125 @@ const getUser = async (req, res) => {
   }
 };
 
+const verifyEmail = async (req, res) => {
+  const { emailToken } = req.body;
+
+  try {
+    const user = await User.verifyEmail(emailToken);
+
+    const token = createToken(user._id);
+
+    res.status(200).json({
+      email: user.email,
+      token,
+      username: user.username,
+      id: user._id,
+      authSource: user.authSource,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: "errors.user_not_found" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ error: "errors.user_already_verified" });
+    }
+
+    sendVerificationMail(user);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const token = createToken(user._id);
+      sendResetPasswordMail(user, token);
+    }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const setPassword = async (req, res) => {
+  const { password, passwordConfirmation, token } = req.body;
+
+  try {
+    const decodedToken = decodeToken(token);
+
+    const user = await User.setPassword(
+      decodedToken._id,
+      password,
+      passwordConfirmation
+    );
+
+    res.status(200).json({
+      email: user.email,
+      token,
+      username: user.username,
+      id: user._id,
+      authSource: user.authSource,
+      isVerified: user.isVerified,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const googleAuth = async (req, res) => {
+  try {
+    // Verify the ID token with Google's API
+    const { tokens } = await oAuth2Client.getToken(req.body.code);
+    const ticket = await oAuth2Client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, given_name, family_name } = payload;
+
+    // Check if the user already exists in the database
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.googleAuth(email, given_name, family_name);
+    }
+
+    const token = createToken(user._id);
+
+    res.status(200).json({
+      email,
+      token,
+      username: user.username,
+      id: user._id,
+      authSource: user.authSource,
+      isVerified: user.isVerified,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   signupUser,
   loginUser,
@@ -171,4 +310,9 @@ module.exports = {
   deleteUser,
   userCountryScore,
   getUser,
+  googleAuth,
+  verifyEmail,
+  resendVerificationEmail,
+  resetPassword,
+  setPassword,
 };

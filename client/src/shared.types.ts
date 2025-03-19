@@ -50,4 +50,6 @@ export interface User {
   username: string;
   email: string;
   token: string;
+  isVerified: boolean;
+  authSource: "self" | "google";
 }
