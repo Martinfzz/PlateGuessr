@@ -35,10 +35,20 @@
       "google": "Continue with Google",
       "apple": "Continue with Apple",
       "facebook": "Continue with Facebook",
-      "create_account": "Create an account"
+      "create_account": "Create an account",
+      "resend_verification_email_message": "Resend verification email"
     },
     "reset_password": {
-      "heading": "Reset password"
+      "heading": "Reset password",
+      "success": {
+        "title": "You have a message!",
+        "message": "We've sent you an email with a link to reset your password. Please check your inbox."
+      }
+    },
+    "set_password": {
+      "heading": "Set password",
+      "new_password": "New password",
+      "repeat_password": "Repeat password"
     },
     "signup": {
       "password_confirmation": "Password confirmation",
@@ -104,7 +114,8 @@
   },
   "notifications": {
     "something_went_wrong": "Something went wrong",
-    "profile_updated": "Profile updated"
+    "profile_updated": "Profile updated",
+    "profile_verified": "Profile verified"
   },
   "validations": {
     "required": "Required",
@@ -116,6 +127,15 @@
     "signup_not_allowed": "Sign up not allowed",
     "incorrect_password": "Incorrect password",
     "incorrect_email": "Incorrect email",
-    "username_taken": "Username already taken"
+    "username_taken": "Username already taken",
+    "email_not_verified": "Please verify your email before logging in.",
+    "email_sent": "A verification email has been sent to your inbox. Please check your email to verify your account."
+  },
+  "errors": {
+    "user_not_found": "User not found",
+    "invalid_token": "Invalid token",
+    "email_token_not_found": "Email token not found",
+    "email_verification_failed": "Email verification failed, invalid token",
+    "user_already_verified": "User already verified"
   }
 }

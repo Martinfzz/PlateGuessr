@@ -35,10 +35,20 @@
       "google": "Continuer avec Google",
       "apple": "Continuer avec Apple",
       "facebook": "Continuer avec Facebook",
-      "create_account": "Créer un compte"
+      "create_account": "Créer un compte",
+      "resend_verification_email_message": "Resend verification email"
     },
     "reset_password": {
-      "heading": "Réinitialiser le mot de passe"
+      "heading": "Réinitialiser le mot de passe",
+      "success": {
+        "title": "Vous avez un message !",
+        "message": "Nous venons de vous envoyer un lien avec des instructions expliquant comment réinitialiser votre mot de passe."
+      }
+    },
+    "set_password": {
+      "heading": "Définir le mot de passe",
+      "new_password": "Nouveau mot de passe",
+      "repeat_password": "Répétez le mot de passe"
     },
     "signup": {
       "password_confirmation": "Confirmation du mot de passe",
@@ -104,7 +114,9 @@
   },
   "notifications": {
     "something_went_wrong": "Quelque chose s'est mal passé",
-    "profile_updated": "Profil mis à jour "
+    "profile_updated": "Profil mis à jour",
+    "profile_verified": "Profil vérifié",
+    "email_sent": "Un email de vérification a été envoyé à votre adresse email. Merci de vérifier votre boîte de réception."
   },
   "validations": {
     "required": "Requis",
@@ -116,6 +128,14 @@
     "signup_not_allowed": "L'inscription n'est pas autorisée",
     "incorrect_password": "Mot de passe incorrect",
     "incorrect_email": "Email incorrect",
-    "username_taken": "Nom d'utilisateur déjà pris"
+    "username_taken": "Nom d'utilisateur déjà pris",
+    "email_not_verified": "Veuillez vérifier votre email pour continuer"
+  },
+  "errors": {
+    "user_not_found": "Utilisateur non trouvé",
+    "invalid_token": "Token invalide",
+    "email_token_not_found": "Token email non trouvé",
+    "email_verification_failed": "Échec de la vérification de l'email, token invalide",
+    "user_already_verified": "Utilisateur déjà vérifié"
   }
 }
