@@ -2,12 +2,15 @@ import React, { useContext } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { AuthContext, AuthContextProvider } from "../../context/AuthContext";
 import { AuthActionType, User } from "../../shared.types";
+import { authReducer } from "../../context/AuthContext";
 
 const mockUser: User = {
   id: "1",
   username: "testuser",
   email: "test@example.com",
   token: "testtoken",
+  isVerified: true,
+  authSource: "self",
 };
 
 describe("AuthContextProvider", () => {
@@ -155,6 +158,101 @@ describe("AuthContextProvider", () => {
       </AuthContextProvider>
     );
 
-    expect(screen.getByText("{}")).toBeInTheDocument();
+    expect(screen.getByText("null")).toBeInTheDocument();
+  });
+
+  describe("authReducer", () => {
+    const initialState = { user: null };
+
+    test("should handle LOGIN action", () => {
+      const user: User = {
+        id: "1",
+        username: "testuser",
+        email: "test@example.com",
+        token: "test",
+        isVerified: true,
+        authSource: "self",
+      };
+      const action = { type: AuthActionType.LOGIN, payload: user };
+      const newState = authReducer(initialState, action);
+
+      expect(newState).toEqual({ user });
+    });
+
+    test("should handle LOGOUT action", () => {
+      const state = {
+        user: {
+          id: "1",
+          username: "testuser",
+          email: "test@example.com",
+          token: "test",
+          isVerified: true,
+          authSource: "self",
+        } as User,
+      };
+      const action = { type: AuthActionType.LOGOUT };
+      const newState = authReducer(state, action);
+
+      expect(newState).toEqual({ user: null });
+    });
+
+    test("should handle UPDATE_USER action", () => {
+      const state = {
+        user: {
+          id: "1",
+          username: "olduser",
+          email: "old@example.com",
+          token: "test",
+          isVerified: true,
+          authSource: "self",
+        } as User,
+      };
+      const updatedUser: User = {
+        id: "1",
+        username: "newuser",
+        email: "new@example.com",
+        token: "test",
+        isVerified: true,
+        authSource: "self",
+      };
+      const action = { type: AuthActionType.UPDATE_USER, payload: updatedUser };
+      const newState = authReducer(state, action);
+
+      expect(newState).toEqual({ user: updatedUser });
+    });
+
+    test("should handle DELETE_USER action", () => {
+      const state = {
+        user: {
+          id: "1",
+          username: "testuser",
+          email: "test@example.com",
+          token: "test",
+          isVerified: true,
+          authSource: "self",
+        } as User,
+      };
+      const action = { type: AuthActionType.DELETE_USER };
+      const newState = authReducer(state, action);
+
+      expect(newState).toEqual({ user: null });
+    });
+
+    test("should return the current state for unknown action types", () => {
+      const state = {
+        user: {
+          id: "1",
+          username: "testuser",
+          email: "test@example.com",
+          token: "test",
+          isVerified: true,
+          authSource: "self",
+        } as User,
+      };
+      const action = { type: "UNKNOWN_ACTION" as AuthActionType };
+      const newState = authReducer(state, action);
+
+      expect(newState).toEqual(state);
+    });
   });
 });

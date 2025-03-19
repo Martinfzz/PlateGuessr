@@ -162,13 +162,34 @@ describe("User Model Test", () => {
       expect(err.message).toBe("validations.incorrect_password");
     });
 
+    test("should fail to login with unverified email", async () => {
+      const email = "test@example.com";
+      const password = "Password123*";
+
+      const user = await User.signup(email, password, password);
+
+      expect(user.isVerified).toBe(false);
+
+      let err;
+      try {
+        await User.login(email, password);
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("validations.email_not_verified");
+    });
+
     test("should login a user successfully", async () => {
       const email = "test@example.com";
       const password = "Password123*";
 
-      await User.signup(email, password, password);
+      let user = await User.signup(email, password, password);
+      user.isVerified = true;
+      await user.save();
 
-      const user = await User.login(email, password);
+      user = await User.login(email, password);
 
       expect(user).toBeDefined();
       expect(user.email).toBe(email);
@@ -328,6 +349,127 @@ describe("User Model Test", () => {
       expect(gameModeScore.best_score).toBe(200);
       expect(gameModeScore.games_played).toBe(2);
       expect(gameModeScore.average_score).toBe(150);
+    });
+  });
+
+  describe("verify email", () => {
+    test("should verify email successfully", async () => {
+      const email = "test@example.com";
+      const user = await User.signup(email, "Password123*", "Password123*");
+
+      const updatedUser = await User.verifyEmail(user.emailToken);
+
+      expect(updatedUser).toBeDefined();
+      expect(updatedUser.isVerified).toBe(true);
+      expect(updatedUser.emailToken).toBeNull();
+    });
+
+    test("should fail when email user is not found", async () => {
+      let err;
+      try {
+        await User.verifyEmail("invalidToken");
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("errors.user_not_found");
+    });
+
+    test("should fail when email token is not found", async () => {
+      let err;
+      try {
+        await User.verifyEmail();
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("errors.email_token_not_found");
+    });
+  });
+
+  describe("set password", () => {
+    let user;
+    let password;
+
+    beforeEach(async () => {
+      const email = "test@example.com";
+      password = "Password123*";
+
+      user = await User.signup(email, password, password);
+    });
+
+    test("should set password successfully", async () => {
+      const newPassword = "newPassword123*";
+
+      const updatedUser = await User.setPassword(
+        user._id,
+        newPassword,
+        newPassword
+      );
+
+      expect(updatedUser).toBeDefined();
+      expect(updatedUser.isVerified).toBe(true);
+      expect(updatedUser.emailToken).toBeNull();
+    });
+
+    test("should fail when passwords doesn't match", async () => {
+      let err;
+      try {
+        await User.setPassword(user._id, "anotherPassword123", "password123");
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("validations.password_match");
+    });
+
+    test("should fail when user is not found", async () => {
+      let err;
+      try {
+        await User.setPassword(
+          new mongoose.Types.ObjectId(),
+          password,
+          password
+        );
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("errors.user_not_found");
+    });
+  });
+
+  describe("google auth", () => {
+    const email = "test@example.com";
+    const given_name = "test";
+    const family_name = "user";
+
+    test("should throw an error if the email exists", async () => {
+      await User.signup(email, "Password123*", "Password123*");
+
+      let err;
+      try {
+        await User.googleAuth(email, given_name, family_name);
+      } catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toBe("validations.signup_not_allowed");
+    });
+
+    test("should create a user successfully", async () => {
+      const user = await User.googleAuth(email, given_name, family_name);
+
+      expect(user).toBeDefined();
+      expect(user.email).toBe(email);
+      expect(user.username).toBe(`${given_name} ${family_name}`);
+      expect(user.authSource).toBe("google");
+      expect(user.isVerified).toBe(true);
     });
   });
 });

@@ -2,6 +2,7 @@ import { render, renderHook } from "@testing-library/react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { AuthContext } from "../../context/AuthContext";
 import React from "react";
+import { User } from "shared.types";
 
 const MockComponent = () => {
   useAuthContext(); // This will throw if not wrapped with AuthContextProvider
@@ -24,12 +25,13 @@ describe("useAuthContext", () => {
   test("should return context value if used inside AuthContextProvider", () => {
     const mockContextValue = {
       user: {
-        name: "Test User",
         id: "1",
         username: "testuser",
         email: "test@example.com",
         token: "testtoken",
-      },
+        isVerified: true,
+        authSource: "self",
+      } as User,
       dispatch: jest.fn(),
     };
 

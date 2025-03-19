@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import AppRoutes from "../../routes/AppRoutes";
 import { MemoryRouter } from "react-router-dom";
+import { AuthContextProvider, AuthContext } from "../../context/AuthContext";
 
 jest.mock("../../App", () => {
   return () => <div>App Component</div>;
@@ -26,6 +27,9 @@ jest.mock("../../pages/country", () => {
 });
 jest.mock("../../pages/user", () => {
   return () => <div>User Component</div>;
+});
+jest.mock("../../pages/setPassword", () => {
+  return () => <div>SetPassword Component</div>;
 });
 
 describe("AppRoutes Component", () => {
@@ -79,14 +83,40 @@ describe("AppRoutes Component", () => {
     expect(screen.getByText("ResetPassword Component")).toBeInTheDocument();
   });
 
-  test("renders Account component", () => {
+  test("renders Account component if user is logged in", () => {
     render(
-      <MemoryRouter initialEntries={["/me/settings"]}>
-        <AppRoutes />
-      </MemoryRouter>
+      <AuthContext.Provider
+        value={{
+          user: {
+            id: "1",
+            username: "test",
+            email: "test@test.com",
+            token: "123Token",
+            isVerified: true,
+            authSource: "self",
+          },
+          dispatch: jest.fn(),
+        }}
+      >
+        <MemoryRouter initialEntries={["/me/settings"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </AuthContext.Provider>
     );
 
     expect(screen.getByText("Account Component")).toBeInTheDocument();
+  });
+
+  test("renders App component if user is not logged in", () => {
+    render(
+      <AuthContextProvider>
+        <MemoryRouter initialEntries={["/me/settings"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </AuthContextProvider>
+    );
+
+    expect(screen.getByText("App Component")).toBeInTheDocument();
   });
 
   test("renders Country component", () => {
@@ -107,5 +137,15 @@ describe("AppRoutes Component", () => {
     );
 
     expect(screen.getByText("User Component")).toBeInTheDocument();
+  });
+
+  test("renders SetPassword component", () => {
+    render(
+      <MemoryRouter initialEntries={["/set-password/123Token"]}>
+        <AppRoutes />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText("SetPassword Component")).toBeInTheDocument();
   });
 });

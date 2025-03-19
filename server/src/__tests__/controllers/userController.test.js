@@ -9,13 +9,40 @@ const {
   deleteUser,
   userCountryScore,
   getUser,
+  verifyEmail,
+  resendVerificationEmail,
+  resetPassword,
+  setPassword,
+  googleAuth,
 } = require("../../controllers/userController");
 const User = require("../../models/userModel");
 const Country = require("../../models/countryModel");
 const jwt = require("jsonwebtoken");
+const { sendVerificationMail } = require("../../utils/sendVerificationMail");
+const { sendResetPasswordMail } = require("../../utils/sendResetPasswordMail");
 
 jest.mock("../../models/userModel");
 jest.mock("jsonwebtoken");
+jest.mock("../../utils/sendVerificationMail");
+jest.mock("../../utils/sendResetPasswordMail");
+jest.mock("google-auth-library", () => {
+  return {
+    OAuth2Client: jest.fn().mockImplementation(() => {
+      return {
+        getToken: jest
+          .fn()
+          .mockResolvedValue({ tokens: { id_token: "mock_id_token" } }),
+        verifyIdToken: jest.fn().mockResolvedValue({
+          getPayload: jest.fn().mockReturnValue({
+            email: "test@example.com",
+            given_name: "John",
+            family_name: "Doe",
+          }),
+        }),
+      };
+    }),
+  };
+});
 
 const app = express();
 app.use(express.json());
@@ -25,6 +52,11 @@ app.put("/update/:id", updateUser);
 app.delete("/delete/:id", deleteUser);
 app.get("/country/:id", userCountryScore);
 app.get("/:id", getUser);
+app.post("/verify-email", verifyEmail);
+app.post("/resend-verification-email", resendVerificationEmail);
+app.post("/reset-password", resetPassword);
+app.post("/set-password", setPassword);
+app.post("/auth/google", googleAuth);
 
 describe("User Controller Tests", () => {
   let mongoServer;
@@ -68,6 +100,8 @@ describe("User Controller Tests", () => {
         _id: "testUserId",
         email: "test@example.com",
         username: "testuser",
+        isVerified: false,
+        authSource: "self",
       };
 
       User.login.mockResolvedValue(mockUser);
@@ -83,19 +117,21 @@ describe("User Controller Tests", () => {
         token: undefined,
         username: "testuser",
         id: "testUserId",
+        isVerified: false,
+        authSource: "self",
       });
     });
   });
 
   describe("signup", () => {
-    test("should signup user and return token", async () => {
-      const mockUser = {
-        _id: "testUserId",
-        email: "test@example.com",
-        username: "testuser",
-        password: "hashedpassword",
-      };
+    const mockUser = {
+      _id: "testUserId",
+      email: "test@example.com",
+      username: "testuser",
+      password: "hashedpassword",
+    };
 
+    test("should signup user and return token", async () => {
       User.signup.mockResolvedValue(mockUser);
       jwt.sign.mockReturnValue("testToken");
 
@@ -137,6 +173,20 @@ describe("User Controller Tests", () => {
 
       expect(response.status).toBe(400);
       expect(response.body).toEqual({ error: "Signup failed" });
+      expect(sendVerificationMail).not.toHaveBeenCalled();
+    });
+
+    test("should send verification email", async () => {
+      User.signup.mockResolvedValue(mockUser);
+      jwt.sign.mockReturnValue("testToken");
+
+      await request(app).post("/signup").send({
+        email: "test@example.com",
+        password: "password123",
+        passwordConfirmation: "password123",
+      });
+
+      expect(sendVerificationMail).toHaveBeenCalledWith(mockUser);
     });
   });
 
@@ -157,6 +207,8 @@ describe("User Controller Tests", () => {
         _id: "testUserId",
         email: "test@example.com",
         username: "newusername",
+        isVerified: false,
+        authSource: "self",
       };
 
       User.update.mockResolvedValue(mockUser);
@@ -175,6 +227,8 @@ describe("User Controller Tests", () => {
         token: "testToken",
         username: "newusername",
         id: "testUserId",
+        isVerified: false,
+        authSource: "self",
       });
       expect(User.update).toHaveBeenCalledWith(
         "testUserId",
@@ -242,7 +296,7 @@ describe("User Controller Tests", () => {
   });
 
   describe("delete", () => {
-    test("should return 400 if id is not provided", async () => {
+    test("should return 404 if id is not provided", async () => {
       const response = await request(app).delete("/delete/");
 
       expect(response.status).toBe(404);
@@ -277,7 +331,7 @@ describe("User Controller Tests", () => {
   });
 
   describe("user country score", () => {
-    test("should return 404 if user is not found", async () => {
+    test("should return 400 if user is not found", async () => {
       jwt.verify.mockReturnValue("testUserId");
       User.findById.mockResolvedValue(null);
 
@@ -300,7 +354,7 @@ describe("User Controller Tests", () => {
   });
 
   describe("get user", () => {
-    test("should return 400 if id is not provided", async () => {
+    test("should return 404 if id is not provided", async () => {
       const response = await request(app).get("/");
 
       expect(response.status).toBe(404);
@@ -336,6 +390,262 @@ describe("User Controller Tests", () => {
       const response = await request(app).get("/testUserId");
 
       expect(response.status).toBe(400);
+    });
+  });
+
+  describe("verify email", () => {
+    test("should return 400 if emailToken is not provided", async () => {
+      const response = await request(app).post("/verify-email").send({});
+
+      expect(response.status).toBe(400);
+    });
+
+    test("should return 400 if email verification fails", async () => {
+      User.findOne.mockResolvedValue(null);
+
+      const response = await request(app).post("/verify-email").send({
+        emailToken: "testToken",
+      });
+
+      expect(response.status).toBe(400);
+    });
+
+    test("should return 200 with user data", async () => {
+      const mockUser = {
+        email: "test@example.com",
+        username: "testuser",
+        authSource: "self",
+        emailToken: "testToken",
+      };
+
+      User.verifyEmail.mockResolvedValue(mockUser);
+
+      const response = await request(app).post("/verify-email").send({
+        emailToken: "testToken",
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        email: "test@example.com",
+        username: "testuser",
+        authSource: "self",
+        token: "testToken",
+      });
+    });
+  });
+
+  describe("resend verification email", () => {
+    test("should return 400 if email is not provided", async () => {
+      const response = await request(app).post("/resend-verification-email");
+
+      expect(response.status).toBe(400);
+    });
+
+    test("should return 400 if user is not found", async () => {
+      User.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post("/resend-verification-email")
+        .send({ email: "test@example.com" });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: "errors.user_not_found" });
+    });
+
+    test("should return 400 is user is already verified", async () => {
+      const mockUser = {
+        email: "test@example.com",
+        isVerified: true,
+      };
+
+      User.findOne.mockResolvedValue(mockUser);
+
+      const response = await request(app)
+        .post("/resend-verification-email")
+        .send({ email: "test@example.com" });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: "errors.user_already_verified" });
+    });
+
+    test("should return 200 and send verification email", async () => {
+      const mockUser = {
+        email: "test@example.com",
+        isVerified: false,
+      };
+
+      User.findOne.mockResolvedValue(mockUser);
+
+      await request(app)
+        .post("/resend-verification-email")
+        .send({ email: "test@example.com" });
+
+      expect(sendVerificationMail).toHaveBeenCalledWith(mockUser);
+    });
+
+    test("should return 400 if email verification fails", async () => {
+      User.findOne.mockImplementation(() => {
+        throw new Error("Verification failed");
+      });
+
+      const response = await request(app)
+        .post("/resend-verification-email")
+        .send({ email: "test@example.com" });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: "Verification failed" });
+    });
+  });
+
+  describe("reset password", () => {
+    test("should return 200 if user is found and send email", async () => {
+      const mockUser = {
+        email: "test@example.com",
+      };
+
+      User.findOne.mockResolvedValue(mockUser);
+
+      const response = await request(app)
+        .post("/reset-password")
+        .send({ email: "test@example.com" });
+
+      expect(sendResetPasswordMail).toHaveBeenCalledWith(mockUser, "testToken");
+      expect(response.status).toBe(200);
+    });
+
+    test("should return 200 if user is not found but do not send email", async () => {
+      User.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post("/reset-password")
+        .send({ email: "test@example.com" });
+
+      expect(sendResetPasswordMail).not.toHaveBeenCalled();
+      expect(response.status).toBe(200);
+    });
+
+    test("should return 400 if reset password fails", async () => {
+      User.findOne.mockImplementation(() => {
+        throw new Error("Reset password failed");
+      });
+
+      const response = await request(app)
+        .post("/reset-password")
+        .send({ email: "test@example.com" });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: "Reset password failed" });
+    });
+  });
+
+  describe("set password", () => {
+    test("should return 400 if password is not provided", async () => {
+      const response = await request(app).post("/set-password").send({});
+
+      expect(response.status).toBe(400);
+    });
+
+    test("should return 400 if token is invalid", async () => {
+      jwt.verify.mockImplementation(() => {
+        throw new Error("Invalid token");
+      });
+
+      const response = await request(app)
+        .post("/set-password")
+        .send({ token: "invalidToken" });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: "errors.invalid_token" });
+    });
+
+    test("should return 200 if password is set", async () => {
+      jwt.verify.mockReturnValue({ _id: "testUserId" });
+      User.setPassword.mockResolvedValue({ email: "test@example.com" });
+
+      const response = await request(app).post("/set-password").send({
+        password: "password123",
+        passwordConfirmation: "password123",
+        token: "testToken",
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        email: "test@example.com",
+        token: "testToken",
+      });
+    });
+  });
+
+  describe("google auth", () => {
+    let req, res;
+
+    beforeEach(() => {
+      req = { body: { code: "mock_code" } };
+      res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+    });
+
+    it("should authenticate a user and return a token", async () => {
+      User.findOne.mockResolvedValue({
+        _id: "mock_user_id",
+        email: "test@example.com",
+        username: "johndoe",
+        authSource: "google",
+        isVerified: true,
+      });
+
+      await googleAuth(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        email: "test@example.com",
+        token: "testToken",
+        username: "johndoe",
+        id: "mock_user_id",
+        authSource: "google",
+        isVerified: true,
+      });
+    });
+
+    it("should create a new user if not found", async () => {
+      User.findOne.mockResolvedValue(null);
+      User.googleAuth.mockResolvedValue({
+        _id: "new_user_id",
+        email: "test@example.com",
+        username: "newuser",
+        authSource: "google",
+        isVerified: false,
+      });
+
+      await googleAuth(req, res);
+
+      expect(User.googleAuth).toHaveBeenCalledWith(
+        "test@example.com",
+        "John",
+        "Doe"
+      );
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        email: "test@example.com",
+        token: "testToken",
+        username: "newuser",
+        id: "new_user_id",
+        authSource: "google",
+        isVerified: false,
+      });
+    });
+
+    it("should return an error if authentication fails", async () => {
+      User.findOne.mockImplementation(() => {
+        throw new Error("Authentication failed");
+      });
+
+      await googleAuth(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Authentication failed" });
     });
   });
 });
