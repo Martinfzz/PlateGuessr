@@ -12,11 +12,25 @@ import EmailModal from "./EmailModal";
 import Logo from "../../components/Logo";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../../Theme";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
 
 const SignUp = () => {
   const { t } = useTranslation();
   const [showEmailModal, setShowEmailModal] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
+  const { googleAuth } = useGoogleAuth();
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async ({ code }) => {
+      console.log("Google Login Success");
+      googleAuth(code);
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+    flow: "auth-code",
+  });
 
   return (
     <>
@@ -32,7 +46,7 @@ const SignUp = () => {
             <h2 className="my-4 yellow">{t("pages.signup.title_2")}</h2>
             <Col>
               <MDBBtn
-                disabled
+                onClick={() => googleLogin()}
                 rounded
                 className="m-2"
                 style={{

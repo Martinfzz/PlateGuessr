@@ -7,24 +7,35 @@ import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../../Theme";
 import Navbar from "../../components/Navbar";
-import { useResetPassword } from "../../hooks/useResetPassword";
 import { CustomSpinner } from "../../shared/components";
 import Alerts from "../../components/Alerts";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
+import { useSetPassword } from "../../hooks/useSetPassword";
 
-const ResetPassword = () => {
+const SetPassword = () => {
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
-  const { resetPassword, error, success, isLoading } = useResetPassword();
+  const { token } = useParams();
+  const { setPassword, error, isLoading } = useSetPassword();
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email(t("validations.invalid_email"))
-      .required(t("validations.required")),
+    password: Yup.string()
+      .required(t("validations.required"))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+        t("validations.password_validation")
+      ),
+    passwordConfirmation: Yup.string()
+      .required(t("validations.required"))
+      .oneOf([Yup.ref("password")], t("validations.password_match")),
   });
 
-  const handleOnSubmit = (values: { email: string }) => {
-    resetPassword(values.email);
+  const handleOnSubmit = (values: {
+    password: string;
+    passwordConfirmation: string;
+  }) => {
+    setPassword(values.password, values.passwordConfirmation, token || "");
   };
 
   return (
@@ -34,14 +45,7 @@ const ResetPassword = () => {
       <div className="d-flex mt-5 justify-content-center">
         {isLoading && <CustomSpinner center />}
 
-        {success && (
-          <Col className="d-flex flex-column justify-content-center text-center text-color">
-            <h2>{t("pages.reset_password.success.title")}</h2>
-            <p>{t("pages.reset_password.success.message")}</p>
-          </Col>
-        )}
-
-        {!isLoading && !success && (
+        {!isLoading && (
           <div>
             {error && (
               <Alerts color="danger" icon={faCircleExclamation}>
@@ -50,33 +54,55 @@ const ResetPassword = () => {
             )}
             <Col>
               <h2 className="d-flex justify-content-center text-color">
-                {t("pages.reset_password.heading")}
+                {t("pages.set_password.heading")}
               </h2>
 
               <Formik
-                initialValues={{ email: "" }}
+                initialValues={{ password: "", passwordConfirmation: "" }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => handleOnSubmit(values)}
               >
                 {(formikProps) => (
                   <Form className="signup-form">
                     <MDBInput
-                      label={t("app_common.email")}
-                      id="email"
-                      type="email"
+                      label={t("pages.set_password.new_password")}
+                      id="password"
+                      type="password"
                       className="mt-4"
                       placeholder=""
                       defaultValue=""
                       contrast={theme === "dark-theme"}
                       onChange={(e) =>
-                        formikProps.setFieldValue("email", e.target.value)
+                        formikProps.setFieldValue("password", e.target.value)
                       }
                     />
                     <ErrorMessage
                       component={ValidationsAlerts as ComponentType}
-                      name="email"
+                      name="password"
                       className="mb-4"
                     />
+
+                    <MDBInput
+                      label={t("pages.set_password.repeat_password")}
+                      id="passwordConfirmation"
+                      type="password"
+                      className="mt-4"
+                      placeholder=""
+                      defaultValue=""
+                      contrast={theme === "dark-theme"}
+                      onChange={(e) =>
+                        formikProps.setFieldValue(
+                          "passwordConfirmation",
+                          e.target.value
+                        )
+                      }
+                    />
+                    <ErrorMessage
+                      component={ValidationsAlerts as ComponentType}
+                      name="passwordConfirmation"
+                      className="mb-4"
+                    />
+
                     <div className="d-flex justify-content-center text-center">
                       <MDBBtn
                         rounded
@@ -98,4 +124,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default SetPassword;

@@ -15,17 +15,32 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useLogin } from "../../hooks/useLogin";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../../Theme";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useResendVerificationEmail } from "../../hooks/useResendVerificationEmail";
 
 const LogIn = () => {
-  const { login, error, isLoading } = useLogin();
+  const { login, error, isLoading, email } = useLogin();
+  const { resendVerificationEmail } = useResendVerificationEmail();
   const { t } = useTranslation();
   const { theme } = useContext(ThemeContext);
+  const { googleAuth } = useGoogleAuth();
 
   const handleSubmit = async (values: { email: string; password: string }) => {
     const { email, password } = values;
 
     await login(email, password);
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async ({ code }) => {
+      googleAuth(code);
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+    flow: "auth-code",
+  });
 
   return (
     <>
@@ -37,9 +52,21 @@ const LogIn = () => {
         <div>
           <Col>
             {error && (
-              <Alerts color="danger" icon={faCircleExclamation}>
-                {t("pages.login.failed")}
-              </Alerts>
+              <>
+                <Alerts color="danger" icon={faCircleExclamation}>
+                  {t(error)}
+                </Alerts>
+                {error === "validations.email_not_verified" && (
+                  <Alerts color="warning" icon={faCircleExclamation}>
+                    <Link
+                      to="/login"
+                      onClick={() => resendVerificationEmail(email)}
+                    >
+                      {t("pages.login.resend_verification_email_message")}
+                    </Link>
+                  </Alerts>
+                )}
+              </>
             )}
             <EmailForm isLoading={isLoading} handleSubmit={handleSubmit} />
             <div className="d-flex text-center">
@@ -53,7 +80,7 @@ const LogIn = () => {
                 </div>
                 <Col>
                   <MDBBtn
-                    disabled
+                    onClick={() => googleLogin()}
                     rounded
                     className="m-2"
                     style={{

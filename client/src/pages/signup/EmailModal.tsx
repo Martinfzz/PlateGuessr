@@ -41,6 +41,7 @@ const EmailModal: FC<EmailModalProps> = ({
               color="none"
               onClick={setShowEmailModal}
               data-testid="close-button"
+              tabIndex={2}
             ></MDBBtn>
           </MDBModalHeader>
           <MDBModalBody>

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { faker } = require("@faker-js/faker");
+const crypto = require("crypto");
 
 const Schema = mongoose.Schema;
 
@@ -45,7 +46,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   username: {
     type: String,
@@ -55,6 +56,18 @@ const userSchema = new Schema({
     type: Map,
     of: countrySchema,
     default: {},
+  },
+  authSource: {
+    type: String,
+    enum: ["self", "google"],
+    default: "self",
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailToken: {
+    type: String,
   },
 });
 
@@ -93,7 +106,12 @@ userSchema.statics.signup = async function (
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash, username });
+  const user = await this.create({
+    email,
+    password: hash,
+    username,
+    emailToken: crypto.randomBytes(64).toString("hex"),
+  });
 
   return user;
 };
@@ -112,6 +130,10 @@ userSchema.statics.login = async function (email, password) {
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
     throw Error("validations.incorrect_password");
+  }
+
+  if (!user.isVerified) {
+    throw Error("validations.email_not_verified");
   }
 
   return user;
@@ -194,6 +216,83 @@ userSchema.statics.saveScore = async function (
 
   country.scores.set(gameModeId, gameModeScore);
   user = await user.save();
+
+  return user;
+};
+
+// verify email
+userSchema.statics.verifyEmail = async function (emailToken) {
+  if (!emailToken) {
+    throw Error("errors.email_token_not_found");
+  }
+
+  const user = await this.findOne({ emailToken });
+
+  if (!user) {
+    throw Error("errors.user_not_found");
+  }
+
+  user.isVerified = true;
+  user.emailToken = null;
+
+  await user.save();
+
+  return user;
+};
+
+// set new password
+userSchema.statics.setPassword = async function (
+  userId,
+  password,
+  passwordConfirmation
+) {
+  const user = await this.findById(userId);
+
+  if (!user) {
+    throw Error("errors.user_not_found");
+  }
+
+  if (passwordConfirmation && password) {
+    if (passwordConfirmation !== password) {
+      throw Error("validations.password_match");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    user.password = hash;
+
+    if (!user.isVerified) {
+      user.emailToken = null;
+      user.isVerified = true;
+    }
+  }
+
+  await user.save();
+
+  return user;
+};
+
+// login with Google
+userSchema.statics.googleAuth = async function (
+  email,
+  given_name,
+  family_name
+) {
+  const emailExists = await this.findOne({ email });
+
+  if (emailExists) {
+    throw Error("validations.signup_not_allowed");
+  }
+
+  let username = [given_name, family_name].join(" ");
+
+  const user = await this.create({
+    email,
+    username,
+    authSource: "google",
+    isVerified: true,
+  });
 
   return user;
 };

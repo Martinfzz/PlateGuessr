@@ -9,6 +9,8 @@ import Account from "../pages/account";
 import Country from "../pages/country";
 import User from "../pages/user";
 import { ThemeContext } from "../Theme";
+import PrivateRoutes from "./PrivateRoutes";
+import SetPassword from "../pages/setPassword";
 
 const AppRoutes = () => {
   const { theme } = useContext(ThemeContext);
@@ -21,9 +23,12 @@ const AppRoutes = () => {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/me/settings" element={<Account />} />
+        <Route path="/set-password/:token" element={<SetPassword />} />
         <Route path="/country/:id" element={<Country />} />
         <Route path="/user/:id" element={<User />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/me/settings" element={<Account />} />
+        </Route>
       </Routes>
     </div>
   );

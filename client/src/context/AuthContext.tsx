@@ -8,7 +8,7 @@ import React, {
 import { AuthActionType, User } from "../shared.types";
 
 interface AuthState {
-  user: User | null;
+  user: User | null | undefined;
 }
 
 interface AuthAction {
@@ -18,7 +18,7 @@ interface AuthAction {
 
 export const AuthContext = createContext<
   | {
-      user: User | null;
+      user: User | null | undefined;
       dispatch: React.Dispatch<AuthAction>;
     }
   | undefined
@@ -30,11 +30,11 @@ export const authReducer = (
 ): AuthState => {
   switch (action.type) {
     case "LOGIN":
-      return { user: action.payload ?? null };
+      return { user: action.payload };
     case "LOGOUT":
       return { user: null };
     case "UPDATE_USER":
-      return { user: action.payload ?? null };
+      return { user: action.payload };
     case "DELETE_USER":
       return { user: null };
     default:
@@ -50,13 +50,13 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(authReducer, {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user") || "null"),
   });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+    const user = JSON.parse(localStorage.getItem("user") || "null");
 
-    if (user) {
+    if (user && user.isVerified) {
       dispatch({ type: AuthActionType.LOGIN, payload: user });
     }
   }, []);

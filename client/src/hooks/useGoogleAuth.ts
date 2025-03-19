@@ -1,30 +1,24 @@
-import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { AuthActionType } from "../shared.types";
+import { useTranslation } from "react-i18next";
+import { notifyError } from "../shared/helpers";
 
-export const useLogin = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+export const useGoogleAuth = () => {
   const { dispatch } = useAuthContext();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    const response = await fetch("/api/user/login", {
+  const googleAuth = async (code: string) => {
+    const response = await fetch("/api/user/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ code }),
     });
     const json = await response.json();
 
     if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
-      setEmail(json.email);
+      notifyError(t("notifications.something_went_wrong"));
     }
     if (response.ok) {
       // save the user to local storage
@@ -33,12 +27,9 @@ export const useLogin = () => {
       // update the auth context
       dispatch({ type: AuthActionType.LOGIN, payload: json });
 
-      // update loading state
-      setIsLoading(false);
-
       navigate("/");
     }
   };
 
-  return { login, isLoading, error, email };
+  return { googleAuth };
 };

@@ -3,12 +3,15 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const userRoutes = require("./routes/user");
 const countryRoutes = require("./routes/country");
 const scoreRoutes = require("./routes/score");
 
 const app = express();
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
