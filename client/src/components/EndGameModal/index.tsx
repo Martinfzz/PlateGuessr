@@ -9,6 +9,10 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+import {
+  setPlayedCountryInfo,
+  setIsPlaying,
+} from "../../features/game/gameSlice";
 import { useTranslation } from "react-i18next";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
@@ -16,7 +20,7 @@ import { API, loadingTypes } from "../../shared/helpers";
 import { CustomSpinner } from "../../shared/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GameOptions, PlayedCountryInfo } from "../../shared.types";
 
 interface EndGameModalProps {
@@ -50,11 +54,12 @@ const EndGameModal: FC<EndGameModalProps> = ({
   );
   const [loading, setLoading] = useState(loadingTypes.none);
   const [userBestScore, setUserBestScore] = useState<number>(0);
+  const dispatch = useDispatch();
 
   const getUserBestScore = useCallback(async () => {
     setLoading(loadingTypes.index);
     await API.get(
-      `/api/score/country/game_mode/user?token=${user?.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}`
+      `${process.env.REACT_APP_API_URL}/api/score/country/game_mode/user?token=${user?.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}`
     )
       .then((res) => {
         setUserBestScore(res.data.best_score);
@@ -68,7 +73,7 @@ const EndGameModal: FC<EndGameModalProps> = ({
   const saveScore = useCallback(async () => {
     setLoading(loadingTypes.create);
     await API.post(
-      `/api/country/save_score?token=${user?.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}&score=${score.after}`
+      `${process.env.REACT_APP_API_URL}/api/country/save_score?token=${user?.token}&countryId=${playedCountryInfo.countryId}&gameModeId=${gameOptions.gameMode}&score=${score.after}`
     )
       .then(() => {})
       .catch((error) => {
@@ -85,7 +90,7 @@ const EndGameModal: FC<EndGameModalProps> = ({
   ]);
 
   useEffect(() => {
-    if (user) saveScore();
+    if (user && gameOptions.gameMode !== "5") saveScore();
   }, [user, saveScore]);
 
   return (
@@ -152,6 +157,10 @@ const EndGameModal: FC<EndGameModalProps> = ({
               <Link
                 to={`/country/${playedCountryInfo.countryId}`}
                 className="stats-link d-flex justify-content-start align-items-center flex-grow-1"
+                onClick={() => {
+                  dispatch(setPlayedCountryInfo({ countryId: 0 }));
+                  dispatch(setIsPlaying(false));
+                }}
               >
                 <h4 className="m-0">
                   <FontAwesomeIcon icon={faChartSimple} />
