@@ -7,7 +7,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: localStorage.getItem("i18nextLng") ?? "en",
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },
