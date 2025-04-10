@@ -16,7 +16,7 @@ const AppRoutes = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className={`App ${theme}`} style={{ height: "100vh" }}>
+    <div className={`App ${theme}`}>
       <Routes>
         <Route path="*" element={<Error404 />} />
         <Route path="/" element={<App />} />
