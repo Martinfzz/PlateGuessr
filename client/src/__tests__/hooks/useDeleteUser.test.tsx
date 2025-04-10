@@ -49,13 +49,16 @@ describe("useDeleteUser", () => {
       await result.current.deleteUser();
     });
 
-    expect(fetchMock).toHaveBeenCalledWith("/api/user/testtoken", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer testtoken",
-      },
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.REACT_APP_API_URL}/api/user/testtoken`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer testtoken",
+        },
+      }
+    );
     expect(mockDispatch).toHaveBeenCalledWith({
       type: AuthActionType.DELETE_USER,
     });
@@ -83,13 +86,16 @@ describe("useDeleteUser", () => {
       await result.current.deleteUser();
     });
 
-    expect(fetchMock).toHaveBeenCalledWith("/api/user/testtoken", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer testtoken",
-      },
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.REACT_APP_API_URL}/api/user/testtoken`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer testtoken",
+        },
+      }
+    );
     expect(mockDispatch).not.toHaveBeenCalled();
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBe("Failed to delete user");
@@ -110,12 +116,15 @@ describe("useDeleteUser", () => {
       await result.current.deleteUser();
     });
 
-    expect(fetchMock).toHaveBeenCalledWith("/api/user/undefined", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer undefined",
-      },
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.REACT_APP_API_URL}/api/user/undefined`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer undefined",
+        },
+      }
+    );
   });
 });

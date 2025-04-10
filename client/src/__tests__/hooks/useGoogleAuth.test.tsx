@@ -47,7 +47,7 @@ describe("useGoogleAuth", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/auth/google",
+      `${process.env.REACT_APP_API_URL}/api/user/auth/google`,
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -74,7 +74,7 @@ describe("useGoogleAuth", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/auth/google",
+      `${process.env.REACT_APP_API_URL}/api/user/auth/google`,
       expect.any(Object)
     );
     expect(localStorage.setItem).not.toHaveBeenCalled();

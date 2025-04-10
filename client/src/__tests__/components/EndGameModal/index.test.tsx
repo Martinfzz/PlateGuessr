@@ -197,11 +197,11 @@ describe("EndGameModal Component", () => {
 
       await waitFor(() => {
         expect(mockedPost).toHaveBeenCalledWith(
-          `/api/country/save_score?token=${user.token}&countryId=1&gameModeId=1&score=100`
+          `${process.env.REACT_APP_API_URL}/api/country/save_score?token=${user.token}&countryId=1&gameModeId=1&score=100`
         );
       });
       expect(mockedGet).toHaveBeenCalledWith(
-        `/api/score/country/game_mode/user?token=${user.token}&countryId=1&gameModeId=1`
+        `${process.env.REACT_APP_API_URL}/api/score/country/game_mode/user?token=${user.token}&countryId=1&gameModeId=1`
       );
     });
   });

@@ -48,7 +48,7 @@ describe("useVerifyEmail", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/verify-email",
+      `${process.env.REACT_APP_API_URL}/api/user/verify-email`,
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -89,7 +89,7 @@ describe("useVerifyEmail", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/verify-email",
+      `${process.env.REACT_APP_API_URL}/api/user/verify-email`,
       expect.any(Object)
     );
     expect(localStorage.setItem).not.toHaveBeenCalled();

@@ -16,7 +16,7 @@ describe("useResetPassword", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/reset-password",
+      `${process.env.REACT_APP_API_URL}/api/user/reset-password`,
       expect.any(Object)
     );
 
@@ -40,7 +40,7 @@ describe("useResetPassword", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/reset-password",
+      `${process.env.REACT_APP_API_URL}/api/user/reset-password`,
       expect.any(Object)
     );
     expect(result.current.isLoading).toBe(false);

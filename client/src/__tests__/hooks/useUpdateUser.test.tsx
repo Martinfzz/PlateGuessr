@@ -50,7 +50,7 @@ describe("useUpdateUser", () => {
       });
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "/api/user/testtoken",
+        `${process.env.REACT_APP_API_URL}/api/user/testtoken`,
         expect.any(Object)
       );
       expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -84,7 +84,7 @@ describe("useUpdateUser", () => {
       });
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "/api/user/testtoken",
+        `${process.env.REACT_APP_API_URL}/api/user/testtoken`,
         expect.any(Object)
       );
       expect(result.current.isLoading).toBe(false);
@@ -107,7 +107,7 @@ describe("useUpdateUser", () => {
       });
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "/api/user/testtoken",
+        `${process.env.REACT_APP_API_URL}/api/user/testtoken`,
         expect.any(Object)
       );
 
@@ -150,7 +150,9 @@ describe("useUpdateUser", () => {
 
       const fetchOptions = fetchMock.mock.calls[0][1];
       const fetchUrl = fetchMock.mock.calls[0][0];
-      expect(fetchUrl).toEqual("/api/user/undefined");
+      expect(fetchUrl).toEqual(
+        `${process.env.REACT_APP_API_URL}/api/user/undefined`
+      );
       expect(fetchOptions?.headers).toEqual({
         "Content-Type": "application/json",
         Authorization: "Bearer undefined",

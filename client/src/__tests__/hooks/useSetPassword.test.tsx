@@ -44,7 +44,7 @@ describe("useSetPassword", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/set-password",
+      `${process.env.REACT_APP_API_URL}/api/user/set-password`,
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -77,7 +77,7 @@ describe("useSetPassword", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/set-password",
+      `${process.env.REACT_APP_API_URL}/api/user/set-password`,
       expect.any(Object)
     );
     expect(result.current.isLoading).toBe(false);
