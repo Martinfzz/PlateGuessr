@@ -1,0 +1,50 @@
+services:
+  plateguessr-frontend:
+    image: martinfzz/plateguessr-frontend:latest
+    container_name: plateguessr-frontend
+    restart: always
+    environment:
+      - REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    ports:
+      - "3001:80"
+    depends_on:
+      - plateguessr-backend
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plateguessr.rule=Host(`plateguessr.martinforget.fr`)"
+      - "traefik.http.routers.plateguessr.entrypoints=websecure"
+      - "traefik.http.routers.plateguessr.tls=true"
+      - "traefik.http.routers.plateguessr.tls.certresolver=myresolver"
+      - "traefik.http.services.plateguessr.loadbalancer.server.port=80"
+    expose:
+      - "3001"
+
+  plateguessr-backend:
+    image: martinfzz/plateguessr-backend:latest
+    container_name: plateguessr-backend
+    restart: always
+    networks:
+      - web
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=${PORT}
+      - MONGO_URI=${MONGO_URI}
+      - SECRET=${SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - EMAIL=${EMAIL}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - CLIENT_URL=${CLIENT_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`plateguessr.martinforget.fr`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+
+networks:
+  web:
+    external: true
