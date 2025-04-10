@@ -10,11 +10,14 @@ export const useVerifyEmail = () => {
   const { t } = useTranslation();
 
   const verifyEmail = async (emailToken: string) => {
-    const response = await fetch("/api/user/verify-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ emailToken }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/verify-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ emailToken }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

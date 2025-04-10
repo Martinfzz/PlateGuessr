@@ -37,13 +37,13 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
     <div data-testid="navbar">
       <Row className="pt-3 m-0 d-flex justify-content-between">
         {logo && (
-          <Col>
+          <Col xs={1} ms={6}>
             <Logo />
           </Col>
         )}
         {page && (
           <>
-            <Col>
+            <Col xs={1} className="d-flex justify-content-start">
               <Link to={"/"}>
                 <MDBBtn className="btn-menu-back text-boldgray">
                   <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
@@ -51,22 +51,18 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
                 </MDBBtn>
               </Link>
             </Col>
-            <Col className="d-flex justify-content-center align-items-center">
-              <MDBBadge
-                className="page-badge d-flex justify-content-center align-items-center text-boldgray"
-                color="warning"
-              >
-                {page}
-              </MDBBadge>
-            </Col>
           </>
         )}
-        <Col>
+        <Col
+          xs={logo || page ? 11 : 12}
+          md={logo || page ? 5 : 12}
+          className="d-flex align-items-center justify-content-end"
+        >
           <div className="d-flex justify-content-end">
             <ThemeToggleButton />
             <LanguageSelector />
             {user && (
-              <MDBDropdown className="user-dropdown">
+              <MDBDropdown className="user-dropdown" data-testid="navbar-user">
                 <MDBDropdownToggle className="text-boldgray">
                   <FontAwesomeIcon icon={faUser} className="me-2" />{" "}
                   <span className="hidden-username">{user.username}</span>
@@ -95,6 +91,20 @@ const Navbar: FC<NavbarProps> = ({ page, logo = false }) => {
             {!user && <ConnexionBtn />}
           </div>
         </Col>
+        {page && (
+          <Col
+            xs={12}
+            md={{ span: 6, offset: 3 }}
+            className="d-flex justify-content-center align-items-center mt-3"
+          >
+            <MDBBadge
+              className="page-badge d-flex justify-content-center align-items-center text-boldgray"
+              color="warning"
+            >
+              {page}
+            </MDBBadge>
+          </Col>
+        )}
       </Row>
     </div>
   );

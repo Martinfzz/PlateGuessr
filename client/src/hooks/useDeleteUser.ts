@@ -13,13 +13,16 @@ export const useDeleteUser = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch("/api/user/" + user?.token, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user?.token}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/` + user?.token,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

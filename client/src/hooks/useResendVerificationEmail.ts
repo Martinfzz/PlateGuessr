@@ -5,11 +5,14 @@ export const useResendVerificationEmail = () => {
   const { t } = useTranslation();
 
   const resendVerificationEmail = async (email: string) => {
-    const response = await fetch("/api/user/resend-verification-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/resend-verification-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      }
+    );
 
     if (!response.ok) {
       notifyError(t("notifications.something_went_wrong"));
