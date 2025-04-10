@@ -61,6 +61,7 @@ const EmailForm = () => {
                 formikProps.setFieldValue("email", e.target.value)
               }
               tabIndex={1}
+              data-testid="email-input"
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}
@@ -78,6 +79,7 @@ const EmailForm = () => {
               onChange={(e) =>
                 formikProps.setFieldValue("password", e.target.value)
               }
+              data-testid="password-input"
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}
@@ -98,6 +100,7 @@ const EmailForm = () => {
                   e.target.value
                 )
               }
+              data-testid="password-confirmation-input"
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}
@@ -112,6 +115,7 @@ const EmailForm = () => {
                 type="submit"
                 color="light"
                 disabled={isLoading}
+                data-testid="signup-button"
               >
                 {t("app_common.signup")}
               </MDBBtn>

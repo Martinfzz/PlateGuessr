@@ -90,6 +90,7 @@ const LogIn = () => {
                       height: "3rem",
                       boxShadow: "none",
                     }}
+                    data-testid="google-button"
                   >
                     <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
                     <span className="ms-2 h6">{t("pages.login.google")}</span>
@@ -107,6 +108,7 @@ const LogIn = () => {
                       height: "3rem",
                       boxShadow: "none",
                     }}
+                    data-testid="apple-button"
                   >
                     <FontAwesomeIcon icon={faApple} className="h6 mb-0" />{" "}
                     <span className="ms-2 h6">{t("pages.login.apple")}</span>
@@ -124,6 +126,7 @@ const LogIn = () => {
                       height: "3rem",
                       boxShadow: "none",
                     }}
+                    data-testid="facebook-button"
                   >
                     <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}
                     <span className="ms-2 h6">{t("pages.login.facebook")}</span>
@@ -133,6 +136,7 @@ const LogIn = () => {
                   <Link
                     to={"/signup"}
                     className="text-muted text-decoration-underline"
+                    data-testid="signup-link"
                   >
                     {t("pages.login.create_account")}
                   </Link>

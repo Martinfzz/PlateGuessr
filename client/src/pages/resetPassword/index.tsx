@@ -36,8 +36,12 @@ const ResetPassword = () => {
 
         {success && (
           <Col className="d-flex flex-column justify-content-center text-center text-color">
-            <h2>{t("pages.reset_password.success.title")}</h2>
-            <p>{t("pages.reset_password.success.message")}</p>
+            <h2 data-testid="reset-password-success-title">
+              {t("pages.reset_password.success.title")}
+            </h2>
+            <p data-testid="reset-password-success-message">
+              {t("pages.reset_password.success.message")}
+            </p>
           </Col>
         )}
 
@@ -49,7 +53,10 @@ const ResetPassword = () => {
               </Alerts>
             )}
             <Col>
-              <h2 className="d-flex justify-content-center text-color">
+              <h2
+                className="d-flex justify-content-center text-color"
+                data-testid="reset-password-heading"
+              >
                 {t("pages.reset_password.heading")}
               </h2>
 
@@ -71,6 +78,7 @@ const ResetPassword = () => {
                       onChange={(e) =>
                         formikProps.setFieldValue("email", e.target.value)
                       }
+                      data-testid="email-input"
                     />
                     <ErrorMessage
                       component={ValidationsAlerts as ComponentType}
@@ -83,6 +91,7 @@ const ResetPassword = () => {
                         className="btn-signup mt-4"
                         type="submit"
                         color="light"
+                        data-testid="reset-password-button"
                       >
                         {t("pages.reset_password.heading")}
                       </MDBBtn>

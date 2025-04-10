@@ -13,6 +13,7 @@ const Logo: FC<LogoProps> = ({ className }) => {
           alt="app logo"
           src="/plateguessr_logo.png"
           className="logo logo-full"
+          data-testid="logo-full"
         />
       </Link>
       <Link to={"/"}>
@@ -20,6 +21,7 @@ const Logo: FC<LogoProps> = ({ className }) => {
           alt="app icon"
           src="/plateguessr_icon.png"
           className="logo logo-icon"
+          data-testid="logo-icon"
         />
       </Link>
     </div>

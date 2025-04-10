@@ -42,8 +42,12 @@ const SignUp = () => {
       >
         <div className="d-flex text-center">
           <Col>
-            <h1 className="text-color">{t("pages.signup.title_1")}</h1>
-            <h2 className="my-4 yellow">{t("pages.signup.title_2")}</h2>
+            <h1 className="text-color" data-testid="signup-title-1">
+              {t("pages.signup.title_1")}
+            </h1>
+            <h2 className="my-4 yellow" data-testid="signup-title-2">
+              {t("pages.signup.title_2")}
+            </h2>
             <Col>
               <MDBBtn
                 onClick={() => googleLogin()}
@@ -56,6 +60,7 @@ const SignUp = () => {
                   height: "3rem",
                   boxShadow: "none",
                 }}
+                data-testid="google-button"
               >
                 <FontAwesomeIcon icon={faGoogle} className="h6 mb-0" />
                 <span className="ms-2 h6">{t("pages.login.google")}</span>
@@ -91,6 +96,7 @@ const SignUp = () => {
                   height: "3rem",
                   boxShadow: "none",
                 }}
+                data-testid="facebook-button"
               >
                 <FontAwesomeIcon icon={faFacebook} className="h6 mb-0" />{" "}
                 <span className="ms-2 h6">{t("pages.login.facebook")}</span>
@@ -116,6 +122,7 @@ const SignUp = () => {
             <Link
               to={"/login"}
               className="text-muted text-decoration-underline"
+              data-testid="login-link"
             >
               {t("pages.signup.account")}
             </Link>

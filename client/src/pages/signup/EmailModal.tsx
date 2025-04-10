@@ -24,16 +24,25 @@ const EmailModal: FC<EmailModalProps> = ({
   const { t } = useTranslation();
 
   return (
-    <MDBModal open={showEmailModal} onClose={setShowEmailModal} tabIndex="-1">
+    <MDBModal
+      open={showEmailModal}
+      onClose={setShowEmailModal}
+      tabIndex="-1"
+      data-testid="email-modal"
+    >
       <MDBModalDialog centered>
         <MDBModalContent className="signup-modal">
           <MDBModalHeader>
             <Col>
               <Row className="d-flex text-center">
-                <MDBModalTitle>{t("pages.signup.modal_title_1")}</MDBModalTitle>
+                <MDBModalTitle data-testid="signup-email-modal-title-1">
+                  {t("pages.signup.modal_title_1")}
+                </MDBModalTitle>
               </Row>
               <Row className="d-flex text-center yellow">
-                <MDBModalTitle>{t("pages.signup.modal_title_2")}</MDBModalTitle>
+                <MDBModalTitle data-testid="signup-email-modal-title-2">
+                  {t("pages.signup.modal_title_2")}
+                </MDBModalTitle>
               </Row>
             </Col>
             <MDBBtn

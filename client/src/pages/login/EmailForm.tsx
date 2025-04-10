@@ -42,6 +42,7 @@ const EmailForm: FC<EmailFormProps> = ({ isLoading, handleSubmit }) => {
               onChange={(e) =>
                 formikProps.setFieldValue("email", e.target.value)
               }
+              data-testid="email-input"
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}
@@ -60,6 +61,7 @@ const EmailForm: FC<EmailFormProps> = ({ isLoading, handleSubmit }) => {
               onChange={(e) =>
                 formikProps.setFieldValue("password", e.target.value)
               }
+              data-testid="password-input"
             />
             <ErrorMessage
               component={ValidationsAlerts as ComponentType}
@@ -71,6 +73,7 @@ const EmailForm: FC<EmailFormProps> = ({ isLoading, handleSubmit }) => {
               <Link
                 to={"/reset-password"}
                 className="text-muted text-decoration-underline"
+                data-testid="forgot-password-link"
               >
                 {t("pages.login.forgot_password")}
               </Link>
@@ -80,6 +83,7 @@ const EmailForm: FC<EmailFormProps> = ({ isLoading, handleSubmit }) => {
                 type="submit"
                 color="light"
                 disabled={isLoading}
+                data-testid="login-button"
               >
                 {t("app_common.login")}
               </MDBBtn>
