@@ -105,17 +105,19 @@
       "cant_save_score": "You can't save this score",
       "save_score": "To save your scores"
     },
-    "country_description": "Find the answer from the list of territorial identifiers appearing on German number plates and corresponding to boroughs and district towns."
+    "country_description": "Find the answer from the list of territorial identifiers appearing on number plates and corresponding to boroughs and district towns."
   },
   "countries": {
     "names": {
-      "germany": "Germany"
+      "germany": "Germany",
+      "france": "France"
     }
   },
   "notifications": {
     "something_went_wrong": "Something went wrong",
     "profile_updated": "Profile updated",
-    "profile_verified": "Profile verified"
+    "profile_verified": "Profile verified",
+    "email_sent": "A verification email has been sent to your inbox. Please check your email to verify your account."
   },
   "validations": {
     "required": "Required",
@@ -128,8 +130,7 @@
     "incorrect_password": "Incorrect password",
     "incorrect_email": "Incorrect email",
     "username_taken": "Username already taken",
-    "email_not_verified": "Please verify your email before logging in.",
-    "email_sent": "A verification email has been sent to your inbox. Please check your email to verify your account."
+    "email_not_verified": "Please verify your email before logging in."
   },
   "errors": {
     "user_not_found": "User not found",

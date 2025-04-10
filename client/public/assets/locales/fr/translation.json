@@ -105,11 +105,12 @@
       "cant_save_score": "Vous ne pouvez pas enregistrer ce score",
       "save_score": "Pour enregistrer vos scores"
     },
-    "country_description": "Trouvez la réponse dans la liste des identifiants territoriaux figurant sur les plaques minéralogiques allemandes et correspondant aux arrondissements et aux villes."
+    "country_description": "Trouvez la réponse dans la liste des identifiants territoriaux figurant sur les plaques minéralogiques et correspondant aux arrondissements et aux villes."
   },
   "countries": {
     "names": {
-      "germany": "Allemagne"
+      "germany": "Allemagne",
+      "france": "France"
     }
   },
   "notifications": {
