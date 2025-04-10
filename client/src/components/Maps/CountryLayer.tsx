@@ -4,19 +4,22 @@ import { dataLayer } from "../../utils/data-layer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
-import { GameOptions, Markers } from "shared.types";
-const data = require("../../assets/metadata/geojson/germany.geojson");
+import { GameOptions, Markers, PlayedCountryInfo } from "shared.types";
 
 interface GameState {
   game: {
     gameOptions: GameOptions;
     markers: Markers;
+    playedCountryInfo: PlayedCountryInfo;
   };
 }
 
 const CountryLayer = () => {
-  const { gameOptions, markers } = useSelector(
+  const { gameOptions, markers, playedCountryInfo } = useSelector(
     (state: GameState) => state.game
+  );
+  const data = require(
+    `../../assets/metadata/geojson/${playedCountryInfo.countryId}.geojson`
   );
 
   return (
@@ -25,7 +28,7 @@ const CountryLayer = () => {
         <Layer {...dataLayer(gameOptions)} data-testid="countries-layer" />
       </Source>
 
-      {markers.user.length > 0
+      {markers.user.length > 0 && markers.user[0].longitude !== null
         ? markers.user.map((m, i) => (
             <Marker {...m} key={i} anchor="bottom" data-testid="user-marker">
               <FontAwesomeIcon
@@ -41,7 +44,7 @@ const CountryLayer = () => {
           ))
         : null}
 
-      {markers.answer.length > 0
+      {markers.answer.length > 0 && markers.answer[0].longitude !== null
         ? markers.answer.map((m, i) => (
             <Marker {...m} key={i} anchor="bottom" data-testid="answer-marker">
               <FontAwesomeIcon

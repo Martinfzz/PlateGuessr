@@ -24,7 +24,7 @@ describe("useResendVerificationEmail", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/resend-verification-email",
+      `${process.env.REACT_APP_API_URL}/api/user/resend-verification-email`,
       expect.any(Object)
     );
     expect(toast.success).toHaveBeenCalledWith("notifications.email_sent", {
@@ -55,7 +55,7 @@ describe("useResendVerificationEmail", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/resend-verification-email",
+      `${process.env.REACT_APP_API_URL}/api/user/resend-verification-email`,
       expect.any(Object)
     );
     expect(toast.error).toHaveBeenCalledWith(

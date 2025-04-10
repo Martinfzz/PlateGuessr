@@ -21,6 +21,19 @@ const SelectedCountry: FC<SelectedCountryProps> = ({ handleOnPlay }) => {
   const { popupInfo } = useSelector((state: GameState) => state.game);
   const dispatch = useDispatch();
 
+  const handleClosePopup = () => {
+    dispatch(
+      setPopupInfo({
+        longitude: null,
+        latitude: null,
+        zoom: null,
+        countryId: null,
+        name: "",
+        color: "#fff",
+      })
+    );
+  };
+
   return (
     <div data-testid="selected-country">
       {popupInfo && (
@@ -28,18 +41,7 @@ const SelectedCountry: FC<SelectedCountryProps> = ({ handleOnPlay }) => {
           anchor="bottom"
           longitude={Number(popupInfo.longitude)}
           latitude={Number(popupInfo.latitude)}
-          onClose={() =>
-            dispatch(
-              setPopupInfo({
-                longitude: null,
-                latitude: null,
-                zoom: null,
-                countryId: null,
-                name: "",
-                color: "#fff",
-              })
-            )
-          }
+          onClose={handleClosePopup}
           closeButton={false}
         >
           <div>
@@ -59,6 +61,7 @@ const SelectedCountry: FC<SelectedCountryProps> = ({ handleOnPlay }) => {
                 className="mx-2 text-center"
                 color="dark"
                 onClick={handleOnPlay}
+                data-testid="country-play-btn"
               >
                 {t("app_common.play")}
               </MDBBtn>

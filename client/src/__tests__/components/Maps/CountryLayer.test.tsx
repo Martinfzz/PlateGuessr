@@ -40,6 +40,9 @@ describe("CountryLayer Component", () => {
           answer: [{ longitude: 20, latitude: 40 }],
           color: "#000",
         },
+        playedCountryInfo: {
+          countryId: "someCountryId",
+        },
       },
     });
 
@@ -67,6 +70,9 @@ describe("CountryLayer Component", () => {
           answer: [],
           color: "#000",
         },
+        playedCountryInfo: {
+          countryId: "someCountryId",
+        },
       },
     });
 
@@ -92,6 +98,9 @@ describe("CountryLayer Component", () => {
           user: [],
           answer: [{ longitude: 10, latitude: 50 }],
           color: "#000",
+        },
+        playedCountryInfo: {
+          countryId: "someCountryId",
         },
       },
     });
@@ -120,6 +129,9 @@ describe("CountryLayer Component", () => {
           user: [],
           answer: [],
           color: "#000",
+        },
+        playedCountryInfo: {
+          countryId: "someCountryId",
         },
       },
     });

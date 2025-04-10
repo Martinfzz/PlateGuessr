@@ -7,7 +7,10 @@ export const countriesLayer: FillLayer = {
   paint: {
     "fill-color": {
       property: "ID",
-      stops: [[276, "#ffcc00"]],
+      stops: [
+        [250, "#002654"],
+        [276, "#ffcc00"],
+      ],
     },
     "fill-opacity": 0.5,
   },
@@ -21,7 +24,10 @@ export const highlightLayer: FillLayer = {
   paint: {
     "fill-color": {
       property: "ID",
-      stops: [[276, "#ffcc00"]],
+      stops: [
+        [250, "#002654"],
+        [276, "#ffcc00"],
+      ],
     },
     "fill-opacity": 0.2,
   },

@@ -40,7 +40,7 @@ describe("useLogin", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      `${process.env.REACT_APP_API_URL}/api/user/login`,
       expect.any(Object)
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -70,7 +70,7 @@ describe("useLogin", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/user/login",
+      `${process.env.REACT_APP_API_URL}/api/user/login`,
       expect.any(Object)
     );
     expect(result.current.isLoading).toBe(false);
