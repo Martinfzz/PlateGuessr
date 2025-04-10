@@ -169,9 +169,7 @@ export const useGame = () => {
       setShowEffect(true);
       setTimeout(() => setShowEffect(false), 2000);
 
-      if (
-        features[0]?.properties.name === selectedElements.current.at(-1)?.id
-      ) {
+      if (features[0]?.properties.id === selectedElements.current.at(-1)?.id) {
         dispatch(setMarkers({ color: "#47A025" }));
         score.current.before = score.current.after;
         score.current.after = score.current.after + guessesCount.current * 1000;
@@ -215,18 +213,24 @@ export const useGame = () => {
   const handleClickOnCountry = useCallback(
     (features: any) => {
       const country = features && features[0];
+
       if (country) {
-        dispatch(
-          setPopupInfo({
-            longitude: country.properties.LNG,
-            latitude: country.properties.LAT,
-            zoom: country.properties.ZOOM,
-            countryId: country.properties.ID,
-            name: country.properties.ADMIN,
-            color: country.properties.COLOR,
-          })
-        );
-        setShowPopupInfo(true);
+        setShowPopupInfo(false);
+
+        // Delay updating popupInfo to ensure React detects the change
+        setTimeout(() => {
+          dispatch(
+            setPopupInfo({
+              longitude: country.properties.LNG,
+              latitude: country.properties.LAT,
+              zoom: country.properties.ZOOM,
+              countryId: country.properties.ID,
+              name: country.properties.ADMIN,
+              color: country.properties.COLOR,
+            })
+          );
+          setShowPopupInfo(true);
+        }, 0);
       } else {
         dispatch(
           setPopupInfo({
