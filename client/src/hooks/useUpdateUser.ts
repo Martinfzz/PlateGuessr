@@ -18,19 +18,22 @@ export const useUpdateUser = () => {
     setError(null);
     setSuccess(null);
 
-    const response = await fetch("/api/user/" + user?.token, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user?.token}`,
-      },
-      body: JSON.stringify({
-        oldUsername,
-        newUsername,
-        currentPassword,
-        password,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/` + user?.token,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
+        body: JSON.stringify({
+          oldUsername,
+          newUsername,
+          currentPassword,
+          password,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

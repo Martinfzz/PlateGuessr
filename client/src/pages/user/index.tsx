@@ -70,7 +70,7 @@ const User = () => {
 
   const getUser = async () => {
     setLoading(loadingTypes.index);
-    await API.get(`/api/user/${params.id}`)
+    await API.get(`${process.env.REACT_APP_API_URL}/api/user/${params.id}`)
       .then((res) => {
         setData(res.data.data);
       })
@@ -174,7 +174,7 @@ const User = () => {
 
           <Row style={{ width: "100%" }}>
             <Col lg={2} xl={3}></Col>
-            <Col lg={8} xl={6} className="px-5">
+            <Col lg={8} xl={6} className="px-4">
               <Row className="mb-4 d-flex justify-content-center">
                 <MDBBtnGroup shadow="0" aria-label="game modes">
                   <MDBBtn

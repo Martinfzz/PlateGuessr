@@ -10,11 +10,14 @@ export const useGoogleAuth = () => {
   const navigate = useNavigate();
 
   const googleAuth = async (code: string) => {
-    const response = await fetch("/api/user/auth/google", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/auth/google`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

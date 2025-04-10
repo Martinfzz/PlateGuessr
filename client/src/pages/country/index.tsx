@@ -72,7 +72,9 @@ const Country = () => {
 
   const getUserCountryScore = async () => {
     setLoading(loadingTypes.index);
-    await API.get(`/api/user/country/${data?._id}?token=${user?.token}`)
+    await API.get(
+      `${process.env.REACT_APP_API_URL}/api/user/country/${data?._id}?token=${user?.token}`
+    )
       .then((res) => {
         if (Object.prototype.hasOwnProperty.call(res.data.data, "scores")) {
           setUserCountryScore(res.data.data);
@@ -90,7 +92,7 @@ const Country = () => {
 
   const getCountry = async () => {
     setLoading(loadingTypes.index);
-    await API.get(`/api/country/${params.id}`)
+    await API.get(`${process.env.REACT_APP_API_URL}/api/country/${params.id}`)
       .then((res) => {
         setData(res.data.data);
         setScores(res.data.data.game_modes["1"].top_scores);
@@ -221,7 +223,7 @@ const Country = () => {
 
           <Row style={{ width: "100%" }}>
             <Col lg={2} xl={3}></Col>
-            <Col lg={8} xl={6} className="px-5">
+            <Col lg={8} xl={6} className="px-4">
               <Row className="mb-5 d-flex justify-content-center">
                 <MDBBtnGroup shadow="0" aria-label="Basic example">
                   <MDBBtn
